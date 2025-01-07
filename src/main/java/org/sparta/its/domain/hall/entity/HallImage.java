@@ -20,10 +20,12 @@ public class HallImage {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	// 연관관계
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hall_id")
 	private Hall hall;
 
+	// 필드
 	@Column(nullable = false, length = 255)
 	private String imageUrl;
 }
