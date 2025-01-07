@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### applicatication config ###
-application-*.yml
+application-*.properties
