@@ -1,8 +1,11 @@
 package org.sparta.its.domain.hall.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.sparta.its.domain.concert.entity.Concert;
+import org.sparta.its.global.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,15 +20,23 @@ import lombok.NoArgsConstructor;
 @Entity(name = "hall")
 @NoArgsConstructor
 @DynamicUpdate
-public class Hall {
+public class Hall extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	// 연관관계
 	@OneToMany(mappedBy = "hall")
-	private List<HallImage> hallImages;
+	private List<HallImage> hallImages = new ArrayList<>();
 
+	@OneToMany(mappedBy = "hall")
+	private List<Concert> concerts = new ArrayList<>();
+
+	@OneToMany(mappedBy = "hall")
+	private List<Seat> seats = new ArrayList<>();
+
+	// 필드
 	@Column(nullable = false, unique = true, length = 30)
 	private String name;
 
@@ -34,4 +45,7 @@ public class Hall {
 
 	@Column(nullable = false)
 	private Integer capacity;
+
+	@Column(nullable = false)
+	private Boolean isOpen;
 }
