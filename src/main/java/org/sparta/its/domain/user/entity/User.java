@@ -1,6 +1,11 @@
 package org.sparta.its.domain.user.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.DynamicUpdate;
+import org.sparta.its.domain.reservation.entity.CancelList;
+import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.global.entity.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -10,6 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +29,14 @@ public class User extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	// 연관관계
+	@OneToMany(mappedBy = "user")
+	private List<CancelList> cancelLists = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user")
+	private List<Reservation> reservations = new ArrayList<>();
+
+	// 필드
 	@Column(unique = true, nullable = false, length = 255)
 	private String email;
 
