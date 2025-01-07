@@ -20,10 +20,12 @@ public class ConcertImage {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	// 연관관계
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "concert_id")
 	private Concert concert;
 
+	// 필드
 	@Column(nullable = false, length = 255)
 	private String imageUrl;
 }
