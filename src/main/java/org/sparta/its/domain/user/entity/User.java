@@ -1,6 +1,5 @@
 package org.sparta.its.domain.user.entity;
 
-import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.sparta.its.global.entity.BaseEntity;
 
@@ -18,7 +17,6 @@ import lombok.NoArgsConstructor;
 @Entity(name = "user")
 @NoArgsConstructor
 @DynamicUpdate
-@DynamicInsert
 public class User extends BaseEntity {
 
 	@Id
