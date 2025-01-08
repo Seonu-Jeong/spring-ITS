@@ -66,20 +66,24 @@ public class S3Service {
 		StringBuilder packageName = new StringBuilder(BUCKET);
 
 		// imageFormat 에 정의된 경로에 따라 설정
-		packageName.append(imageFormat.getPath());
+		StringBuilder secondPackageName = new StringBuilder(imageFormat.getPath());
 
 		// 해당 도메인 id에 따른 패키지 추가
-		packageName.append("/").append(id);
+		secondPackageName.append("/").append(id);
 
 		// 이미지 이름과 확장자를 가져옴
 		String s3FileName = image.getOriginalFilename();
+
+		// 최종 패키지
+		packageName.append(secondPackageName);
 
 		// s3 저장
 		ObjectMetadata objMeta = new ObjectMetadata();
 		objMeta.setContentLength(image.getInputStream().available());
 		amazonS3.putObject(packageName.toString(), s3FileName, image.getInputStream(), objMeta);
 
-		return amazonS3.getResourceUrl(BUCKET, packageName + "/" + s3FileName);
+		// substring은 '/' 해주기 위함
+		return amazonS3.getResourceUrl(BUCKET, secondPackageName.substring(1) + "/" + s3FileName);
 	}
 
 	/**
