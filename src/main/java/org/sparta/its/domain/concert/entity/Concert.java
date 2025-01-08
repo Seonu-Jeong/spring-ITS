@@ -10,6 +10,7 @@ import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.reservation.entity.Reservation;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -63,4 +65,26 @@ public class Concert {
 
 	@Column(nullable = false)
 	private Integer price;
+
+	@Column(nullable = false)
+	@ElementCollection
+	private List<String> images = new ArrayList<>();
+
+	@Builder
+	public Concert(Hall hall, String title, String singer, LocalDateTime startAt, LocalDateTime endAt,
+		LocalTime runningStartTime, LocalTime runningEndTime, Integer price, List<ConcertImage> concertImages) {
+		this.hall = hall;
+		this.title = title;
+		this.singer = singer;
+		this.startAt = startAt;
+		this.endAt = endAt;
+		this.runningStartTime = runningStartTime;
+		this.runningEndTime = runningEndTime;
+		this.price = price;
+		this.concertImages = concertImages;
+	}
+
+	public void addImage(List<String> image) {
+		this.images = image;
+	}
 }
