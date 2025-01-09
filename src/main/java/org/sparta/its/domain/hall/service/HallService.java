@@ -8,7 +8,6 @@ import org.sparta.its.domain.hall.dto.HallResponse;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.hall.entity.HallImage;
 import org.sparta.its.domain.hall.entity.Seat;
-import org.sparta.its.domain.hall.repository.HallBulkRepository;
 import org.sparta.its.domain.hall.repository.HallImageRepository;
 import org.sparta.its.domain.hall.repository.HallRepository;
 import org.sparta.its.domain.hall.repository.SeatRepository;
@@ -33,7 +32,7 @@ public class HallService {
 	private final S3Service s3Service;
 
 	// TODO 성능 개선 시, 사용
-	private final HallBulkRepository hallBulkRepository;
+	// private final HallBulkRepository hallBulkRepository;
 
 	/**
 	 * 공연장을 저장 + 공연장 이미지 S3 업로드 + 업로드 URL 저장
