@@ -17,12 +17,11 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 	//TODO : order 고민
 	@Query("SELECT c " +
 		"FROM concert c " +
-		"WHERE c.singer LIKE %:singer% OR c.title LIKE %:title% " +
-		"ORDER BY c.startAt ASC")
+		"WHERE c.singer LIKE %:singer% AND c.title LIKE %:title% AND c.endAt > :today")
 	Page<Concert> findAllWithOrderBySingerAndTitle(
 		@Param("singer") String singer,
 		@Param("title") String title,
-		@Param("startAt") LocalDateTime startAt,
+		@Param("today") LocalDateTime today,
 		Pageable pageable);
 	// Default 메소드
 }

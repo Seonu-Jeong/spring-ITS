@@ -64,12 +64,21 @@ public class ConcertService {
 		return ConcertResponse.CreateDto.toDto(saveConcert, publicUrls);
 	}
 
-	public List<ConcertResponse.FindDto> findAll(String singer, String title, String order, Integer page, Integer size,
-		LocalDateTime startAt) {
-		Pageable pageable = PageRequest.of(page, size, Sort.by("startAt").ascending());
-		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitle(singer, title, startAt,
+	public List<ConcertResponse.FindDto> findAll(String singer, String title, String order, Integer page,
+		Integer size) {
+		Sort sort = "desc".equalsIgnoreCase(order)
+			? Sort.by(Sort.Order.desc("startAt"))
+			: Sort.by(Sort.Order.asc("startAt"));
+
+		LocalDateTime today = LocalDateTime.now();
+		Pageable pageable = PageRequest.of(page, size, sort);
+		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitle(singer, title, today,
 			pageable);
 
 		return allConcerts.stream().map(ConcertResponse.FindDto::toDto).toList();
 	}
+
+	// public ConcertResponse.FindDto findConcert(Long concertId) {
+	//
+	// }
 }

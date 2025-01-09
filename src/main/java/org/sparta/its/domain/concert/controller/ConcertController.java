@@ -1,6 +1,5 @@
 package org.sparta.its.domain.concert.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
@@ -55,13 +54,21 @@ public class ConcertController {
 	public ResponseEntity<List<ConcertResponse.FindDto>> findAll(
 		@RequestParam(required = false) String singer,
 		@RequestParam(required = false) String concertTitle,
-		@RequestParam(required = false) String order,
-		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "10") Integer size,
-		@RequestParam(required = false) LocalDateTime startAt) {
-		List<ConcertResponse.FindDto> allConcertDto = concertService.findAll(singer, concertTitle, order, page, size,
-			startAt);
+		@RequestParam(defaultValue = "DESC") String order,
+		@RequestParam(defaultValue = "1") Integer page,
+		@RequestParam(defaultValue = "5") Integer size) {
+
+		List<ConcertResponse.FindDto> allConcertDto = concertService.findAll(singer, concertTitle, order, page - 1,
+			size);
 
 		return ResponseEntity.status(HttpStatus.OK).body(allConcertDto);
 	}
+
+	// @GetMapping("/{concertId}")
+	// public ResponseEntity<ConcertResponse.FindDto> findConcert(
+	// 	@PathVariable Long concertId) {
+	// 	ConcertResponse.FindDto response = concertService.findedConcert(concertId);
+	//
+	// 	return ResponseEntity.status(HttpStatus.OK).body(response);
+	// }
 }
