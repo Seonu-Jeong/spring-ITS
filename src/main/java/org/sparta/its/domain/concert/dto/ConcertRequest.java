@@ -2,10 +2,8 @@ package org.sparta.its.domain.concert.dto;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
 
 import org.sparta.its.domain.concert.entity.Concert;
-import org.sparta.its.domain.concert.entity.ConcertImage;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,7 +60,6 @@ public class ConcertRequest {
 				.runningStartTime(runningStartTime)
 				.runningEndTime(runningEndTime)
 				.price(price)
-				.concertImages(Arrays.stream(images).map(image -> new ConcertImage()).toList())
 				.build();
 		}
 	}

@@ -41,7 +41,7 @@ public class Concert {
 	private Hall hall;
 
 	@OneToMany(mappedBy = "concert")
-	private List<Reservation> reservations = new ArrayList<>();
+	private final List<Reservation> reservations = new ArrayList<>();
 
 	// 필드
 	@Column(nullable = false, length = 30)
