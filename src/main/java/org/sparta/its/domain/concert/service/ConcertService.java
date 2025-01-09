@@ -2,7 +2,8 @@ package org.sparta.its.domain.concert.service;
 
 import java.util.List;
 
-import org.sparta.its.domain.concert.dto.CreateConcert;
+import org.sparta.its.domain.concert.dto.ConcertRequest;
+import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.concert.fake.HallRepository;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
@@ -21,7 +22,7 @@ public class ConcertService {
 	private final HallRepository hallRepository;
 
 	@Transactional
-	public CreateConcert.ResponseDto createConcert(CreateConcert.RequestDto requestDto, List<MultipartFile> images) {
+	public ConcertResponse.ResponseDto createConcert(ConcertRequest.CreateDto requestDto, List<MultipartFile> images) {
 
 		Hall findHall = hallRepository.findByIdOrThrow(requestDto.getHallId());
 
@@ -29,6 +30,6 @@ public class ConcertService {
 
 		concertRepository.save(concert);
 
-		return CreateConcert.ResponseDto.toDto(concert);
+		return ConcertResponse.ResponseDto.toDto(concert);
 	}
 }
