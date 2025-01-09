@@ -35,6 +35,11 @@ public class GlobalExceptionHandler {
 		return ErrorResponseDto.toResponseEntity(exception);
 	}
 
+	@ExceptionHandler(value = {ImageException.class})
+	public ResponseEntity<ErrorResponseDto> handleCustomException(ImageException exception) {
+		return ErrorResponseDto.toResponseEntity(exception);
+	}
+
 	@ExceptionHandler(value = {MethodArgumentNotValidException.class})
 	public ResponseEntity<ErrorResponseDto> handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException exception) {
