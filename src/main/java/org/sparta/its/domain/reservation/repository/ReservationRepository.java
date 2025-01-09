@@ -1,9 +1,9 @@
-package org.sparta.its.domain.reservation.entity.repository;
+package org.sparta.its.domain.reservation.repository;
 
 import java.util.Optional;
 
-import org.sparta.its.domain.reservation.entity.entity.Reservation;
-import org.sparta.its.domain.reservation.entity.entity.ReservationStatus;
+import org.sparta.its.domain.reservation.entity.Reservation;
+import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;

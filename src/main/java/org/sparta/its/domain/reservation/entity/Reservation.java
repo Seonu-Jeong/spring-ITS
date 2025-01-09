@@ -1,4 +1,4 @@
-package org.sparta.its.domain.reservation.entity.entity;
+package org.sparta.its.domain.reservation.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.sparta.its.domain.concert.entity.Concert;
@@ -60,4 +60,6 @@ public class Reservation extends BaseEntity {
 	public void completeReservation() {
 		this.status = ReservationStatus.COMPLETED;
 	}
+
+	public void cancelReservation() { this.status = ReservationStatus.PENDING; }
 }

@@ -1,6 +1,6 @@
-package org.sparta.its.domain.reservation.entity.dto;
+package org.sparta.its.domain.reservation.dto;
 
-import org.sparta.its.domain.reservation.entity.entity.Reservation;
+import org.sparta.its.domain.reservation.entity.Reservation;
 
 import lombok.Builder;
 import lombok.Getter;

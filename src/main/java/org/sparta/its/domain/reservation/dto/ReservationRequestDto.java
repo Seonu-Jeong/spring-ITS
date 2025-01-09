@@ -1,9 +1,9 @@
-package org.sparta.its.domain.reservation.entity.dto;
+package org.sparta.its.domain.reservation.dto;
 
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.hall.entity.Seat;
-import org.sparta.its.domain.reservation.entity.entity.Reservation;
-import org.sparta.its.domain.reservation.entity.entity.ReservationStatus;
+import org.sparta.its.domain.reservation.entity.Reservation;
+import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import org.sparta.its.domain.user.entity.User;
 
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package org.sparta.its.domain.reservation.entity;
+package org.sparta.its.domain.cancelList.entity;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,4 +42,17 @@ public class CancelList extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 10)
 	private CancelStatus status;
+
+	@Builder
+	public CancelList(
+		Long id,
+		User user,
+		String description,
+		CancelStatus status) {
+
+		this.id = id;
+		this.user = user;
+		this.description = description;
+		this.status = status;
+	}
 }
