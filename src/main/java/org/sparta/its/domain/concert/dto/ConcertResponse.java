@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.entity.Concert;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -25,16 +24,12 @@ public class ConcertResponse {
 
 		private final String singer;
 
-		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 		private final LocalDateTime startAt;
 
-		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 		private final LocalDateTime endAt;
 
-		@DateTimeFormat(pattern = "HH:mm")
 		private final LocalTime runningStartTime;
 
-		@DateTimeFormat(pattern = "HH:mm")
 		private final LocalTime runningEndTime;
 
 		private final Integer price;

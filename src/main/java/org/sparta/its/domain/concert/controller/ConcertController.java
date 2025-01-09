@@ -3,6 +3,8 @@ package org.sparta.its.domain.concert.controller;
 import org.sparta.its.domain.concert.dto.ConcertRequest;
 import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.service.ConcertService;
+import org.sparta.its.global.exception.ConcertException;
+import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +32,15 @@ public class ConcertController {
 	@PostMapping
 	public ResponseEntity<ConcertResponse.CreateDto> createConcert(
 		@Valid @ModelAttribute ConcertRequest.CreateDto createDto) {
+
+		if (createDto.getRunningStartTime().isAfter(createDto.getRunningEndTime())) {
+			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_TIME);
+		}
+
+		if (createDto.getStartAt().isAfter(createDto.getEndAt())) {
+			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
+		}
+		//TODO : 콘서트 등록 시 일자 확인
 		ConcertResponse.CreateDto response = concertService.createConcert(createDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
