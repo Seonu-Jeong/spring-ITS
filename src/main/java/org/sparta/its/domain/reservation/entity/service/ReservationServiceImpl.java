@@ -49,4 +49,16 @@ public class ReservationServiceImpl implements ReservationService {
 
 		return ReservationResponseDto.fromEntity(reservation);
 	}
+
+	@Override
+	public ReservationResponseDto completeReservation(Long reservationId){
+		Reservation reservation = reservationRepository.findById(reservationId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다"));
+
+		reservation.completeReservation();
+
+		reservationRepository.save(reservation);
+
+		return ReservationResponseDto.fromEntity(reservation);
+	}
 }
