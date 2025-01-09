@@ -1,4 +1,4 @@
-package org.sparta.its.domain.hall;
+package org.sparta.its.domain.hall.service;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,9 +1,10 @@
-package org.sparta.its.domain.hall;
+package org.sparta.its.domain.hall.controller;
 
 import java.io.IOException;
 
 import org.sparta.its.domain.hall.dto.HallRequest;
 import org.sparta.its.domain.hall.dto.HallResponse;
+import org.sparta.its.domain.hall.service.HallService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
