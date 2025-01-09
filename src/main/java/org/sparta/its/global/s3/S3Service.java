@@ -2,6 +2,7 @@ package org.sparta.its.global.s3;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.sparta.its.global.exception.ImageException;
@@ -37,6 +38,12 @@ public class S3Service {
 		MultipartFile[] images,
 		ImageFormat imageFormat,
 		Long domainId) throws IOException {
+
+		// 이미지가 빈값인지 확인
+		long count = Arrays.stream(images).filter(MultipartFile::isEmpty).count();
+		if (count > 0) {
+			throw new ImageException(ImageErrorCode.TEST);
+		}
 
 		List<String> uploadedUrls = new ArrayList<>();
 		for (MultipartFile image : images) {
@@ -82,7 +89,7 @@ public class S3Service {
 		objMeta.setContentLength(image.getInputStream().available());
 		amazonS3.putObject(packageName.toString(), s3FileName, image.getInputStream(), objMeta);
 
-		// substring은 '/' 해주기 위함
+		// substring 은 '/' 해주기 위함
 		return amazonS3.getResourceUrl(BUCKET, secondPackageName.substring(1) + "/" + s3FileName);
 	}
 
