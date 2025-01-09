@@ -25,8 +25,8 @@ public class ConcertController {
 	@PostMapping
 	public ResponseEntity<CreateConcert.ResponseDto> createConcert(
 		@Valid @RequestPart CreateConcert.RequestDto requestDto,
-		@RequestPart List<MultipartFile> file) {
-		CreateConcert.ResponseDto response = concertService.createConcert(requestDto);
+		@RequestPart List<MultipartFile> images) {
+		CreateConcert.ResponseDto response = concertService.createConcert(requestDto, images);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}

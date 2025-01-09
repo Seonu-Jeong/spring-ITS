@@ -7,6 +7,7 @@ import java.util.List;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.concert.entity.ConcertImage;
 import org.sparta.its.domain.hall.entity.Hall;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -50,7 +51,7 @@ public class CreateConcert {
 		@NotNull(message = "공연 가격은 필수값 입니다.")
 		private final Integer price;
 
-		public Concert toEntity(Hall hall, List<String> images) {
+		public Concert toEntity(Hall hall, List<MultipartFile> images) {
 			return Concert.builder()
 				.hall(hall)
 				.title(title)
