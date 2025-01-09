@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -48,4 +49,12 @@ public class Hall extends BaseEntity {
 
 	@Column(nullable = false)
 	private Boolean isOpen;
+
+	@Builder
+	public Hall(String name, String location, Integer capacity, Boolean isOpen) {
+		this.name = name;
+		this.location = location;
+		this.capacity = capacity;
+		this.isOpen = isOpen;
+	}
 }
