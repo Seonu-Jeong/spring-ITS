@@ -1,6 +1,7 @@
 package org.sparta.its.domain.concert.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
@@ -15,6 +16,10 @@ import org.sparta.its.global.exception.ImageException;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,5 +62,14 @@ public class ConcertService {
 		}
 
 		return ConcertResponse.CreateDto.toDto(saveConcert, publicUrls);
+	}
+
+	public List<ConcertResponse.FindDto> findAll(String singer, String title, String order, Integer page, Integer size,
+		LocalDateTime startAt) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("startAt").ascending());
+		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitle(singer, title, startAt,
+			pageable);
+
+		return allConcerts.stream().map(ConcertResponse.FindDto::toDto).toList();
 	}
 }
