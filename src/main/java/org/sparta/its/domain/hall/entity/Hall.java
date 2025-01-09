@@ -29,13 +29,13 @@ public class Hall extends BaseEntity {
 
 	// 연관관계
 	@OneToMany(mappedBy = "hall")
-	private List<HallImage> hallImages = new ArrayList<>();
+	private final List<HallImage> hallImages = new ArrayList<>();
 
 	@OneToMany(mappedBy = "hall")
-	private List<Concert> concerts = new ArrayList<>();
+	private final List<Concert> concerts = new ArrayList<>();
 
 	@OneToMany(mappedBy = "hall")
-	private List<Seat> seats = new ArrayList<>();
+	private final List<Seat> seats = new ArrayList<>();
 
 	// 필드
 	@Column(nullable = false, unique = true, length = 30)
