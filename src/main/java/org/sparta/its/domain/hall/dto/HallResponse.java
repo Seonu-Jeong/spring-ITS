@@ -17,6 +17,8 @@ public class HallResponse {
 
 		private final String location;
 
+		private final Integer capacity;
+
 		private final LocalDateTime createdAt;
 
 		private final List<String> images;
@@ -25,6 +27,7 @@ public class HallResponse {
 			this.hallId = savedHall.getId();
 			this.hallName = savedHall.getName();
 			this.location = savedHall.getLocation();
+			this.capacity = savedHall.getCapacity();
 			this.createdAt = savedHall.getCreatedAt();
 			this.images = publicUrl;
 		}
