@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,7 +31,7 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse.SignUpDto> signup(
-		@RequestBody AuthRequest.SignUpDto signUpDto
+		@Valid @RequestBody AuthRequest.SignUpDto signUpDto
 	) {
 
 		AuthResponse.SignUpDto responseDto = userService.signUp(signUpDto);
@@ -40,7 +41,7 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse.LoginDto> login(
-		@RequestBody AuthRequest.LoginDto loginDto,
+		@Valid @RequestBody AuthRequest.LoginDto loginDto,
 		HttpServletResponse res
 	) {
 
