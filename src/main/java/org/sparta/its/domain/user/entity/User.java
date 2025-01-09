@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -51,9 +52,18 @@ public class User extends BaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 15)
-	private Status status;
+	private Status status = Status.ACTIVATED;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 10)
 	private Role role;
+
+	@Builder
+	public User(String email, String password, String name, String phoneNumber, Role role) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.role = role;
+	}
 }
