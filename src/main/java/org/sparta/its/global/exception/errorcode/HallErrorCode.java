@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum HallErrorCode {
 
-	EXAMPLE(HttpStatus.BAD_REQUEST, "예시");
+	NOT_FOUND_HALL(HttpStatus.NOT_FOUND, "공연장 정보를 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String detail;
