@@ -10,6 +10,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+	@ExceptionHandler(value = {RuntimeException.class})
+	public ResponseEntity<ErrorResponseDto> handleCustomException(RuntimeException exception) {
+		ErrorResponseDto responseDto = ErrorResponseDto.builder()
+			.code("SERVER_ERROR")
+			.massage("서버 내부적인 문제가 발생했습니다.")
+			.build();
+
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
+	}
+
 	@ExceptionHandler(value = {UserException.class})
 	public ResponseEntity<ErrorResponseDto> handleCustomException(UserException exception) {
 		return ErrorResponseDto.toResponseEntity(exception);
