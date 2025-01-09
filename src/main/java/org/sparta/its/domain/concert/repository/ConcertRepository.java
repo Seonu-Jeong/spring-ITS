@@ -15,9 +15,13 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 
 	// @Query 작성 메소드
 	//TODO : order 고민
-	@Query("SELECT c " +
-		"FROM concert c " +
-		"WHERE c.singer LIKE %:singer% AND c.title LIKE %:title% AND c.endAt > :today")
+	@Query("""
+		SELECT c
+			FROM concert c
+			WHERE c.singer LIKE %:singer%
+			AND c.title LIKE %:title%
+			AND c.endAt >:today
+		""")
 	Page<Concert> findAllWithOrderBySingerAndTitle(
 		@Param("singer") String singer,
 		@Param("title") String title,

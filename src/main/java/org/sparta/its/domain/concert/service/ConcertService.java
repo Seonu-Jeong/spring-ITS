@@ -70,8 +70,9 @@ public class ConcertService {
 			? Sort.by(Sort.Order.desc("startAt"))
 			: Sort.by(Sort.Order.asc("startAt"));
 
-		LocalDateTime today = LocalDateTime.now();
 		Pageable pageable = PageRequest.of(page, size, sort);
+		LocalDateTime today = LocalDateTime.now();
+
 		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitle(singer, title, today,
 			pageable);
 
