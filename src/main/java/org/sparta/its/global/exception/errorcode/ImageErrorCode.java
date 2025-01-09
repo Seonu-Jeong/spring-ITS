@@ -10,11 +10,10 @@ import lombok.Getter;
 public enum ImageErrorCode {
 
 	// 400 BAD REQUEST
-	NO_FILE(HttpStatus.BAD_REQUEST, "파일이 없습니다."),
-	TEST(HttpStatus.BAD_REQUEST, "SDF 없습니다."),
 	BAD_IMAGE_FILE(HttpStatus.BAD_REQUEST, "파일이 올바르지 않습니다"),
 	NO_EXTENSION_FILE(HttpStatus.BAD_REQUEST, "파일 확장자가 없는 파일입니다."),
 	NOT_ALLOW_FILE_EXTENSION(HttpStatus.BAD_REQUEST, "해당 확장자는 업로드가 불가능합니다."),
+	DUPLICATED_NAME(HttpStatus.BAD_REQUEST, "중복된 공연장 이름입니다."),
 
 	// 500 INTERNAL SERVER ERROR
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드 실패");

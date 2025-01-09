@@ -43,6 +43,10 @@ public class HallService {
 	@Transactional
 	public HallResponse.CreatDto creatHall(HallRequest.CreateDto createDto) {
 
+		if (hallRepository.existsByName(createDto.getName())) {
+			throw new ImageException(ImageErrorCode.DUPLICATED_NAME);
+		}
+
 		Hall savedHall = hallRepository.save(createDto.toEntity());
 
 		List<String> publicUrls;
@@ -63,7 +67,7 @@ public class HallService {
 			hallImageRepository.save(hallImage);
 		}
 
-		for (int i = 1; i < savedHall.getCapacity(); i++) {
+		for (int i = 1; i <= savedHall.getCapacity(); i++) {
 			Seat seat = new Seat(savedHall, i);
 			seatRepository.save(seat);
 		}

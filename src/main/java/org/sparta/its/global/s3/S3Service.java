@@ -42,7 +42,7 @@ public class S3Service {
 		// 이미지가 빈값인지 확인
 		long count = Arrays.stream(images).filter(MultipartFile::isEmpty).count();
 		if (count > 0) {
-			throw new ImageException(ImageErrorCode.TEST);
+			throw new ImageException(ImageErrorCode.BAD_IMAGE_FILE);
 		}
 
 		List<String> uploadedUrls = new ArrayList<>();
