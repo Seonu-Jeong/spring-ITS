@@ -31,8 +31,7 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse.SignUpDto> signup(
-		@Valid @RequestBody AuthRequest.SignUpDto signUpDto
-	) {
+		@Valid @RequestBody AuthRequest.SignUpDto signUpDto) {
 
 		AuthResponse.SignUpDto responseDto = userService.signUp(signUpDto);
 
@@ -42,8 +41,7 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse.LoginDto> login(
 		@Valid @RequestBody AuthRequest.LoginDto loginDto,
-		HttpServletResponse res
-	) {
+		HttpServletResponse res) {
 
 		AuthResponse.LoginDto responseDto = userService.login(loginDto);
 
@@ -63,8 +61,7 @@ public class AuthController {
 	@PostMapping("/logout")
 	public ResponseEntity<AuthResponse.LogoutDto> logout(
 		@AuthenticationPrincipal UserDetail userDetail,
-		HttpServletResponse response
-	) {
+		HttpServletResponse response) {
 
 		// JWT 삭제 비우기
 		Cookie jwtCookie = new Cookie(AUTHORIZATION_HEADER, "");
