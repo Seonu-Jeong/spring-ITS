@@ -15,6 +15,6 @@ public interface HallRepository extends JpaRepository<Hall, Long> {
 	// Default 메소드
 	default Hall findByIdOrThrow(Long hallId) {
 		return findById(hallId).orElseThrow(() ->
-			new HallException(HallErrorCode.EXAMPLE));
+			new HallException(HallErrorCode.NOT_FOUND_HALL));
 	}
 }

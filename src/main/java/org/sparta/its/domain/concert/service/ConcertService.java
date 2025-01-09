@@ -11,7 +11,9 @@ import org.sparta.its.domain.concert.repository.ConcertImageRepository;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.hall.repository.HallRepository;
+import org.sparta.its.global.exception.ConcertException;
 import org.sparta.its.global.exception.ImageException;
+import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
@@ -38,6 +40,14 @@ public class ConcertService {
 	 */
 	@Transactional
 	public ConcertResponse.CreateDto createConcert(ConcertRequest.CreateDto createDto) {
+
+		if (createDto.getRunningStartTime().isAfter(createDto.getRunningEndTime())) {
+			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_TIME);
+		}
+
+		if (createDto.getStartAt().isAfter(createDto.getEndAt())) {
+			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
+		}
 
 		Hall findHall = hallRepository.findByIdOrThrow(createDto.getHallId());
 
