@@ -28,4 +28,9 @@ public class HallImage {
 	// 필드
 	@Column(nullable = false, length = 255)
 	private String imageUrl;
+
+	public HallImage(Hall hall, String imageUrl) {
+		this.hall = hall;
+		this.imageUrl = imageUrl;
+	}
 }
