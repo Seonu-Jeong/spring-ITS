@@ -1,4 +1,4 @@
-package org.sparta.its.domain.reservation.entity;
+package org.sparta.its.domain.reservation.entity.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.sparta.its.domain.concert.entity.Concert;
@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,4 +48,16 @@ public class Reservation extends BaseEntity {
 	@Column(nullable = false, length = 8)
 	private ReservationStatus status;
 
+	@Builder
+	public Reservation(Long id, User user, Concert concert, Seat seat, ReservationStatus status) {
+		this.id = id;
+		this.user = user;
+		this.concert = concert;
+		this.seat = seat;
+		this.status = status;
+	}
+
+	public void completeReservation() {
+		this.status = ReservationStatus.COMPLETED;
+	}
 }
