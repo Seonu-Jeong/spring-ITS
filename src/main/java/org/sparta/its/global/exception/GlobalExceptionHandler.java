@@ -3,6 +3,7 @@ package org.sparta.its.global.exception;
 import org.sparta.its.global.exception.response.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(value = {RuntimeException.class})
-	public ResponseEntity<ErrorResponseDto> handleCustomException(RuntimeException exception) {
+	public ResponseEntity<ErrorResponseDto> handleInternalServerException(RuntimeException exception) {
 		ErrorResponseDto responseDto = ErrorResponseDto.builder()
 			.code("SERVER_ERROR")
 			.massage("서버 내부적인 문제가 발생했습니다.")
@@ -49,5 +50,10 @@ public class GlobalExceptionHandler {
 			.build();
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+	}
+
+	@ExceptionHandler(value = {AccessDeniedException.class})
+	public void handleAccessDeniedException(AccessDeniedException exception) {
+		throw exception;
 	}
 }
