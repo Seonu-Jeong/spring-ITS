@@ -10,7 +10,6 @@ import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.reservation.entity.Reservation;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -66,10 +65,6 @@ public class Concert {
 	@Column(nullable = false)
 	private Integer price;
 
-	@Column(nullable = false)
-	@ElementCollection
-	private List<String> images = new ArrayList<>();
-
 	@Builder
 	public Concert(Hall hall, String title, String singer, LocalDateTime startAt, LocalDateTime endAt,
 		LocalTime runningStartTime, LocalTime runningEndTime, Integer price, List<ConcertImage> concertImages) {
@@ -83,8 +78,5 @@ public class Concert {
 		this.price = price;
 		this.concertImages = concertImages;
 	}
-
-	public void addImage(List<String> image) {
-		this.images = image;
-	}
 }
+

@@ -1,17 +1,14 @@
 package org.sparta.its.domain.concert.controller;
 
-import java.util.List;
-
 import org.sparta.its.domain.concert.dto.ConcertRequest;
 import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.service.ConcertService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +20,15 @@ public class ConcertController {
 
 	private final ConcertService concertService;
 
+	/**
+	 * 콘서트 등록
+	 * @param createDto {@link ConcertResponse.CreateDto} {@link ModelAttribute} 생성 DTO 요청
+	 * @return {@link ResponseEntity} HttpStatus 상태값과 body 응답
+	 */
 	@PostMapping
-	public ResponseEntity<ConcertResponse.ResponseDto> createConcert(
-		@Valid @RequestPart ConcertRequest.CreateDto requestDto,
-		@RequestPart List<MultipartFile> images) {
-		ConcertResponse.ResponseDto response = concertService.createConcert(requestDto, images);
+	public ResponseEntity<ConcertResponse.CreateDto> createConcert(
+		@Valid @ModelAttribute ConcertRequest.CreateDto createDto) {
+		ConcertResponse.CreateDto response = concertService.createConcert(createDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}

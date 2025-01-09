@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.entity.Concert;
-import org.sparta.its.domain.concert.entity.ConcertImage;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -18,7 +17,7 @@ public class ConcertResponse {
 	@Getter
 	@RequiredArgsConstructor
 	@Builder
-	public static class ResponseDto {
+	public static class CreateDto {
 		private final Long id;
 
 		private final Long hallId;
@@ -43,8 +42,8 @@ public class ConcertResponse {
 
 		private final List<String> images;
 
-		public static ResponseDto toDto(Concert concert) {
-			return ResponseDto.builder()
+		public static CreateDto toDto(Concert concert, List<String> imageUrls) {
+			return CreateDto.builder()
 				.id(concert.getId())
 				.hallId(concert.getHall().getId())
 				.title(concert.getTitle())
@@ -54,7 +53,7 @@ public class ConcertResponse {
 				.runningStartTime(concert.getRunningStartTime())
 				.runningEndTime(concert.getRunningEndTime())
 				.price(concert.getPrice())
-				.images(concert.getConcertImages().stream().map(ConcertImage::getImageUrl).toList())
+				.images(imageUrls)
 				.build();
 		}
 	}

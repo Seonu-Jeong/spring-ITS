@@ -1,9 +1,9 @@
 package org.sparta.its.domain.concert.repository;
 
-import org.sparta.its.domain.concert.entity.Concert;
+import org.sparta.its.domain.concert.entity.ConcertImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ConcertRepository extends JpaRepository<Concert, Long> {
+public interface ConcertImageRepository extends JpaRepository<ConcertImage, Long> {
 
 	// 쿼리 메소드
 
