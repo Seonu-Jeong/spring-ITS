@@ -37,4 +37,9 @@ public class Seat {
 	// 필드
 	@Column(nullable = false)
 	private Integer seatNumber;
+
+	public Seat(Hall savedHall, int i) {
+		this.hall = savedHall;
+		this.seatNumber = i;
+	}
 }
