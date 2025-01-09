@@ -10,7 +10,6 @@ import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.reservation.entity.Reservation;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -35,14 +34,14 @@ public class Concert {
 
 	// 연관관계
 	@OneToMany(mappedBy = "concert")
-	private List<ConcertImage> concertImages = new ArrayList<>();
+	private final List<ConcertImage> concertImages = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hall_id")
 	private Hall hall;
 
 	@OneToMany(mappedBy = "concert")
-	private List<Reservation> reservations = new ArrayList<>();
+	private final List<Reservation> reservations = new ArrayList<>();
 
 	// 필드
 	@Column(nullable = false, length = 30)
@@ -66,13 +65,9 @@ public class Concert {
 	@Column(nullable = false)
 	private Integer price;
 
-	@Column(nullable = false)
-	@ElementCollection
-	private List<String> images = new ArrayList<>();
-
 	@Builder
 	public Concert(Hall hall, String title, String singer, LocalDateTime startAt, LocalDateTime endAt,
-		LocalTime runningStartTime, LocalTime runningEndTime, Integer price, List<ConcertImage> concertImages) {
+		LocalTime runningStartTime, LocalTime runningEndTime, Integer price) {
 		this.hall = hall;
 		this.title = title;
 		this.singer = singer;
@@ -81,10 +76,6 @@ public class Concert {
 		this.runningStartTime = runningStartTime;
 		this.runningEndTime = runningEndTime;
 		this.price = price;
-		this.concertImages = concertImages;
-	}
-
-	public void addImage(List<String> image) {
-		this.images = image;
 	}
 }
+
