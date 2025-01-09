@@ -15,6 +15,8 @@ import org.sparta.its.global.exception.ImageException;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.SdkClientException;
@@ -79,5 +81,16 @@ public class HallService {
 		// hallBulkRepository.saveAllSeat(savedHall.getId(), numberList);
 
 		return new HallResponse.CreatDto(savedHall, publicUrls);
+	}
+
+	/**
+	 * 동적 쿼리 + 페이징을 통한 공연장 조회
+	 * @param name
+	 * @param location
+	 * @param pageable
+	 * @return
+	 */
+	public Page<HallResponse.ReadDto> getHalls(String name, String location, Pageable pageable) {
+		return hallRepository.findByNameAndLocation(name, location, pageable);
 	}
 }
