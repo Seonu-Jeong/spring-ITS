@@ -38,8 +38,8 @@ public class WebSecurityConfig {
 		http.authorizeHttpRequests((authorizeHttpRequests) ->
 			authorizeHttpRequests
 				// auth
-				.requestMatchers("auth/signup", "auth/login").permitAll()
-				.requestMatchers("auth/logout").authenticated()
+				.requestMatchers("/auth/signup", "/auth/login").permitAll()
+				.requestMatchers("/auth/logout").authenticated()
 
 				//나머지
 				.anyRequest().permitAll()
