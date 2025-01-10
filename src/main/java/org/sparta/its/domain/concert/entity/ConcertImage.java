@@ -28,4 +28,9 @@ public class ConcertImage {
 	// 필드
 	@Column(nullable = false, length = 255)
 	private String imageUrl;
+
+	public ConcertImage(Concert saveConcert, String publicUrl) {
+		this.concert = saveConcert;
+		this.imageUrl = publicUrl;
+	}
 }
