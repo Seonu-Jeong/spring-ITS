@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +53,7 @@ public class ConcertController {
 			.isBefore(LocalDateTime.now())) {
 			throw new ConcertException(ConcertErrorCode.ALREADY_PASSED);
 		}
-		//TODO : 콘서트 등록 시 일자 확인 : 현재 시간을 기준으로 이전일 경우 예외 처리
+
 		ConcertResponse.CreateDto response = concertService.createConcert(createDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -78,11 +79,16 @@ public class ConcertController {
 		return ResponseEntity.status(HttpStatus.OK).body(allConcertDto);
 	}
 
-	// @GetMapping("/{concertId}")
-	// public ResponseEntity<ConcertResponse.FindDto> findConcert(
-	// 	@PathVariable Long concertId) {
-	// 	ConcertResponse.FindDto response = concertService.findedConcert(concertId);
-	//
-	// 	return ResponseEntity.status(HttpStatus.OK).body(response);
-	// }
+	/**
+	 * 콘서트 상세 조회
+	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
+	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.FindDto} 조회Dto 응답
+	 * */
+	@GetMapping("/{concertId}")
+	public ResponseEntity<ConcertResponse.FindDto> findConcert(
+		@PathVariable Long concertId) {
+		ConcertResponse.FindDto response = concertService.findConcert(concertId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
 }
