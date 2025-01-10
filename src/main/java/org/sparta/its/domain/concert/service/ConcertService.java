@@ -72,10 +72,10 @@ public class ConcertService {
 	 * @param title  콘서트명 검색 조건
 	 * @param order {@link Sort} 오름차순과 내림차순 결정
 	 * @param pageable {@link Pageable} 페이지 번호와 사이즈 결정
-	 * @return {@link ConcertResponse.FindDto}  응답 Dto
+	 * @return {@link ConcertResponse.ReadDto}  응답 Dto
 	 */
 	@Transactional(readOnly = true)
-	public List<ConcertResponse.FindDto> findAll(String singer, String title, String order, Pageable pageable) {
+	public List<ConcertResponse.ReadDto> getConcerts(String singer, String title, String order, Pageable pageable) {
 		// 정렬 변수 설정
 		Sort sort;
 
@@ -91,21 +91,21 @@ public class ConcertService {
 		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitleAndToday(singer, title, today,
 			SortByStartAt);
 
-		return allConcerts.stream().map(ConcertResponse.FindDto::toDto).toList();
+		return allConcerts.stream().map(ConcertResponse.ReadDto::toDto).toList();
 	}
 
 	/**
 	 * 콘서트 상세 조회
 	 * @param concertId 콘서트 고유 식별자
-	 * @return {@link ConcertResponse.FindDto} 형태로 응답
+	 * @return {@link ConcertResponse.ReadDto} 형태로 응답
 	 */
-	public ConcertResponse.FindDto findConcert(Long concertId) {
+	public ConcertResponse.ReadDto getDetailConcert(Long concertId) {
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
 
 		if (concert.getEndAt().isBefore(LocalDateTime.now())) {
 			throw new ConcertException(ConcertErrorCode.ALREADY_ENDED);
 		}
 
-		return ConcertResponse.FindDto.toDto(concert);
+		return ConcertResponse.ReadDto.toDto(concert);
 	}
 }

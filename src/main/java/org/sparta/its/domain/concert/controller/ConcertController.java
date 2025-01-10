@@ -65,16 +65,16 @@ public class ConcertController {
 	 * @param concertTitle {@link RequestParam} 콘서트 검색 조건
 	 * @param order {@link RequestParam} 내림차순 or 오름차순 정렬
 	 * @param pageable {@link PageableDefault} pageable 인터페이스 size 및 page default 값 설정
-	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.FindDto} 조회Dto 응답
+	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.ReadDto} 조회Dto 응답
 	 */
 	@GetMapping
-	public ResponseEntity<List<ConcertResponse.FindDto>> findAll(
+	public ResponseEntity<List<ConcertResponse.ReadDto>> getConcerts(
 		@RequestParam(required = false) String singer,
 		@RequestParam(required = false) String concertTitle,
 		@RequestParam(defaultValue = "내림차순") String order,
 		@PageableDefault Pageable pageable) {
 
-		List<ConcertResponse.FindDto> allConcertDto = concertService.findAll(singer, concertTitle, order, pageable);
+		List<ConcertResponse.ReadDto> allConcertDto = concertService.getConcerts(singer, concertTitle, order, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(allConcertDto);
 	}
@@ -82,12 +82,12 @@ public class ConcertController {
 	/**
 	 * 콘서트 상세 조회
 	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
-	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.FindDto} 조회Dto 응답
+	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.ReadDto} 조회Dto 응답
 	 * */
 	@GetMapping("/{concertId}")
-	public ResponseEntity<ConcertResponse.FindDto> findConcert(
+	public ResponseEntity<ConcertResponse.ReadDto> getDetailConcert(
 		@PathVariable Long concertId) {
-		ConcertResponse.FindDto response = concertService.findConcert(concertId);
+		ConcertResponse.ReadDto response = concertService.getDetailConcert(concertId);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
