@@ -1,4 +1,4 @@
-package org.sparta.its.domain.reservation.entity.entity;
+package org.sparta.its.domain.reservation.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.sparta.its.domain.concert.entity.Concert;
