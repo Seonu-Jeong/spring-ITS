@@ -11,6 +11,7 @@ import lombok.Getter;
 
 public class HallResponse {
 
+	@Builder
 	@Getter
 	public static class CreatDto {
 		private final Long hallId;
@@ -23,15 +24,17 @@ public class HallResponse {
 
 		private final LocalDateTime createdAt;
 
-		private final List<String> images;
+		private final List<String> imageUrls;
 
-		public CreatDto(Hall savedHall, List<String> publicUrl) {
-			this.hallId = savedHall.getId();
-			this.hallName = savedHall.getName();
-			this.location = savedHall.getLocation();
-			this.capacity = savedHall.getCapacity();
-			this.createdAt = savedHall.getCreatedAt();
-			this.images = publicUrl;
+		public static CreatDto toDto(Hall savedHall, List<String> publicUrl) {
+			return CreatDto.builder()
+				.hallId(savedHall.getId())
+				.hallName(savedHall.getName())
+				.location(savedHall.getLocation())
+				.capacity(savedHall.getCapacity())
+				.createdAt(savedHall.getCreatedAt())
+				.imageUrls(publicUrl)
+				.build();
 		}
 	}
 
@@ -99,17 +102,5 @@ public class HallResponse {
 			this.imageUrls = imageUrl.stream().map(HallImage::getImageUrl).toList();
 			this.isOpen = isOpen;
 		}
-
-		public ReadDetailDto(Hall hall) {
-			this.hallId = hall.getId();
-			this.hallName = hall.getName();
-			this.location = hall.getLocation();
-			this.capacity = hall.getCapacity();
-			this.createdAt = hall.getCreatedAt();
-			this.modifiedAt = hall.getModifiedAt();
-			this.imageUrls = hall.getHallImages().stream().map(HallImage::getImageUrl).toList();
-			this.isOpen = hall.getIsOpen();
-		}
-
 	}
 }

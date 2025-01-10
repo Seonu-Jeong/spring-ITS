@@ -80,7 +80,7 @@ public class HallService {
 		// 	.toList();
 		// hallBulkRepository.saveAllSeat(savedHall.getId(), numberList);
 
-		return new HallResponse.CreatDto(savedHall, publicUrls);
+		return HallResponse.CreatDto.toDto(savedHall, publicUrls);
 	}
 
 	/**
