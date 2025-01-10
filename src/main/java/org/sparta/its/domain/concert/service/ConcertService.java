@@ -64,16 +64,38 @@ public class ConcertService {
 		return ConcertResponse.CreateDto.toDto(saveConcert, publicUrls);
 	}
 
+	/**
+	 * 콘서트 가수명 및 콘서트명으로 다건 조회
+	 * @param singer 가수명 검색 조건
+	 * @param title  콘서트명 검색 조건
+	 * @param order {@link Sort} 오름차순과 내림차순 결정
+	 * @param page {@link Pageable} 페이지 번호 입력
+	 * @param size {@link Pageable} 페이지 갯수 입력
+	 * @return {@link ConcertResponse.FindDto}  응답 Dto
+	 */
+	@Transactional(readOnly = true)
 	public List<ConcertResponse.FindDto> findAll(String singer, String title, String order, Integer page,
 		Integer size) {
-		Sort sort = "desc".equalsIgnoreCase(order)
-			? Sort.by(Sort.Order.desc("startAt"))
-			: Sort.by(Sort.Order.asc("startAt"));
+
+		// 정렬 변수 설정
+		Sort sort;
+
+		switch (order) {
+			case "오름차순":
+				sort = Sort.by(Sort.Order.desc("startAt"));
+				break;
+			case "내림차순":
+				sort = Sort.by(Sort.Order.asc("startAt"));
+				break;
+			default:
+				throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
+		}
 
 		Pageable pageable = PageRequest.of(page, size, sort);
+
 		LocalDateTime today = LocalDateTime.now();
 
-		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitle(singer, title, today,
+		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitleAndEndAt(singer, title, today,
 			pageable);
 
 		return allConcerts.stream().map(ConcertResponse.FindDto::toDto).toList();

@@ -1,5 +1,6 @@
 package org.sparta.its.domain.concert.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
@@ -30,7 +31,7 @@ public class ConcertController {
 	/**
 	 * 콘서트 등록
 	 * @param createDto {@link ConcertResponse.CreateDto} {@link ModelAttribute} 생성 DTO 요청
-	 * @return {@link ResponseEntity} HttpStatus 상태값과 body 응답
+	 * @return {@link ResponseEntity} HttpStatus 상태값과 body 응답 {@link ConcertResponse.CreateDto} 조회Dto 응답
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping
@@ -44,19 +45,33 @@ public class ConcertController {
 		if (createDto.getStartAt().isAfter(createDto.getEndAt())) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
 		}
-		//TODO : 콘서트 등록 시 일자 확인
+
+		if (createDto.getStartAt().isBefore(LocalDateTime.now()) || createDto.getEndAt()
+			.isBefore(LocalDateTime.now())) {
+			throw new ConcertException(ConcertErrorCode.ALREADY_PASSED);
+		}
+		//TODO : 콘서트 등록 시 일자 확인 : 현재 시간을 기준으로 이전일 경우 예외 처리
 		ConcertResponse.CreateDto response = concertService.createConcert(createDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
+	/**
+	 * 콘서트 가수명 및 콘서트명으로 다건 조회
+	 * @param singer {@link RequestParam} 가수명 검색 조건
+	 * @param concertTitle {@link RequestParam} 콘서트 검색 조건
+	 * @param order {@link RequestParam} 내림차순 or 오름차순 정렬
+	 * @param page {@link RequestParam} 조회할 페이지 번호
+	 * @param size {@link RequestParam} 조회할 페이지 갯수
+	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.FindDto} 조회Dto 응답
+	 */
 	@GetMapping
 	public ResponseEntity<List<ConcertResponse.FindDto>> findAll(
 		@RequestParam(required = false) String singer,
 		@RequestParam(required = false) String concertTitle,
 		@RequestParam(defaultValue = "DESC") String order,
 		@RequestParam(defaultValue = "1") Integer page,
-		@RequestParam(defaultValue = "5") Integer size) {
+		@RequestParam(defaultValue = "10") Integer size) {
 
 		List<ConcertResponse.FindDto> allConcertDto = concertService.findAll(singer, concertTitle, order, page - 1,
 			size);

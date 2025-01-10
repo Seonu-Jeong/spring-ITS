@@ -14,7 +14,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 	// 쿼리 메소드
 
 	// @Query 작성 메소드
-	//TODO : order 고민
+	//TODO : order 고민 Pageable 안에 정렬 정보로 내림차순 or 오름차순 결정
 	@Query("""
 		SELECT c
 			FROM concert c
@@ -22,7 +22,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 			AND c.title LIKE %:title%
 			AND c.endAt >:today
 		""")
-	Page<Concert> findAllWithOrderBySingerAndTitle(
+	Page<Concert> findAllWithOrderBySingerAndTitleAndToday(
 		@Param("singer") String singer,
 		@Param("title") String title,
 		@Param("today") LocalDateTime today,
