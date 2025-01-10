@@ -44,6 +44,8 @@ public class WebSecurityConfig {
 				.requestMatchers("/auth/signup", "/auth/login").permitAll()
 				// concert
 				.requestMatchers(HttpMethod.GET, "/concerts", "/concerts/*").permitAll()
+				// hall
+				.requestMatchers("/halls").hasAuthority("ADMIN")
 				//나머지
 				.anyRequest().authenticated()
 		);
