@@ -8,6 +8,8 @@ import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.service.ConcertService;
 import org.sparta.its.global.exception.ConcertException;
 import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -61,20 +63,17 @@ public class ConcertController {
 	 * @param singer {@link RequestParam} 가수명 검색 조건
 	 * @param concertTitle {@link RequestParam} 콘서트 검색 조건
 	 * @param order {@link RequestParam} 내림차순 or 오름차순 정렬
-	 * @param page {@link RequestParam} 조회할 페이지 번호
-	 * @param size {@link RequestParam} 조회할 페이지 갯수
+	 * @param pageable {@link PageableDefault} pageable 인터페이스 size 및 page default 값 설정
 	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.FindDto} 조회Dto 응답
 	 */
 	@GetMapping
 	public ResponseEntity<List<ConcertResponse.FindDto>> findAll(
 		@RequestParam(required = false) String singer,
 		@RequestParam(required = false) String concertTitle,
-		@RequestParam(defaultValue = "DESC") String order,
-		@RequestParam(defaultValue = "1") Integer page,
-		@RequestParam(defaultValue = "10") Integer size) {
+		@RequestParam(defaultValue = "내림차순") String order,
+		@PageableDefault(size = 10, page = 0) Pageable pageable) {
 
-		List<ConcertResponse.FindDto> allConcertDto = concertService.findAll(singer, concertTitle, order, page - 1,
-			size);
+		List<ConcertResponse.FindDto> allConcertDto = concertService.findAll(singer, concertTitle, order, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(allConcertDto);
 	}

@@ -71,13 +71,11 @@ public class ConcertService {
 	 * @param singer 가수명 검색 조건
 	 * @param title  콘서트명 검색 조건
 	 * @param order {@link Sort} 오름차순과 내림차순 결정
-	 * @param page {@link Pageable} 페이지 번호 입력
-	 * @param size {@link Pageable} 페이지 갯수 입력
+	 * @param pageable {@link Pageable} 페이지 번호와 사이즈 결정
 	 * @return {@link ConcertResponse.FindDto}  응답 Dto
 	 */
 	@Transactional(readOnly = true)
-	public List<ConcertResponse.FindDto> findAll(String singer, String title, String order, Integer page,
-		Integer size) {
+	public List<ConcertResponse.FindDto> findAll(String singer, String title, String order, Pageable pageable) {
 
 		// 정렬 변수 설정
 		Sort sort;
@@ -88,12 +86,11 @@ public class ConcertService {
 			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
 		}
 
-		Pageable pageable = PageRequest.of(page, size, sort);
-
 		LocalDateTime today = LocalDateTime.now();
+		Pageable SortByStartAt = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
 		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitleAndToday(singer, title, today,
-			pageable);
+			SortByStartAt);
 
 		return allConcerts.stream().map(ConcertResponse.FindDto::toDto).toList();
 	}
