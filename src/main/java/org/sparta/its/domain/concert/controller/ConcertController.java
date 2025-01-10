@@ -71,7 +71,7 @@ public class ConcertController {
 		@RequestParam(required = false) String singer,
 		@RequestParam(required = false) String concertTitle,
 		@RequestParam(defaultValue = "내림차순") String order,
-		@PageableDefault(size = 10, page = 0) Pageable pageable) {
+		@PageableDefault Pageable pageable) {
 
 		List<ConcertResponse.FindDto> allConcertDto = concertService.findAll(singer, concertTitle, order, pageable);
 
