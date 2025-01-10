@@ -5,7 +5,7 @@ import org.sparta.its.global.exception.HallException;
 import org.sparta.its.global.exception.errorcode.HallErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HallRepository extends JpaRepository<Hall, Long>, HallQueryDslRepository {
+public interface HallRepository extends JpaRepository<Hall, Long> {
 
 	// 쿼리 메소드
 	boolean existsByName(String name);
@@ -17,5 +17,4 @@ public interface HallRepository extends JpaRepository<Hall, Long>, HallQueryDslR
 		return findById(hallId)
 			.orElseThrow(() -> new HallException(HallErrorCode.NOT_FOUND_HALL));
 	}
-
 }

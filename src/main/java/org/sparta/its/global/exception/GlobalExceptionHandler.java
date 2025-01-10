@@ -8,11 +8,17 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(value = {RuntimeException.class})
 	public ResponseEntity<ErrorResponseDto> handleInternalServerException(RuntimeException exception) {
+
+		log.error(exception.getMessage(), exception);
+
 		ErrorResponseDto responseDto = ErrorResponseDto.builder()
 			.code("SERVER_ERROR")
 			.massage("서버 내부적인 문제가 발생했습니다.")
