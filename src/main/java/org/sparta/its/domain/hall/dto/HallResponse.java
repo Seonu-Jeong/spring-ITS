@@ -70,4 +70,16 @@ public class HallResponse {
 				.build();
 		}
 	}
+
+	@Builder
+	@Getter
+	public static class DeleteDto {
+		private final String message;
+
+		public static DeleteDto message() {
+			return DeleteDto.builder()
+				.message("공연장 삭제완료")
+				.build();
+		}
+	}
 }
