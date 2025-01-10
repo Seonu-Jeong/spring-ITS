@@ -9,12 +9,10 @@ import org.sparta.its.domain.concert.entity.ConcertImage;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 public class ConcertResponse {
 
 	@Getter
-	@RequiredArgsConstructor
 	@Builder
 	public static class CreateDto {
 		private final Long id;
@@ -54,9 +52,8 @@ public class ConcertResponse {
 	}
 
 	@Getter
-	@RequiredArgsConstructor
 	@Builder
-	public static class FindDto {
+	public static class ReadDto {
 		private final Long id;
 
 		private final Long hallId;
@@ -77,8 +74,8 @@ public class ConcertResponse {
 
 		private final List<String> images;
 
-		public static FindDto toDto(Concert concert) {
-			return FindDto.builder()
+		public static ReadDto toDto(Concert concert) {
+			return ReadDto.builder()
 				.id(concert.getId())
 				.hallId(concert.getHall().getId())
 				.title(concert.getTitle())
