@@ -15,6 +15,8 @@ import org.sparta.its.global.exception.ImageException;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.SdkClientException;
@@ -36,8 +38,8 @@ public class HallService {
 
 	/**
 	 * 공연장을 저장 + 공연장 이미지 S3 업로드 + 업로드 URL 저장
-	 * @param createDto
-	 * @return
+	 * @param createDto 제목, 위치, 수용인원, 이미지
+	 * @return {@link HallResponse.CreatDto} dto 응답
 	 */
 	@Transactional
 	public HallResponse.CreatDto creatHall(HallRequest.CreateDto createDto) {
@@ -78,6 +80,31 @@ public class HallService {
 		// 	.toList();
 		// hallBulkRepository.saveAllSeat(savedHall.getId(), numberList);
 
-		return new HallResponse.CreatDto(savedHall, publicUrls);
+		return HallResponse.CreatDto.toDto(savedHall, publicUrls);
+	}
+
+	/**
+	 * 동적 쿼리(이름, 위치에 따른) + 페이징을 통한 공연장 조회
+	 * @param name 공연장 이름
+	 * @param location 공연장 위치
+	 * @param pageable 페이징
+	 * @return  {@link HallResponse.ReadDto} dto 응답
+	 */
+	public List<HallResponse.ReadDto> getHalls(String name, String location, Pageable pageable) {
+		Page<Hall> halls
+			= hallRepository.findByNameAndLocation(name, location, pageable);
+
+		return halls.stream().map(HallResponse.ReadDto::toDto).toList();
+	}
+
+	/**
+	 * 공연장 세부 조회
+	 * @param hallId 공연장 아이디
+	 * @return {@link HallResponse.ReadDto} dto 응답
+	 */
+	public HallResponse.ReadDto getDetailHall(Long hallId) {
+		Hall findHall = hallRepository.findByIdOrThrow(hallId);
+
+		return HallResponse.ReadDto.toDto(findHall);
 	}
 }
