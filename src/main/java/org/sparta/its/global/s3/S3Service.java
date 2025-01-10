@@ -1,6 +1,8 @@
 package org.sparta.its.global.s3;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +53,25 @@ public class S3Service {
 			uploadedUrls.add(fileUrl);
 		}
 		return uploadedUrls;
+	}
+
+	public void deleteImages(
+		List<String> imageUrls) {
+
+		for (String imageUrl : imageUrls) {
+			String objectKey = getObjectKey(imageUrl);
+			amazonS3.deleteObject(BUCKET, objectKey);
+		}
+
+	}
+
+	private String getObjectKey(String imageUrl) {
+		// ".com/" 이후의 위치를 찾음
+		int objectKeyStartIndex = imageUrl.indexOf(".com/") + 5; // ".com/" 다음 위치
+		String objectKeyEncoded = imageUrl.substring(objectKeyStartIndex);
+
+		// 객체 키 디코딩
+		return URLDecoder.decode(objectKeyEncoded, StandardCharsets.UTF_8);
 	}
 
 	/**

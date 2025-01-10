@@ -57,4 +57,8 @@ public class Hall extends BaseEntity {
 		this.capacity = capacity;
 		this.isOpen = isOpen;
 	}
+
+	public void updateClosed() {
+		this.isOpen = false;
+	}
 }

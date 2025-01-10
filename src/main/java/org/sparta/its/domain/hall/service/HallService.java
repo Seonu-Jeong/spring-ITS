@@ -99,12 +99,37 @@ public class HallService {
 
 	/**
 	 * 공연장 세부 조회
-	 * @param hallId 공연장 아이디
+	 * @param hallId 공연장 고유 식별자
 	 * @return {@link HallResponse.ReadDto} dto 응답
 	 */
 	public HallResponse.ReadDto getDetailHall(Long hallId) {
 		Hall findHall = hallRepository.findByIdOrThrow(hallId);
 
 		return HallResponse.ReadDto.toDto(findHall);
+	}
+
+	/**
+	 * 공연장 Soft Delete + 이미지 삭제 + 이미지 테이블 삭제 + s3 이미지 삭제
+	 * @param hallId 공연장 고유 식별자
+	 */
+	@Transactional
+	public HallResponse.DeleteDto deleteHall(Long hallId) {
+		Hall findHall = hallRepository.findByIdOrThrow(hallId);
+
+		// 삭제를 원하는 공연장에 저장된 이미지 urlList 을 받아옴
+		List<String> imageUrls = findHall.getHallImages().stream().map(HallImage::getImageUrl).toList();
+
+		// 삭제룰 원하는 공연장의 공연장 이미지 테이블의 레코드들을 삭제
+		hallImageRepository.deleteAllByIdInBatch(findHall.getHallImages().stream().map(HallImage::getId).toList());
+		findHall.updateClosed();
+
+		try {
+			// 이미지 삭제
+			s3Service.deleteImages(imageUrls);
+		} catch (SdkClientException e) {
+			throw new ImageException(ImageErrorCode.FILE_DELETE_FAILED);
+		}
+
+		return HallResponse.DeleteDto.message();
 	}
 }
