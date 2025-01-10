@@ -14,7 +14,7 @@ public enum ConcertErrorCode {
 
 	IS_NOT_AFTER_DATE(HttpStatus.BAD_REQUEST, "콘서트 시작 날짜는 종료 날짜보다 늦을 수 없습니다."),
 
-	ALREADY_ENDED(HttpStatus.BAD_REQUEST, "이미 종료된 공연입니다."),
+	ALREADY_ENDED(HttpStatus.BAD_REQUEST, "이미 종료된 콘서트입니다."),
 
 	ALREADY_PASSED(HttpStatus.BAD_REQUEST, "콘서트 시작 날짜와, 종료 날짜는 현재 날짜보다 이전일 수 없습니다."),
 
