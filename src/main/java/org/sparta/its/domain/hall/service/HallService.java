@@ -90,7 +90,18 @@ public class HallService {
 	 * @param pageable
 	 * @return
 	 */
-	public Page<HallResponse.ReadDto> getHalls(String name, String location, Pageable pageable) {
-		return hallRepository.findByNameAndLocation(name, location, pageable);
+	public List<HallResponse.ReadDto> getHalls(String name, String location, Pageable pageable) {
+		Page<Hall> halls
+			= hallRepository.findByNameAndLocation(name, location, pageable);
+
+		return halls.stream().map(HallResponse.ReadDto::toDto).toList();
+	}
+
+	public HallResponse.ReadDetailDto getDetailHall(Long hallId) {
+		Hall findHall = hallRepository.findByIdOrThrow(hallId);
+
+		return new HallResponse.ReadDetailDto(findHall.getId(), findHall.getName(), findHall.getLocation(),
+			findHall.getCapacity(), findHall.getCreatedAt(), findHall.getModifiedAt(), findHall.getHallImages(),
+			findHall.getIsOpen());
 	}
 }
