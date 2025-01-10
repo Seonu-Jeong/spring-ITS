@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,14 +34,14 @@ public class Concert {
 
 	// 연관관계
 	@OneToMany(mappedBy = "concert")
-	private List<ConcertImage> concertImages = new ArrayList<>();
+	private final List<ConcertImage> concertImages = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hall_id")
 	private Hall hall;
 
 	@OneToMany(mappedBy = "concert")
-	private List<Reservation> reservations = new ArrayList<>();
+	private final List<Reservation> reservations = new ArrayList<>();
 
 	// 필드
 	@Column(nullable = false, length = 30)
@@ -63,4 +64,18 @@ public class Concert {
 
 	@Column(nullable = false)
 	private Integer price;
+
+	@Builder
+	public Concert(Hall hall, String title, String singer, LocalDateTime startAt, LocalDateTime endAt,
+		LocalTime runningStartTime, LocalTime runningEndTime, Integer price) {
+		this.hall = hall;
+		this.title = title;
+		this.singer = singer;
+		this.startAt = startAt;
+		this.endAt = endAt;
+		this.runningStartTime = runningStartTime;
+		this.runningEndTime = runningEndTime;
+		this.price = price;
+	}
 }
+
