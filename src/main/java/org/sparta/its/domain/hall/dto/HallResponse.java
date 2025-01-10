@@ -70,37 +70,4 @@ public class HallResponse {
 				.build();
 		}
 	}
-
-	@Getter
-	public static class ReadDetailDto {
-		private final Long hallId;
-
-		private final String hallName;
-
-		private final String location;
-
-		private final Integer capacity;
-
-		private final LocalDateTime createdAt;
-
-		private final LocalDateTime modifiedAt;
-
-		private final List<String> imageUrls;
-
-		private final Boolean isOpen;
-
-		public ReadDetailDto(Long id, String name, String location, Integer capacity, LocalDateTime createdAt,
-			LocalDateTime modifiedAt,
-			List<HallImage> imageUrl,
-			boolean isOpen) {
-			this.hallId = id;
-			this.hallName = name;
-			this.location = location;
-			this.capacity = capacity;
-			this.createdAt = createdAt;
-			this.modifiedAt = modifiedAt;
-			this.imageUrls = imageUrl.stream().map(HallImage::getImageUrl).toList();
-			this.isOpen = isOpen;
-		}
-	}
 }
