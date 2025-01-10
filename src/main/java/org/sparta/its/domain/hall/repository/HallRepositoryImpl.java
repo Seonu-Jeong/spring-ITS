@@ -35,7 +35,7 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 	@Override
 	public Page<Hall> findByNameAndLocation(String name, String location, Pageable pageable) {
 		List<Hall> fetch = jpaQueryFactory.selectFrom(hall)
-			.where(hallNameLike(name), HallLocationLike(location))
+			.where(hallNameLike(name), hallLocationLike(location))
 			.orderBy(hall.isOpen.desc(), hall.name.asc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
@@ -43,7 +43,7 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 
 		JPAQuery<Long> count = jpaQueryFactory.select(hall.count())
 			.from(hall)
-			.where(hallNameLike(name), HallLocationLike(location));
+			.where(hallNameLike(name), hallLocationLike(location));
 
 		return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
 	}
@@ -55,7 +55,7 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 		return hall.name.like("%" + name + "%");
 	}
 
-	private BooleanExpression HallLocationLike(String location) {
+	private BooleanExpression hallLocationLike(String location) {
 		if (location == null) {
 			return null;
 		}
