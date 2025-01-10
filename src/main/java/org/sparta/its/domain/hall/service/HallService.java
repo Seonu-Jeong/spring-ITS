@@ -38,8 +38,8 @@ public class HallService {
 
 	/**
 	 * 공연장을 저장 + 공연장 이미지 S3 업로드 + 업로드 URL 저장
-	 * @param createDto
-	 * @return
+	 * @param createDto 제목, 위치, 수용인원, 이미지
+	 * @return {@link HallResponse.CreatDto} dto 응답
 	 */
 	@Transactional
 	public HallResponse.CreatDto creatHall(HallRequest.CreateDto createDto) {
@@ -84,11 +84,11 @@ public class HallService {
 	}
 
 	/**
-	 * 동적 쿼리 + 페이징을 통한 공연장 조회
-	 * @param name
-	 * @param location
-	 * @param pageable
-	 * @return
+	 * 동적 쿼리(이름, 위치에 따른) + 페이징을 통한 공연장 조회
+	 * @param name 공연장 이름
+	 * @param location 공연장 위치
+	 * @param pageable 페이징
+	 * @return  {@link HallResponse.ReadDto} dto 응답
 	 */
 	public List<HallResponse.ReadDto> getHalls(String name, String location, Pageable pageable) {
 		Page<Hall> halls
@@ -97,11 +97,14 @@ public class HallService {
 		return halls.stream().map(HallResponse.ReadDto::toDto).toList();
 	}
 
-	public HallResponse.ReadDetailDto getDetailHall(Long hallId) {
+	/**
+	 * 공연장 세부 조회
+	 * @param hallId 공연장 아이디
+	 * @return {@link HallResponse.ReadDto} dto 응답
+	 */
+	public HallResponse.ReadDto getDetailHall(Long hallId) {
 		Hall findHall = hallRepository.findByIdOrThrow(hallId);
 
-		return new HallResponse.ReadDetailDto(findHall.getId(), findHall.getName(), findHall.getLocation(),
-			findHall.getCapacity(), findHall.getCreatedAt(), findHall.getModifiedAt(), findHall.getHallImages(),
-			findHall.getIsOpen());
+		return HallResponse.ReadDto.toDto(findHall);
 	}
 }
