@@ -43,7 +43,8 @@ public class HallController {
 	}
 
 	/**
-	 * 모든 공연장 조회	 * @param name {@link RequestParam} 공연장 이름
+	 * 모든 공연장 조회
+	 *   * @param name {@link RequestParam} 공연장 이름
 	 * 	 * @param location {@link RequestParam} 공연장 위치
 	 * 	 * @param pageable {@link RequestParam} page, size 파라미터
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
@@ -60,12 +61,13 @@ public class HallController {
 	}
 
 	/**
-	 *
+	 * 공연장 상세 조회
 	 * @param hallId {@link PathVariable}
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */
 	@GetMapping("/{hallId}")
-	public ResponseEntity<HallResponse.ReadDto> getDetailHall(@PathVariable Long hallId) {
+	public ResponseEntity<HallResponse.ReadDto> getDetailHall(
+		@PathVariable Long hallId) {
 
 		HallResponse.ReadDto detailHall = hallService.getDetailHall(hallId);
 
