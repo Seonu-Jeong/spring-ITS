@@ -12,7 +12,7 @@ public enum HallErrorCode {
 	// 400 BAD REQUEST
 
 	// 404 NOT FOUND
-	NOT_FOUND_HALL(HttpStatus.BAD_REQUEST, "공연장을 찾을 수 없습니다.");
+	NOT_FOUND_HALL(HttpStatus.NOT_FOUND, "공연장을 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String detail;
