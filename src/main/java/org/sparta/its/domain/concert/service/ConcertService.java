@@ -83,14 +83,9 @@ public class ConcertService {
 		Sort sort;
 
 		switch (order) {
-			case "오름차순":
-				sort = Sort.by(Sort.Order.desc("startAt"));
-				break;
-			case "내림차순":
-				sort = Sort.by(Sort.Order.asc("startAt"));
-				break;
-			default:
-				throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
+			case "오름차순" -> sort = Sort.by(Sort.Order.desc("startAt"));
+			case "내림차순" -> sort = Sort.by(Sort.Order.asc("startAt"));
+			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
 		}
 
 		Pageable pageable = PageRequest.of(page, size, sort);
