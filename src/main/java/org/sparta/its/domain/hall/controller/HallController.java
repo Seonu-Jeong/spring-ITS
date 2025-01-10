@@ -81,7 +81,7 @@ public class HallController {
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */
 	@DeleteMapping("/{hallId}")
-	public ResponseEntity<?> deleteHall(
+	public ResponseEntity<HallResponse.DeleteDto> deleteHall(
 		@PathVariable Long hallId) {
 
 		HallResponse.DeleteDto deleteDto = hallService.deleteHall(hallId);
