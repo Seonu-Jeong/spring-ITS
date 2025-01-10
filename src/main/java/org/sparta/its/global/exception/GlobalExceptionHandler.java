@@ -47,6 +47,16 @@ public class GlobalExceptionHandler {
 		return ErrorResponseDto.toResponseEntity(exception);
 	}
 
+	@ExceptionHandler(value = {ReservationException.class})
+	public ResponseEntity<ErrorResponseDto> handleCustomException(ReservationException exception) {
+		return ErrorResponseDto.toResponseEntity(exception);
+	}
+
+	@ExceptionHandler(value = {SeatException.class})
+	public ResponseEntity<ErrorResponseDto> handleCustomException(SeatException exception) {
+		return ErrorResponseDto.toResponseEntity(exception);
+	}
+
 	@ExceptionHandler(value = {MethodArgumentNotValidException.class})
 	public ResponseEntity<ErrorResponseDto> handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException exception) {

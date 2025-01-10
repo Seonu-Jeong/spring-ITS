@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,4 +48,11 @@ public class Reservation extends BaseEntity {
 	@Column(nullable = false, length = 8)
 	private ReservationStatus status;
 
+	@Builder
+	public Reservation(User user, Concert concert, Seat seat, ReservationStatus status) {
+		this.user = user;
+		this.concert = concert;
+		this.seat = seat;
+		this.status = status;
+	}
 }
