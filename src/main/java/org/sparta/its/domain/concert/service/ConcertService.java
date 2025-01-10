@@ -12,7 +12,9 @@ import org.sparta.its.domain.concert.repository.ConcertImageRepository;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.hall.repository.HallRepository;
+import org.sparta.its.global.exception.ConcertException;
 import org.sparta.its.global.exception.ImageException;
+import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
@@ -95,7 +97,7 @@ public class ConcertService {
 
 		LocalDateTime today = LocalDateTime.now();
 
-		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitleAndEndAt(singer, title, today,
+		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitleAndToday(singer, title, today,
 			pageable);
 
 		return allConcerts.stream().map(ConcertResponse.FindDto::toDto).toList();
