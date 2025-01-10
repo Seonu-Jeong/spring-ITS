@@ -1,6 +1,5 @@
 package org.sparta.its.domain.hall.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.sparta.its.domain.hall.dto.HallRequest;
@@ -30,9 +29,8 @@ public class HallController {
 
 	/**
 	 * 공연장을 등록하는 API
-	 * @param createDto 이름, 지역, 수용 인원, 이미지 필수 ㄱ밧
-	 * @return
-	 * @throws IOException
+	 * @param createDto {@link ModelAttribute} 이름, 지역, 수용 인원, 이미지 필수 값
+	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.CreatDto} dto 응답
 	 */
 	@PostMapping
 	public ResponseEntity<HallResponse.CreatDto> createHall(
@@ -46,10 +44,10 @@ public class HallController {
 
 	/**
 	 * 모든 공연장 조회
-	 * @param name 공연장 이름
-	 * @param location 공연장 위치
-	 * @param pageable page, size 파라미터
-	 * @return
+	 * @param name {@link RequestParam} 공연장 이름
+	 * @param location {@link RequestParam} 공연장 위치
+	 * @param pageable {@link RequestParam} page, size 파라미터
+	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */
 	@GetMapping
 	public ResponseEntity<List<HallResponse.ReadDto>> getHalls(
@@ -62,6 +60,11 @@ public class HallController {
 		return ResponseEntity.status(HttpStatus.OK).body(halls);
 	}
 
+	/**
+	 *
+	 * @param hallId {@link PathVariable}
+	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDetailDto} 조회 dto 응답
+	 */
 	@GetMapping("/{hallId}")
 	public ResponseEntity<HallResponse.ReadDetailDto> getDetailHall(@PathVariable Long hallId) {
 
