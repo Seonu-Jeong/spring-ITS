@@ -55,6 +55,10 @@ public class S3Service {
 		return uploadedUrls;
 	}
 
+	/**
+	 * aws s3 이미지 삭제하는 함수
+	 * @param imageUrls 공연장 이미지 urlList
+	 */
 	public void deleteImages(
 		List<String> imageUrls) {
 
@@ -65,6 +69,11 @@ public class S3Service {
 
 	}
 
+	/**
+	 * url 을 통해 aws-s3에 오브젝트 경로를 찾는 함수
+	 * @param imageUrl 이미지 url
+	 * @return ex) HALL/7/김태현2.jpg
+	 */
 	private String getObjectKey(String imageUrl) {
 		// ".com/" 이후의 위치를 찾음
 		int objectKeyStartIndex = imageUrl.indexOf(".com/") + 5; // ".com/" 다음 위치

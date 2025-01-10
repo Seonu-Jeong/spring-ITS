@@ -119,7 +119,7 @@ public class HallService {
 		// 삭제를 원하는 공연장에 저장된 이미지 urlList 을 받아옴
 		List<String> imageUrls = findHall.getHallImages().stream().map(HallImage::getImageUrl).toList();
 
-		// 삭제룰 원하는 공연장의 공연장 이미지 테이블의 레코드들을 삭제
+		// 삭제를 원하는 공연장의 공연장 이미지 테이블의 레코드들을 삭제
 		hallImageRepository.deleteAllByIdInBatch(findHall.getHallImages().stream().map(HallImage::getId).toList());
 		findHall.updateClosed();
 
