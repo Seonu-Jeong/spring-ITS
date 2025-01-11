@@ -24,7 +24,7 @@ public class ReservationController {
 	 *
 	 * @param concertId 콘서트 ID
 	 * @param seatId 좌석 ID
-	// * @return ResponseEntity<ReservationResponse.SelectDto>
+	 * @return ResponseEntity<ReservationResponse.SelectDto>
 	 */
 	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/select")
