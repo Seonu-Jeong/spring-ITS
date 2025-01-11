@@ -1,4 +1,4 @@
-package org.sparta.its.domain.reservation;
+package org.sparta.its.domain.cancelList.entity;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;

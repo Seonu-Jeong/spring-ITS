@@ -11,6 +11,14 @@ import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import org.sparta.its.domain.reservation.dto.ReservationResponse;
 import org.sparta.its.domain.reservation.repository.ReservationRepository;
+import org.sparta.its.global.exception.ConcertException;
+import org.sparta.its.global.exception.HallException;
+import org.sparta.its.global.exception.ImageException;
+import org.sparta.its.global.exception.ReservationException;
+import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
+import org.sparta.its.global.exception.errorcode.HallErrorCode;
+import org.sparta.its.global.exception.errorcode.ImageErrorCode;
+import org.sparta.its.global.exception.errorcode.ReservationErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,36 +26,39 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ReservationService{
+public class ReservationService {
 
 	private final ReservationRepository reservationRepository;
 	private final SeatRepository seatRepository;
 	private final ConcertRepository concertRepository;
+
 	/**
 	 * 좌석 선택
 	 *
-	 * @param selectDto 선택 요청 Dto
+	 * @param concertId 콘서트 아이디
+	 * @param seatId 좌석 아이디
 	 * @return ReservationResponse.SelectDto 선택된 좌석 예약 정보
 	 */
 	@Transactional
-	public ReservationResponse.SelectDto selectSeat(
-		ReservationRequest.SelectDto selectDto) {
+	public ReservationResponse.SelectDto selectSeat(Long seatId, Long concertId) {
 		// 콘서트 조회
-		Concert concert = concertRepository.findById(selectDto.getConcertId())
-			.orElseThrow(()-> new IllegalArgumentException("해당 콘서트를 찾을 수 없습니다"));
+		Concert concert = concertRepository.findByIdOrThrow(concertId);
 		// 좌석 조회
-		Seat seat = seatRepository.findById(selectDto.getSeatId())
-			.orElseThrow(()-> new IllegalArgumentException("해당 좌석을 찾을 수 없습니다"));
+		Seat seat = seatRepository.findByIdOrThrow(seatId);
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
-			.findReservationForSeatAndConcert(selectDto.getConcertId(), selectDto.getSeatId(), ReservationStatus.PENDING);
+			.findReservationForSeatAndConcert(seat, concert, ReservationStatus.PENDING);
 
 		if (existingReservation.isPresent()) {
-			throw new IllegalStateException("이 자리는 이미 예약되었습니다.");
+			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
 		}
 
 		// 예약 생성
-		Reservation reservation = selectDto.toEntity(seat, concert);
+		Reservation reservation = Reservation.builder()
+			.seat(seat)
+			.concert(concert)
+			.status(ReservationStatus.PENDING)
+			.build();
 
 		reservationRepository.save(reservation);
 

@@ -1,5 +1,6 @@
 package org.sparta.its.global.exception;
 
+import org.sparta.its.domain.hall.entity.Seat;
 import org.sparta.its.global.exception.response.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,16 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(value = {ImageException.class})
 	public ResponseEntity<ErrorResponseDto> handleCustomException(ImageException exception) {
+		return ErrorResponseDto.toResponseEntity(exception);
+	}
+
+	@ExceptionHandler(value = {ReservationException.class})
+	public ResponseEntity<ErrorResponseDto> handleCustomException(ReservationException exception) {
+		return ErrorResponseDto.toResponseEntity(exception);
+	}
+
+	@ExceptionHandler(value = {SeatException.class})
+	public ResponseEntity<ErrorResponseDto> handleCustomException(SeatException exception) {
 		return ErrorResponseDto.toResponseEntity(exception);
 	}
 
