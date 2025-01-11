@@ -16,7 +16,13 @@ import jakarta.persistence.LockModeType;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 	//특정 자리 조회시 Pessimistic Lock적용
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	@Query("SELECT r FROM reservation r WHERE r.seat = :seatId AND r.concert = :concertId AND r.status = :status")
+	@Query("""
+		SELECT r 
+		FROM reservation r 
+		WHERE r.seat = :seatId 
+		AND r.concert = :concertId 
+		AND r.status = :status
+		""")
 	Optional<Reservation> findReservationForSeatAndConcert(
 		@Param("seatId") Seat seat,
 		@Param("concertId") Concert concert,

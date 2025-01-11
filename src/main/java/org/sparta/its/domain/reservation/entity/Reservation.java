@@ -49,8 +49,7 @@ public class Reservation extends BaseEntity {
 	private ReservationStatus status;
 
 	@Builder
-	public Reservation(Long id, User user, Concert concert, Seat seat, ReservationStatus status) {
-		this.id = id;
+	public Reservation(User user, Concert concert, Seat seat, ReservationStatus status) {
 		this.user = user;
 		this.concert = concert;
 		this.seat = seat;
