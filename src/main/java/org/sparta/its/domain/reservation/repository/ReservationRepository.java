@@ -14,8 +14,11 @@ import org.springframework.data.repository.query.Param;
 import jakarta.persistence.LockModeType;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+	// 쿼리 메소드
+
+	// @Query 작성 메소드
 	//특정 자리 조회시 Pessimistic Lock적용
-	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	//TODO: 동시성 제어해야함
 	@Query("""
 		SELECT r
 		FROM reservation r
@@ -28,4 +31,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 		@Param("concertId") Concert concert,
 		@Param("status") ReservationStatus status
 	);
+	// Default 메소드
+
 }
