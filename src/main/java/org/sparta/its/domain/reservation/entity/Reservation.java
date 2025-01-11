@@ -55,8 +55,4 @@ public class Reservation extends BaseEntity {
 		this.seat = seat;
 		this.status = status;
 	}
-
-	public void completeReservation() {
-		this.status = ReservationStatus.COMPLETED;
-	}
 }

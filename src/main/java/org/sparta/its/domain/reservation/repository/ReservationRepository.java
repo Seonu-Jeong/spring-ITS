@@ -17,10 +17,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	//특정 자리 조회시 Pessimistic Lock적용
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	@Query("""
-		SELECT r 
-		FROM reservation r 
-		WHERE r.seat = :seatId 
-		AND r.concert = :concertId 
+		SELECT r
+		FROM reservation r
+		WHERE r.seat = :seatId
+		AND r.concert = :concertId
 		AND r.status = :status
 		""")
 	Optional<Reservation> findReservationForSeatAndConcert(
