@@ -1,6 +1,5 @@
 package org.sparta.its.global.exception;
 
-import org.sparta.its.global.exception.errorcode.ReservationErrorCode;
 import org.sparta.its.global.exception.errorcode.SeatErrorCode;
 import org.sparta.its.global.exception.response.ErrorResponseDto;
 import org.springframework.http.HttpStatus;

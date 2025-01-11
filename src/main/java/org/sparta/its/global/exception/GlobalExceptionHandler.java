@@ -1,6 +1,5 @@
 package org.sparta.its.global.exception;
 
-import org.sparta.its.domain.hall.entity.Seat;
 import org.sparta.its.global.exception.response.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
