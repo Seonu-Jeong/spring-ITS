@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,9 +45,9 @@ public class HallController {
 
 	/**
 	 * 모든 공연장 조회
-	 *   * @param name {@link RequestParam} 공연장 이름
-	 * 	 * @param location {@link RequestParam} 공연장 위치
-	 * 	 * @param pageable {@link RequestParam} page, size 파라미터
+	 * @param name {@link RequestParam} 공연장 이름
+	 * @param location {@link RequestParam} 공연장 위치
+	 * @param pageable {@link RequestParam} page, size 파라미터
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */
 	@GetMapping
@@ -62,7 +63,7 @@ public class HallController {
 
 	/**
 	 * 공연장 상세 조회
-	 * @param hallId {@link PathVariable}
+	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */
 	@GetMapping("/{hallId}")
@@ -72,5 +73,19 @@ public class HallController {
 		HallResponse.ReadDto detailHall = hallService.getDetailHall(hallId);
 
 		return ResponseEntity.status(HttpStatus.OK).body(detailHall);
+	}
+
+	/**
+	 * 공연장 삭제
+	 * @param hallId {@link PathVariable} 공연장 고유 식별자
+	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
+	 */
+	@DeleteMapping("/{hallId}")
+	public ResponseEntity<HallResponse.DeleteDto> deleteHall(
+		@PathVariable Long hallId) {
+
+		HallResponse.DeleteDto deleteDto = hallService.deleteHall(hallId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(deleteDto);
 	}
 }
