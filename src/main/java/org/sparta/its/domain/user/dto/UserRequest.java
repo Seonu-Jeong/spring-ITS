@@ -1,6 +1,7 @@
 package org.sparta.its.domain.user.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,13 @@ public class UserRequest {
 		@Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "유효하지 않은 휴대폰 형식입니다.")
 		private final String phoneNumber;
 
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	public static class DeleteDto {
+
+		@NotBlank(message = "비밀번호를 입력해주세요")
+		private final String password;
 	}
 }
