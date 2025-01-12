@@ -1,6 +1,6 @@
-package org.sparta.its.domain.hall.dto.hallImage;
+package org.sparta.its.domain.hallImage.dto;
 
-import org.sparta.its.domain.hall.entity.HallImage;
+import org.sparta.its.domain.hallImage.entity.HallImage;
 
 import lombok.Builder;
 import lombok.Getter;

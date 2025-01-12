@@ -1,4 +1,6 @@
-package org.sparta.its.domain.hall.entity;
+package org.sparta.its.domain.hallImage.entity;
+
+import org.sparta.its.domain.hall.entity.Hall;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,5 +34,9 @@ public class HallImage {
 	public HallImage(Hall hall, String imageUrl) {
 		this.hall = hall;
 		this.imageUrl = imageUrl;
+	}
+
+	public void updateUrl(String publicUrl) {
+		this.imageUrl = publicUrl;
 	}
 }
