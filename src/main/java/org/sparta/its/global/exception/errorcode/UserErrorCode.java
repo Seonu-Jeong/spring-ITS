@@ -16,11 +16,16 @@ public enum UserErrorCode {
 
 	INVALID_LOGIN(HttpStatus.BAD_REQUEST, "아이디, 비밀번호가 불일치합니다"),
 
+	PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "비밀번호가 불일치합니다"),
+
 	// 401 UNAUTHORIZED
 	UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "인증에 실패했습니다."),
 
 	// 403 FORBIDDEN
-	FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "권한이 없는 접근입니다.");
+	FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "권한이 없는 접근입니다."),
+
+	// 404 NOT FOUND
+	NO_EXIST_ID(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다");
 
 	private final HttpStatus httpStatus;
 	private final String detail;
