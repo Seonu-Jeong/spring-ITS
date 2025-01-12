@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.sparta.its.domain.hall.entity.Hall;
-import org.sparta.its.domain.hall.entity.HallImage;
+import org.sparta.its.domain.hallImage.entity.HallImage;
 
 import lombok.Builder;
 import lombok.Getter;

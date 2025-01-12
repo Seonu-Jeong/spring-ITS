@@ -6,11 +6,11 @@ import java.util.List;
 import org.sparta.its.domain.hall.dto.HallRequest;
 import org.sparta.its.domain.hall.dto.HallResponse;
 import org.sparta.its.domain.hall.entity.Hall;
-import org.sparta.its.domain.hall.entity.HallImage;
 import org.sparta.its.domain.hall.entity.Seat;
-import org.sparta.its.domain.hall.repository.HallImageRepository;
 import org.sparta.its.domain.hall.repository.HallRepository;
 import org.sparta.its.domain.hall.repository.SeatRepository;
+import org.sparta.its.domain.hallImage.entity.HallImage;
+import org.sparta.its.domain.hallImage.repository.HallImageRepository;
 import org.sparta.its.global.exception.ImageException;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
@@ -132,4 +132,5 @@ public class HallService {
 
 		return HallResponse.DeleteDto.message();
 	}
+
 }

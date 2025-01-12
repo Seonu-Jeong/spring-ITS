@@ -44,7 +44,7 @@ public class HallController {
 	}
 
 	/**
-	 * 모든 공연장 조회
+	 * 모든 공연장 조회하는 API
 	 * @param name {@link RequestParam} 공연장 이름
 	 * @param location {@link RequestParam} 공연장 위치
 	 * @param pageable {@link RequestParam} page, size 파라미터
@@ -62,7 +62,7 @@ public class HallController {
 	}
 
 	/**
-	 * 공연장 상세 조회
+	 * 공연장 상세 조회하는 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */
@@ -76,7 +76,7 @@ public class HallController {
 	}
 
 	/**
-	 * 공연장 삭제
+	 * 공연장 삭제하는 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */
