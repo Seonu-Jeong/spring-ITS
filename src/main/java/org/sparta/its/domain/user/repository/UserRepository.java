@@ -29,4 +29,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 		return findUserByEmailAndStatusIsActivated(email).orElseThrow(() ->
 			new UserException(INVALID_LOGIN));
 	}
+
+	default User findByIdOrThrow(Long id) {
+		return findById(id).orElseThrow(() -> new UserException(NO_EXIST_ID));
+	}
 }

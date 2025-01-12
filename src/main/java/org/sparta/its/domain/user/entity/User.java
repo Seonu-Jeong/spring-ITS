@@ -6,7 +6,9 @@ import java.util.List;
 import org.hibernate.annotations.DynamicUpdate;
 import org.sparta.its.domain.cancelList.entity.CancelList;
 import org.sparta.its.domain.reservation.entity.Reservation;
+import org.sparta.its.domain.user.dto.UserRequest;
 import org.sparta.its.global.entity.BaseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -65,5 +67,29 @@ public class User extends BaseEntity {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.role = role;
+	}
+
+	public void updateUser(UserRequest.UpdateDto updateDto, PasswordEncoder passwordEncoder) {
+
+		updateName(updateDto.getName());
+
+		updatePassword(updateDto.getNewPassword(), passwordEncoder);
+
+		updatePhoneNumber(updateDto.getPhoneNumber());
+	}
+
+	public void updatePassword(String password, PasswordEncoder passwordEncoder) {
+		if (password != null)
+			this.password = passwordEncoder.encode(password);
+	}
+
+	public void updateName(String name) {
+		if (name != null)
+			this.name = name;
+	}
+
+	public void updatePhoneNumber(String phoneNumber) {
+		if (phoneNumber != null)
+			this.phoneNumber = phoneNumber;
 	}
 }
