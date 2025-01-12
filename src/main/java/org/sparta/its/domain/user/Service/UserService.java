@@ -92,4 +92,18 @@ public class UserService {
 
 		return UserResponse.UpdateDto.toDto(updatedUser);
 	}
+
+	@Transactional
+	public UserResponse.DeleteDto deleteUser(UserRequest.DeleteDto deleteDto, Long id) {
+
+		User savedUser = userRepository.findByIdOrThrow(id);
+
+		if (!passwordEncoder.matches(savedUser.getPassword(), deleteDto.getPassword()))
+			throw new UserException(PASSWORD_NOT_MATCH);
+
+		savedUser.deActivate();
+
+		return UserResponse.DeleteDto.toDto("회원탈퇴 완료");
+	}
+
 }
