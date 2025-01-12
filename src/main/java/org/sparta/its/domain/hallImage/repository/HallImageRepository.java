@@ -1,6 +1,6 @@
-package org.sparta.its.domain.hall.repository;
+package org.sparta.its.domain.hallImage.repository;
 
-import org.sparta.its.domain.hall.entity.HallImage;
+import org.sparta.its.domain.hallImage.entity.HallImage;
 import org.sparta.its.global.exception.HallImageException;
 import org.sparta.its.global.exception.errorcode.HallImageErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
