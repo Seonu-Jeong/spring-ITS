@@ -55,6 +55,27 @@ public class S3Service {
 		return uploadedUrls;
 	}
 
+	public String updateImage(
+		ImageFormat imageFormat,
+		Long id,
+		String imageUrl,
+		MultipartFile[] images) throws IOException {
+
+		// 이미지파일이 1개 일때만 업데이트 가능
+		if (images.length != 1) {
+			throw new ImageException(ImageErrorCode.BAD_IMAGE_FILE);
+		}
+
+		// 기존 이미지 삭제
+		String objectKey = getObjectKey(imageUrl);
+		amazonS3.deleteObject(BUCKET, objectKey);
+
+		// 이미지를 새로 업로드하고 url 을 받아옴
+		String fileUrl = saveFileToS3(images[0], imageFormat, id);
+
+		return fileUrl;
+	}
+
 	/**
 	 * aws s3 이미지 삭제하는 함수
 	 * @param imageUrls 공연장 이미지 urlList
@@ -153,4 +174,5 @@ public class S3Service {
 	private boolean isWhiteList(String fileExtension, String[] whiteList) {
 		return !PatternMatchUtils.simpleMatch(whiteList, fileExtension);
 	}
+
 }
