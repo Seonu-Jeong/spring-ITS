@@ -131,11 +131,6 @@ public class ConcertService {
 		// id 로 콘서트 정보 불러옴
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
 
-		// Querydsl 로 수정된 concert 정보를 받아옴
-		concertRepository.updateConcert(concertId, updateDto);
-
-		Concert updatedConcert = concertRepository.findByIdOrThrow(concertId);
-
 		// 기존 콘서트 시작(종료) 날짜와 요청값 콘서트 시작(종료) 날짜 비교 예외처리
 		ConcertValidator.validateCrossDates(updateDto, concert);
 
@@ -150,6 +145,11 @@ public class ConcertService {
 
 		// 콘서트 시작 날짜 및 졸료 날짜 현재 시점 기준 예외처리
 		ConcertValidator.isBeforeToday(updateDto);
+
+		// Querydsl 로 수정된 concert 정보를 받아옴
+		concertRepository.updateConcert(concertId, updateDto);
+
+		Concert updatedConcert = concertRepository.findByIdOrThrow(concertId);
 
 		return ConcertResponse.UpdateDto.toDto(updatedConcert);
 	}

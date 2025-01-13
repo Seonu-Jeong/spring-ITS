@@ -9,6 +9,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ConcertImageErrorCode {
 
+	// 400 BAD_REQUEST
+	NOT_MATCHING(HttpStatus.BAD_REQUEST, "콘서트 이미지가 콘서트와 매칭되지 않습니다."),
+
 	// 404 NOT_FOUND
 	NOT_FOUND(HttpStatus.NOT_FOUND, "콘서트 이미지 정보를 찾을 수 없습니다.");
 
