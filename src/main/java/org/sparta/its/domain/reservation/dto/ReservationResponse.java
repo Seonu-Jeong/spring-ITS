@@ -2,7 +2,6 @@ package org.sparta.its.domain.reservation.dto;
 
 import java.time.LocalDateTime;
 
-import org.sparta.its.domain.hall.dto.HallResponse;
 import org.sparta.its.domain.reservation.entity.Reservation;
 
 import lombok.Builder;
@@ -49,7 +48,7 @@ public class ReservationResponse {
 		public static CompleteDto toDto(Reservation reservation) {
 			return CompleteDto.builder()
 				.reservationId(reservation.getId())
-				// .userName(reservation.getUser().getName())
+				.userName(reservation.getUser().getName())
 				.concertTitle(reservation.getConcert().getTitle())
 				.seatNumber(reservation.getSeat().getSeatNumber())
 				.status(reservation.getStatus().name())
