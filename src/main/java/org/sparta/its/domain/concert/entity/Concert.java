@@ -35,7 +35,7 @@ public class Concert {
 
 	// 연관관계
 	@OneToMany(mappedBy = "concert")
-	private List<ConcertImage> concertImages = new ArrayList<>();
+	private final List<ConcertImage> concertImages = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hall_id")
@@ -68,7 +68,7 @@ public class Concert {
 
 	@Builder
 	public Concert(Hall hall, String title, String singer, LocalDateTime startAt, LocalDateTime endAt,
-		LocalTime runningStartTime, LocalTime runningEndTime, Integer price, List<ConcertImage> concertImages) {
+		LocalTime runningStartTime, LocalTime runningEndTime, Integer price) {
 		this.hall = hall;
 		this.title = title;
 		this.singer = singer;
@@ -77,7 +77,6 @@ public class Concert {
 		this.runningStartTime = runningStartTime;
 		this.runningEndTime = runningEndTime;
 		this.price = price;
-		this.concertImages = concertImages;
 	}
 }
 

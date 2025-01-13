@@ -29,11 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.amazonaws.SdkClientException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ConcertService {
 
 	private final ConcertRepository concertRepository;
@@ -130,10 +128,13 @@ public class ConcertService {
 	 */
 	@Transactional
 	public ConcertResponse.UpdateDto updatedConcert(Long concertId, ConcertRequest.UpdateDto updateDto) {
-		// Querydsl 로 수정된 concert 정보를 받아옴
-		Concert updatedConcert = concertRepository.updateQuery(concertId, updateDto);
-
+		// id 로 콘서트 정보 불러옴
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
+
+		// Querydsl 로 수정된 concert 정보를 받아옴
+		concertRepository.updateConcert(concertId, updateDto);
+
+		Concert updatedConcert = concertRepository.findByIdOrThrow(concertId);
 
 		// 기존 콘서트 시작(종료) 날짜와 요청값 콘서트 시작(종료) 날짜 비교 예외처리
 		ConcertValidator.validateCrossDates(updateDto, concert);

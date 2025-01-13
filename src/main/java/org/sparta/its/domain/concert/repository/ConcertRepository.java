@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ConcertRepository extends JpaRepository<Concert, Long>, ConcertQuerydslRepository {
+public interface ConcertRepository extends JpaRepository<Concert, Long>, ConcertQueryDslRepository {
 
 	// 쿼리 메소드
 
@@ -35,5 +35,4 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
 		return findById(concertId).orElseThrow(() ->
 			new ConcertException(ConcertErrorCode.NOT_FOUND));
 	}
-
 }
