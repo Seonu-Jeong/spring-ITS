@@ -8,7 +8,9 @@ import org.sparta.its.domain.hallImage.dto.HallImageRequest;
 import org.sparta.its.domain.hallImage.dto.HallImageResponse;
 import org.sparta.its.domain.hallImage.entity.HallImage;
 import org.sparta.its.domain.hallImage.repository.HallImageRepository;
+import org.sparta.its.global.exception.HallImageException;
 import org.sparta.its.global.exception.ImageException;
+import org.sparta.its.global.exception.errorcode.HallImageErrorCode;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.S3Service;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,10 @@ public class HallImageService {
 
 		HallImage findHallImage
 			= hallImageRepository.findByIdOrThrow(hallImagesId);
+
+		if (!findHallImage.getHall().getId().equals(findHall.getId())) {
+			throw new HallImageException(HallImageErrorCode.NOT_MATCHING);
+		}
 
 		String publicUrl;
 

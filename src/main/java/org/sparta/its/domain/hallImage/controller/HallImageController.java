@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,7 +31,7 @@ public class HallImageController {
 	public ResponseEntity<HallImageResponse.UpdateDto> updateHallImage(
 		@PathVariable Long hallId,
 		@PathVariable Long hallImagesId,
-		@ModelAttribute HallImageRequest.UpdateImageDto updateImageDto) {
+		@Valid @ModelAttribute HallImageRequest.UpdateImageDto updateImageDto) {
 
 		HallImageResponse.UpdateDto updateDto
 			= hallImageService.updateHallImage(hallId, hallImagesId, updateImageDto);
