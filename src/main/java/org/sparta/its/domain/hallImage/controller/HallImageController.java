@@ -1,5 +1,6 @@
 package org.sparta.its.domain.hallImage.controller;
 
+import org.sparta.its.domain.hall.dto.HallResponse;
 import org.sparta.its.domain.hallImage.dto.HallImageRequest;
 import org.sparta.its.domain.hallImage.dto.HallImageResponse;
 import org.sparta.its.domain.hallImage.service.HallImageService;
@@ -25,7 +26,7 @@ public class HallImageController {
 	 * 공연장 이미지 업데이트하는 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @param updateImageDto createDto {@link ModelAttribute} 이미지 포멧팅, 공연장이미지 고유 식별자, 이미지
-	 * @return {@link ResponseEntity} httpStatus 와 test
+	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.UpdateDto} 조회 dto 응답
 	 */
 	@PatchMapping("/hallImages/{hallImagesId}")
 	public ResponseEntity<HallImageResponse.UpdateDto> updateHallImage(
