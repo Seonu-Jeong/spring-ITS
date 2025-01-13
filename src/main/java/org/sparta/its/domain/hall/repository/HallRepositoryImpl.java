@@ -22,11 +22,11 @@ import jakarta.persistence.EntityManager;
 public class HallRepositoryImpl implements HallQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
-	private final EntityManager em;
+	private final EntityManager entityManager;
 
 	public HallRepositoryImpl(EntityManager entityManager) {
 		this.jpaQueryFactory = new JPAQueryFactory(entityManager);
-		this.em = entityManager;
+		this.entityManager = entityManager;
 	}
 
 	/**
@@ -72,8 +72,8 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 
 		query.execute();
 
-		em.flush();
-		em.clear();
+		entityManager.flush();
+		entityManager.clear();
 	}
 
 	private BooleanExpression hallNameLike(String name) {

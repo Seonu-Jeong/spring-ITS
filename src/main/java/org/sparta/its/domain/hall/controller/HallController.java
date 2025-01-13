@@ -80,6 +80,7 @@ public class HallController {
 	/**
 	 * 공연장 수정하는 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
+	 * @param updateDto {@link RequestBody} 수정 정보 Dto 요청
 	 * @return {@link ResponseEntity}
 	 */
 	@PatchMapping("/{hallId}")
