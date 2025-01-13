@@ -31,7 +31,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 		@Param("status") ReservationStatus status
 	);
 	// Default 메소드
-	default Reservation findByIdorThrow(Long reservationId){
+	default Reservation findByIdOrThrow(Long reservationId){
 		return findById(reservationId).orElseThrow(() ->
 			new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
 	}
