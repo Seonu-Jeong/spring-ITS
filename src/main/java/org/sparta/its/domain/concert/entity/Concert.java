@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.sparta.its.domain.concert.dto.ConcertRequest;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.reservation.entity.Reservation;
 
@@ -78,14 +77,6 @@ public class Concert {
 		this.runningEndTime = runningEndTime;
 		this.price = price;
 		this.concertImages = concertImages;
-	}
-
-	public void updateConcert(ConcertRequest.UpdateDto updateDto) {
-		this.title = updateDto.getTitle();
-		this.startAt = updateDto.getStartAt();
-		this.endAt = updateDto.getEndAt();
-		this.runningStartTime = updateDto.getRunningStartTime();
-		this.runningEndTime = updateDto.getRunningEndTime();
 	}
 }
 
