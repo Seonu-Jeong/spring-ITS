@@ -55,4 +55,20 @@ public class ReservationResponse {
 				.build();
 		}
 	}
+
+	@Getter
+	@Builder
+	public static class CancelDto {
+
+		private final Long reservationId;
+
+		private final Integer seatNumber;
+
+		public static CancelDto toDto(Reservation reservation) {
+			return CancelDto.builder()
+				.reservationId(reservation.getId())
+				.seatNumber(reservation.getSeat().getSeatNumber())
+				.build();
+		}
+	}
 }
