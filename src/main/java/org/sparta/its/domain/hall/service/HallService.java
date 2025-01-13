@@ -11,7 +11,9 @@ import org.sparta.its.domain.hall.repository.HallRepository;
 import org.sparta.its.domain.hall.repository.SeatRepository;
 import org.sparta.its.domain.hallImage.entity.HallImage;
 import org.sparta.its.domain.hallImage.repository.HallImageRepository;
+import org.sparta.its.global.exception.HallException;
 import org.sparta.its.global.exception.ImageException;
+import org.sparta.its.global.exception.errorcode.HallErrorCode;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
@@ -106,6 +108,28 @@ public class HallService {
 		Hall findHall = hallRepository.findByIdOrThrow(hallId);
 
 		return HallResponse.ReadDto.toDto(findHall);
+	}
+
+	/**
+	 * 공연장 수정
+	 * @param hallId 공연장 고유 식별자
+	 * @param updateDto 이름, 위치
+	 * @return {@link HallResponse.ReadDto} dto 응답
+	 */
+	@Transactional
+	public HallResponse.ReadDto updateHall(Long hallId, HallRequest.UpdateDto updateDto) {
+		// 공연장 isOpen 상태가 true 인 공연장을 찾음
+		Hall findHallByOpenStatus
+			= hallRepository.findHallByIdAndIsOpen(hallId, true);
+
+		if (findHallByOpenStatus == null) {
+			throw new HallException(HallErrorCode.NOT_FOUND_HALL);
+		}
+
+		hallRepository.updateHall(findHallByOpenStatus.getId(), updateDto);
+
+		Hall updateHall = hallRepository.findByIdOrThrow(hallId);
+		return HallResponse.ReadDto.toDto(updateHall);
 	}
 
 	/**

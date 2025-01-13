@@ -4,6 +4,7 @@ import static org.sparta.its.domain.hall.entity.QHall.*;
 
 import java.util.List;
 
+import org.sparta.its.domain.hall.dto.HallRequest;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import jakarta.persistence.EntityManager;
 
@@ -20,9 +22,11 @@ import jakarta.persistence.EntityManager;
 public class HallRepositoryImpl implements HallQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
+	private final EntityManager em;
 
 	public HallRepositoryImpl(EntityManager entityManager) {
 		this.jpaQueryFactory = new JPAQueryFactory(entityManager);
+		this.em = entityManager;
 	}
 
 	/**
@@ -46,6 +50,30 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 			.where(hallNameLike(name), hallLocationLike(location));
 
 		return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
+	}
+
+	/**
+	 * 공연장 수정하는 동적 쿼리
+	 * @param hallId 공연장 고유 식별자
+	 * @param updateDto 이름, 위치
+	 */
+	@Override
+	public void updateHall(Long hallId, HallRequest.UpdateDto updateDto) {
+
+		JPAUpdateClause query = jpaQueryFactory.update(hall).where(hall.id.eq(hallId));
+
+		if (updateDto.getName() != null) {
+			query.set(hall.name, updateDto.getName());
+		}
+
+		if (updateDto.getLocation() != null) {
+			query.set(hall.location, updateDto.getLocation());
+		}
+
+		query.execute();
+
+		em.flush();
+		em.clear();
 	}
 
 	private BooleanExpression hallNameLike(String name) {
