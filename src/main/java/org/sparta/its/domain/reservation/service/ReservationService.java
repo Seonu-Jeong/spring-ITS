@@ -3,12 +3,12 @@ package org.sparta.its.domain.reservation.service;
 import java.util.Optional;
 
 import org.sparta.its.domain.cancelList.entity.CancelList;
-import org.sparta.its.domain.cancelList.entity.CancelStatus;
 import org.sparta.its.domain.cancelList.repository.CancelListRepository;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
 import org.sparta.its.domain.hall.entity.Seat;
 import org.sparta.its.domain.hall.repository.SeatRepository;
+import org.sparta.its.domain.reservation.dto.ReservationRequest;
 import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import org.sparta.its.domain.reservation.dto.ReservationResponse;
@@ -39,7 +39,7 @@ public class ReservationService {
 	 *
 	 * @param concertId 콘서트 아이디
 	 * @param seatId 좌석 아이디
-	 * @return ReservationResponse.SelectDto 선택된 좌석 예약 정보
+	 * @return {@link ReservationResponse.SelectDto} 선택된 좌석 예약 정보
 	 */
 	@Transactional
 	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, Long userId) {
@@ -49,7 +49,7 @@ public class ReservationService {
 		Seat seat = seatRepository.findByIdOrThrow(seatId);
 		// 유저 확인
 		User user = userRepository.findById(userId)
-			.orElseThrow(()-> new UserException(UserErrorCode.UNAUTHORIZED_ACCESS));
+			.orElseThrow(()-> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
 			.findReservationForSeatAndConcert(seat, concert, ReservationStatus.PENDING);
@@ -72,23 +72,23 @@ public class ReservationService {
 	}
 
 	/**
-	 * 좌석 선택
+	 * 좌석 선택 완료
 	 *
 	 * @param concertId 콘서트 아이디
 	 * @param seatId 좌석 아이디
 	 * @param reservationId 예약 아이디
 	 * @param userId 유저 아이디
-	 * @return ReservationResponse.SelectDto 선택된 좌석 예약 정보
+	 * @return {@link ReservationResponse.CompleteDto} 선택된 좌석 예약 정보
 	 */
 	@Transactional
-	public ReservationResponse.CompleteDto completeReservation(Long concertId, Long seatId, Long reservationId, Long userId) {
+	public ReservationResponse.CompleteDto completeReservation(Long reservationId, Long userId) {
 		// 예약 조회
 		Reservation reservation = reservationRepository.findById(reservationId)
 			.orElseThrow(() -> new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
 
 		// 예약과 로그인 사용자 검증
 		if (!reservation.getUser().getId().equals(userId)) {
-			throw new UserException(UserErrorCode.UNAUTHORIZED_ACCESS);
+			throw new UserException(UserErrorCode.FORBIDDEN_ACCESS);
 		}
 
 		reservation.completeReservation();
@@ -98,11 +98,27 @@ public class ReservationService {
 		return ReservationResponse.CompleteDto.toDto(reservation);
 	}
 
+	/**
+	 * 예매된 좌석 취소
+	 *
+	 * @param reservationId 예약 아이디
+	 * @param requestedUserId 유저 아이디
+	 * @param cancelDto 콘서트 이름, 좌석 번호, 유저 정보
+	 * @return {@link ReservationResponse.CancelDto} 취소 완료된 정보
+	 */
 	@Transactional
-	public ReservationResponse.CancelDto cancelReservation(Long reservationId, String description) {
-		// 예약 조회
+	public ReservationResponse.CancelDto cancelReservation(Long reservationId, Long requestedUserId, ReservationRequest.CancelDto cancelDto) {
+
+		// 예약 찾기
 		Reservation reservation = reservationRepository.findById(reservationId)
 			.orElseThrow(() -> new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
+
+		// 예약과 로그인 사용자 검증
+		Long reservedUserId = reservation.getUser().getId();
+
+		if (!reservedUserId.equals(requestedUserId)) {
+			throw new UserException(UserErrorCode.FORBIDDEN_ACCESS);
+		}
 
 		// 완료된 예약만 취소 가능
 		if (reservation.getStatus() != ReservationStatus.COMPLETED) {
@@ -114,11 +130,10 @@ public class ReservationService {
 		reservationRepository.save(reservation);
 
 		// 취소 내역 저장
-		CancelList cancelList = CancelList.builder()
-			.user(reservation.getUser())
-			.description(description)
-			.status(CancelStatus.REQUESTED)
-			.build();
+		CancelList newCancelList = cancelDto.toEntity(
+			concert.getTitle(),
+			reservation.getSeat().getSeatNumber(),
+			reservation.getUser());
 
 		cancelListRepository.save(cancelList);
 
