@@ -21,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class ReservationController {
 
 	private final ReservationService reservationService;
-	private final UserRepository userRepository;
-
 	/**
 	 * 좌석 선택
 	 *
