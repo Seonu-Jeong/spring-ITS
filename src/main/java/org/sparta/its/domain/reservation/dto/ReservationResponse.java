@@ -59,12 +59,13 @@ public class ReservationResponse {
 	@Getter
 	@Builder
 	public static class CancelDto {
+
 		private final Long reservationId;
 
-		private final String rejectComment;
+		private final Integer seatNumber;
 
-		public static CompleteDto toDto(Reservation reservation) {
-			return CompleteDto.builder()
+		public static CancelDto toDto(Reservation reservation) {
+			return CancelDto.builder()
 				.reservationId(reservation.getId())
 				.seatNumber(reservation.getSeat().getSeatNumber())
 				.build();

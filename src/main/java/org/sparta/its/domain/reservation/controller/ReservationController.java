@@ -1,5 +1,6 @@
 package org.sparta.its.domain.reservation.controller;
 
+import org.sparta.its.domain.reservation.dto.ReservationRequest;
 import org.sparta.its.domain.reservation.dto.ReservationResponse;
 import org.sparta.its.domain.reservation.service.ReservationService;
 import org.sparta.its.global.security.UserDetail;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/concerts/{concertId}/seats/{seatId}")
 @RequiredArgsConstructor
 public class ReservationController {
 
@@ -29,12 +29,11 @@ public class ReservationController {
 	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.SelectDto} 조회 dto 응답
 	 */
 	@PreAuthorize("hasAuthority('USER')")
-	@PostMapping("/select")
+	@PostMapping("/concerts/{concertId}/seats/{seatId}/select")
 	public ResponseEntity<ReservationResponse.SelectDto> selectSeat(
 		@PathVariable Long concertId,
 		@PathVariable Long seatId,
-		@AuthenticationPrincipal UserDetail userDetail
-		) {
+		@AuthenticationPrincipal UserDetail userDetail) {
 		ReservationResponse.SelectDto selectDto = reservationService.selectSeat(concertId, seatId, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(selectDto);
@@ -43,8 +42,6 @@ public class ReservationController {
 	/**
 	 * 예약 완료 처리
 	 *
-	 * @param concertId {@link PathVariable}콘서트 ID
-	 * @param seatId {@link PathVariable}좌석 ID
 	 * @param reservationId {@link PathVariable}예약 ID
 	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
 	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.CompleteDto} 조회 dto 응답
@@ -62,9 +59,10 @@ public class ReservationController {
 	/**
 	 * 예약 취소 처리
 	 *
-	 * @param reservationId 예약 ID
-	 * @param rejectComment 취소 사유
-	 * @return ReservationResponse.CompleteDto 예약 완료된 정보
+	 * @param reservationId {@link PathVariable}예약 ID
+	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
+	 * @param cancelDto {@link RequestBody} 취소 관련 정보
+	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.CancelDto} 조회 dto 응답
 	 */
 	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/reservations/{reservationId}")

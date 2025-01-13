@@ -1,12 +1,16 @@
 package org.sparta.its.domain.reservation.dto;
 
-import org.sparta.its.domain.reservation.entity.Reservation;
+import org.sparta.its.domain.cancelList.entity.CancelList;
+import org.sparta.its.domain.cancelList.entity.CancelStatus;
+import org.sparta.its.domain.user.entity.User;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 public class ReservationRequest {
-	@AllArgsConstructor
+
 	@Getter
+	@RequiredArgsConstructor
 	public static class CancelDto {
 
 		private final String rejectComment;

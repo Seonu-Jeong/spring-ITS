@@ -1,5 +1,6 @@
 package org.sparta.its.domain.reservation.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.sparta.its.domain.cancelList.entity.CancelList;
@@ -74,8 +75,6 @@ public class ReservationService {
 	/**
 	 * 좌석 선택 완료
 	 *
-	 * @param concertId 콘서트 아이디
-	 * @param seatId 좌석 아이디
 	 * @param reservationId 예약 아이디
 	 * @param userId 유저 아이디
 	 * @return {@link ReservationResponse.CompleteDto} 선택된 좌석 예약 정보
@@ -121,13 +120,16 @@ public class ReservationService {
 		}
 
 		// 완료된 예약만 취소 가능
-		if (reservation.getStatus() != ReservationStatus.COMPLETED) {
-			throw new IllegalStateException("완료되지 않은 예약은 취소할 수 없습니다.");
+		if (!ReservationStatus.COMPLETED.equals(reservation.getStatus())) {
+			throw new ReservationException(ReservationErrorCode.CANCEL_COMPLETED);
 		}
 
-		// 예약 상태를 취소로 변경
-		reservation.cancelReservation();
-		reservationRepository.save(reservation);
+		// 콘서트 시작 일자 지난 후 취소 예외 처리
+		Concert concert = reservation.getConcert();
+
+		if (concert.getStartAt().isBefore(LocalDateTime.now())) {
+			throw new ReservationException(ReservationErrorCode.ALREADY_STARTED);
+		}
 
 		// 취소 내역 저장
 		CancelList newCancelList = cancelDto.toEntity(
@@ -135,7 +137,7 @@ public class ReservationService {
 			reservation.getSeat().getSeatNumber(),
 			reservation.getUser());
 
-		cancelListRepository.save(cancelList);
+		cancelListRepository.save(newCancelList);
 
 		return ReservationResponse.CancelDto.toDto(reservation);
 	}
