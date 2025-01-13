@@ -117,7 +117,7 @@ public class HallService {
 	 * @return {@link HallResponse.ReadDto} dto 응답
 	 */
 	@Transactional
-	public HallResponse.ReadDto updateHall(Long hallId, HallRequest.UpdateDto updateDto) {
+	public HallResponse.UpdateDto updateHall(Long hallId, HallRequest.UpdateDto updateDto) {
 		// 공연장 isOpen 상태가 true 인 공연장을 찾음
 		Hall findHallByOpenStatus
 			= hallRepository.findHallByIdAndIsOpen(hallId, true);
@@ -129,7 +129,7 @@ public class HallService {
 		hallRepository.updateHall(findHallByOpenStatus.getId(), updateDto);
 
 		Hall updateHall = hallRepository.findByIdOrThrow(hallId);
-		return HallResponse.ReadDto.toDto(updateHall);
+		return HallResponse.UpdateDto.toDto(updateHall);
 	}
 
 	/**

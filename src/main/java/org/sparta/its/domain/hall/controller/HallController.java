@@ -84,11 +84,11 @@ public class HallController {
 	 * @return {@link ResponseEntity}
 	 */
 	@PatchMapping("/{hallId}")
-	public ResponseEntity<HallResponse.ReadDto> updateHall(
+	public ResponseEntity<HallResponse.UpdateDto> updateHall(
 		@PathVariable Long hallId,
 		@RequestBody HallRequest.UpdateDto updateDto) {
 
-		HallResponse.ReadDto updatedHall
+		HallResponse.UpdateDto updatedHall
 			= hallService.updateHall(hallId, updateDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(updatedHall);

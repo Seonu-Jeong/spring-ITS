@@ -73,6 +73,39 @@ public class HallResponse {
 
 	@Builder
 	@Getter
+	public static class UpdateDto {
+		private final Long hallId;
+
+		private final String hallName;
+
+		private final String location;
+
+		private final Integer capacity;
+
+		private final LocalDateTime createdAt;
+
+		private final LocalDateTime modifiedAt;
+
+		private final List<String> imageUrls;
+
+		private final Boolean isOpen;
+
+		public static UpdateDto toDto(Hall hall) {
+			return UpdateDto.builder()
+				.hallId(hall.getId())
+				.hallName(hall.getName())
+				.location(hall.getLocation())
+				.capacity(hall.getCapacity())
+				.createdAt(hall.getCreatedAt())
+				.modifiedAt(hall.getModifiedAt())
+				.imageUrls(hall.getHallImages().stream().map(HallImage::getImageUrl).toList())
+				.isOpen(hall.getIsOpen())
+				.build();
+		}
+	}
+
+	@Builder
+	@Getter
 	public static class DeleteDto {
 		private final String message;
 
