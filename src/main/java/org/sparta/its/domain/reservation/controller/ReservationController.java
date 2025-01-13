@@ -10,7 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class ReservationController {
 	 * @param concertId {@link PathVariable}콘서트 ID
 	 * @param seatId {@link PathVariable}좌석 ID
 	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
-	 * @return ResponseEntity<ReservationResponse.SelectDto>
+	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.SelectDto} 조회 dto 응답
 	 */
 	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/select")
@@ -48,17 +47,14 @@ public class ReservationController {
 	 * @param seatId {@link PathVariable}좌석 ID
 	 * @param reservationId {@link PathVariable}예약 ID
 	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
-	 * @return ReservationResponse.CompleteDto 예약 완료된 정보
+	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.CompleteDto} 조회 dto 응답
 	 */
 	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/reservations/{reservationId}")
 	public ResponseEntity<ReservationResponse.CompleteDto> completeReservation(
-		@PathVariable Long concertId,
-		@PathVariable Long seatId,
 		@PathVariable Long reservationId,
-		@AuthenticationPrincipal UserDetail userDetail
-	) {
-		ReservationResponse.CompleteDto completeDto = reservationService.completeReservation(concertId, seatId, reservationId, userDetail.getId());
+		@AuthenticationPrincipal UserDetail userDetail) {
+		ReservationResponse.CompleteDto completeDto = reservationService.completeReservation(reservationId, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.OK).body(completeDto);
 	}
@@ -74,11 +70,11 @@ public class ReservationController {
 	@PostMapping("/reservations/{reservationId}")
 	public ResponseEntity<ReservationResponse.CancelDto> cancelReservation(
 		@PathVariable Long reservationId,
-		@RequestBody String rejectComment,
-		@AuthenticationPrincipal User user
-	) {
-		ReservationResponse.CancelDto canlcelDto = reservationService.cancelReservation(reservationId, rejectComment);
+		@AuthenticationPrincipal UserDetail userDetail,
+		@RequestBody ReservationRequest.CancelDto cancelDto) {
 
-		return ResponseEntity.status(HttpStatus.OK).body(cancelDto);
+		ReservationResponse.CancelDto responseDto = reservationService.cancelReservation(reservationId, userDetail.getId(), cancelDto);
+
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 }
