@@ -2,6 +2,7 @@ package org.sparta.its.domain.cancelList.entity;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.domain.user.entity.User;
 import org.sparta.its.global.entity.BaseEntity;
 
@@ -35,9 +36,12 @@ public class CancelList extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "reservation_id")
+	private Reservation reservation;
 	// 필드
 	@Column(length = 40)
-	private String description;
+	private String rejectComment;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 10)
@@ -52,7 +56,9 @@ public class CancelList extends BaseEntity {
 
 		this.id = id;
 		this.user = user;
-		this.description = description;
+		this.rejectComment = description;
 		this.status = status;
 	}
+
+
 }

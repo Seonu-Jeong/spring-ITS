@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,5 +64,24 @@ public class ReservationController {
 		ReservationResponse.CompleteDto completeDto = reservationService.completeReservation(concertId, seatId, reservationId, user);
 
 		return ResponseEntity.status(HttpStatus.OK).body(completeDto);
+	}
+
+	/**
+	 * 예약 취소 처리
+	 *
+	 * @param reservationId 예약 ID
+	 * @param rejectComment 취소 사유
+	 * @return ReservationResponse.CompleteDto 예약 완료된 정보
+	 */
+	@PreAuthorize("hasAuthority('USER')")
+	@PostMapping("/reservations/{reservationId}")
+	public ResponseEntity<ReservationResponse.CancelDto> cancelReservation(
+		@PathVariable Long reservationId,
+		@RequestBody String rejectComment,
+		@AuthenticationPrincipal User user
+	) {
+		ReservationResponse.CancelDto canlcelDto = reservationService.cancelReservation(reservationId, rejectComment);
+
+		return ResponseEntity.status(HttpStatus.OK).body(cancelDto);
 	}
 }

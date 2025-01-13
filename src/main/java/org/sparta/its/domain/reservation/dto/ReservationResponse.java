@@ -49,10 +49,24 @@ public class ReservationResponse {
 		public static CompleteDto toDto(Reservation reservation) {
 			return CompleteDto.builder()
 				.reservationId(reservation.getId())
-				// .userName(reservation.getUser().getName())
+				.userName(reservation.getUser().getName())
 				.concertTitle(reservation.getConcert().getTitle())
 				.seatNumber(reservation.getSeat().getSeatNumber())
 				.status(reservation.getStatus().name())
+				.build();
+		}
+	}
+
+	@Getter
+	@Builder
+	public static class CancelDto {
+		private final Long reservationId;
+
+		private final String rejectComment;
+
+		public static CompleteDto toDto(Reservation reservation) {
+			return CompleteDto.builder()
+				.reservationId(reservation.getId())
 				.build();
 		}
 	}

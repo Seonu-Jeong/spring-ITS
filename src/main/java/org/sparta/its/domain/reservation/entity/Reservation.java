@@ -48,12 +48,16 @@ public class Reservation extends BaseEntity {
 	@Column(nullable = false, length = 8)
 	private ReservationStatus status;
 
+	@Column(nullable = true, length = 30)
+	private String rejectComment;
+
 	@Builder
-	public Reservation(User user, Concert concert, Seat seat, ReservationStatus status) {
+	public Reservation(User user, Concert concert, Seat seat, ReservationStatus status, String rejectComment) {
 		this.user = user;
 		this.concert = concert;
 		this.seat = seat;
 		this.status = status;
+		this.rejectComment = null;
 	}
 
 	public void completeReservation() {
@@ -63,5 +67,7 @@ public class Reservation extends BaseEntity {
 		this.status = ReservationStatus.COMPLETED;
 	}
 
-	public void cancelReservation() { this.status = ReservationStatus.PENDING; }
+	public void cancelReservation() {
+		this.status = ReservationStatus.PENDING;
+	}
 }

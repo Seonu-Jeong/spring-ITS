@@ -2,6 +2,9 @@ package org.sparta.its.domain.reservation.service;
 
 import java.util.Optional;
 
+import org.sparta.its.domain.cancelList.entity.CancelList;
+import org.sparta.its.domain.cancelList.entity.CancelStatus;
+import org.sparta.its.domain.cancelList.repository.CancelListRepository;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
 import org.sparta.its.domain.hall.entity.Seat;
@@ -29,6 +32,7 @@ public class ReservationService {
 	private final SeatRepository seatRepository;
 	private final ConcertRepository concertRepository;
 	private final UserRepository userRepository;
+	private final CancelListRepository cancelListRepository;
 
 	/**
 	 * 좌석 선택
@@ -83,5 +87,32 @@ public class ReservationService {
 		reservationRepository.save(reservation);
 
 		return ReservationResponse.CompleteDto.toDto(reservation);
+	}
+
+	@Transactional
+	public ReservationResponse.CancelDto cancelReservation(Long reservationId, String description) {
+		// 예약 조회
+		Reservation reservation = reservationRepository.findById(reservationId)
+			.orElseThrow(() -> new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
+
+		// 완료된 예약만 취소 가능
+		if (reservation.getStatus() != ReservationStatus.COMPLETED) {
+			throw new IllegalStateException("완료되지 않은 예약은 취소할 수 없습니다.");
+		}
+
+		// 예약 상태를 취소로 변경
+		reservation.cancelReservation();
+		reservationRepository.save(reservation);
+
+		// 취소 내역 저장
+		CancelList cancelList = CancelList.builder()
+			.user(reservation.getUser())
+			.description(description)
+			.status(CancelStatus.REQUESTED)
+			.build();
+
+		cancelListRepository.save(cancelList);
+
+		return ReservationResponse.CancelDto.toDto(reservation);
 	}
 }
