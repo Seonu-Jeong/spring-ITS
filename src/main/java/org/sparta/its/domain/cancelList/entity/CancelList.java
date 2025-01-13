@@ -2,7 +2,6 @@ package org.sparta.its.domain.cancelList.entity;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.domain.user.entity.User;
 import org.sparta.its.global.entity.BaseEntity;
 
@@ -16,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
