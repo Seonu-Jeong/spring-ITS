@@ -63,4 +63,25 @@ public class ConcertRequest {
 				.build();
 		}
 	}
+
+	@Getter
+	@RequiredArgsConstructor
+	public static class UpdateDto {
+
+		private final String title;
+
+		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+		private final LocalDateTime startAt;
+
+		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+		private final LocalDateTime endAt;
+
+		@DateTimeFormat(pattern = "HH:mm")
+		private final LocalTime runningStartTime;
+
+		@DateTimeFormat(pattern = "HH:mm")
+		private final LocalTime runningEndTime;
+
+		private final MultipartFile[] images;
+	}
 }

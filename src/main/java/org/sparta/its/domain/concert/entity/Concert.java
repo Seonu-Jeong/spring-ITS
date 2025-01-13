@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.sparta.its.domain.concert.dto.ConcertRequest;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.reservation.entity.Reservation;
 
@@ -34,7 +35,7 @@ public class Concert {
 
 	// 연관관계
 	@OneToMany(mappedBy = "concert")
-	private final List<ConcertImage> concertImages = new ArrayList<>();
+	private List<ConcertImage> concertImages = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hall_id")
@@ -67,7 +68,7 @@ public class Concert {
 
 	@Builder
 	public Concert(Hall hall, String title, String singer, LocalDateTime startAt, LocalDateTime endAt,
-		LocalTime runningStartTime, LocalTime runningEndTime, Integer price) {
+		LocalTime runningStartTime, LocalTime runningEndTime, Integer price, List<ConcertImage> concertImages) {
 		this.hall = hall;
 		this.title = title;
 		this.singer = singer;
@@ -76,6 +77,15 @@ public class Concert {
 		this.runningStartTime = runningStartTime;
 		this.runningEndTime = runningEndTime;
 		this.price = price;
+		this.concertImages = concertImages;
+	}
+
+	public void updateConcert(ConcertRequest.UpdateDto updateDto) {
+		this.title = updateDto.getTitle();
+		this.startAt = updateDto.getStartAt();
+		this.endAt = updateDto.getEndAt();
+		this.runningStartTime = updateDto.getRunningStartTime();
+		this.runningEndTime = updateDto.getRunningEndTime();
 	}
 }
 

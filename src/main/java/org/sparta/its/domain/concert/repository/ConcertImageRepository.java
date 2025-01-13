@@ -10,4 +10,5 @@ public interface ConcertImageRepository extends JpaRepository<ConcertImage, Long
 	// @Query 작성 메소드
 
 	// Default 메소드
+
 }

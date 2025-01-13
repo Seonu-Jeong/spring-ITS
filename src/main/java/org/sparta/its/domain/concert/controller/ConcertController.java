@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,7 @@ public class ConcertController {
 
 	/**
 	 * 콘서트 등록
-	 * @param createDto {@link ConcertResponse.CreateDto} {@link ModelAttribute} 생성 DTO 요청
+	 * @param createDto {@link ConcertResponse.CreateDto} {@link ModelAttribute} 생성 Dto 요청
 	 * @return {@link ResponseEntity} HttpStatus 상태값과 body 응답 {@link ConcertResponse.CreateDto} 조회Dto 응답
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -87,7 +88,38 @@ public class ConcertController {
 	@GetMapping("/{concertId}")
 	public ResponseEntity<ConcertResponse.ReadDto> getDetailConcert(
 		@PathVariable Long concertId) {
+
 		ConcertResponse.ReadDto response = concertService.getDetailConcert(concertId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+
+	/**
+	 * 콘서트 정보 수정
+	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
+	 * @param updateDto {@link ModelAttribute} 수정 정보 Dto 요청
+	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.UpdateDto} 수정Dto 응답
+	 */
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PatchMapping("/{concertId}")
+	public ResponseEntity<ConcertResponse.UpdateDto> updateConcert(
+		@PathVariable Long concertId,
+		@ModelAttribute ConcertRequest.UpdateDto updateDto) {
+
+		if (updateDto.getRunningStartTime().isAfter(updateDto.getRunningEndTime())) {
+			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_TIME);
+		}
+
+		if (updateDto.getStartAt().isAfter(updateDto.getEndAt())) {
+			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
+		}
+
+		if (updateDto.getStartAt().isBefore(LocalDateTime.now()) || updateDto.getEndAt()
+			.isBefore(LocalDateTime.now())) {
+			throw new ConcertException(ConcertErrorCode.ALREADY_PASSED);
+		}
+
+		ConcertResponse.UpdateDto response = concertService.updatedConcert(concertId, updateDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}

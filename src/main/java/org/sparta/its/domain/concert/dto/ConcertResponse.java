@@ -56,7 +56,7 @@ public class ConcertResponse {
 	public static class ReadDto {
 		private final Long id;
 
-		private final Long hallId;
+		private final String hallName;
 
 		private final String title;
 
@@ -77,7 +77,7 @@ public class ConcertResponse {
 		public static ReadDto toDto(Concert concert) {
 			return ReadDto.builder()
 				.id(concert.getId())
-				.hallId(concert.getHall().getId())
+				.hallName(concert.getHall().getName())
 				.title(concert.getTitle())
 				.singer(concert.getSinger())
 				.startAt(concert.getStartAt())
@@ -86,6 +86,46 @@ public class ConcertResponse {
 				.runningEndTime(concert.getRunningEndTime())
 				.price(concert.getPrice())
 				.images(concert.getConcertImages().stream().map(ConcertImage::getImageUrl).toList())
+				.build();
+		}
+	}
+
+	@Getter
+	@Builder
+	public static class UpdateDto {
+
+		private final Long id;
+
+		private final String hallName;
+
+		private final String title;
+
+		private final String singer;
+
+		private final LocalDateTime startAt;
+
+		private final LocalDateTime endAt;
+
+		private final LocalTime runningStartTime;
+
+		private final LocalTime runningEndTime;
+
+		private final Integer price;
+
+		private final List<String> images;
+
+		public static UpdateDto toDto(Concert concert, List<String> imageUrls) {
+			return UpdateDto.builder()
+				.id(concert.getId())
+				.hallName(concert.getHall().getName())
+				.title(concert.getTitle())
+				.singer(concert.getSinger())
+				.startAt(concert.getStartAt())
+				.endAt(concert.getEndAt())
+				.runningStartTime(concert.getRunningStartTime())
+				.runningEndTime(concert.getRunningEndTime())
+				.price(concert.getPrice())
+				.images(imageUrls)
 				.build();
 		}
 	}
