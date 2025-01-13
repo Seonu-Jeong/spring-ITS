@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,13 +29,13 @@ public class Hall extends BaseEntity {
 
 	// 연관관계
 	@OneToMany(mappedBy = "hall")
-	private List<HallImage> hallImages = new ArrayList<>();
+	private final List<HallImage> hallImages = new ArrayList<>();
 
 	@OneToMany(mappedBy = "hall")
-	private List<Concert> concerts = new ArrayList<>();
+	private final List<Concert> concerts = new ArrayList<>();
 
 	@OneToMany(mappedBy = "hall")
-	private List<Seat> seats = new ArrayList<>();
+	private final List<Seat> seats = new ArrayList<>();
 
 	// 필드
 	@Column(nullable = false, unique = true, length = 30)
@@ -48,4 +49,16 @@ public class Hall extends BaseEntity {
 
 	@Column(nullable = false)
 	private Boolean isOpen;
+
+	@Builder
+	public Hall(String name, String location, Integer capacity, Boolean isOpen) {
+		this.name = name;
+		this.location = location;
+		this.capacity = capacity;
+		this.isOpen = isOpen;
+	}
+
+	public void updateClosed() {
+		this.isOpen = false;
+	}
 }

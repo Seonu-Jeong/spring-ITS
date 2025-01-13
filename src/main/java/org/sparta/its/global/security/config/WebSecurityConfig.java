@@ -5,6 +5,8 @@ import org.sparta.its.global.security.exception.JwtAuthenticationEntryPoint;
 import org.sparta.its.global.security.filter.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
@@ -39,10 +42,12 @@ public class WebSecurityConfig {
 			authorizeHttpRequests
 				// auth
 				.requestMatchers("/auth/signup", "/auth/login").permitAll()
-				.requestMatchers("/auth/logout").authenticated()
-
+				// concert
+				.requestMatchers(HttpMethod.GET, "/concerts", "/concerts/*").permitAll()
+				// hall
+				.requestMatchers("/halls").hasAuthority("ADMIN")
 				//나머지
-				.anyRequest().permitAll()
+				.anyRequest().authenticated()
 		);
 
 		// 필터 관리

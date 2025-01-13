@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,8 +31,7 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse.SignUpDto> signup(
-		@RequestBody AuthRequest.SignUpDto signUpDto
-	) {
+		@Valid @RequestBody AuthRequest.SignUpDto signUpDto) {
 
 		AuthResponse.SignUpDto responseDto = userService.signUp(signUpDto);
 
@@ -40,9 +40,8 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse.LoginDto> login(
-		@RequestBody AuthRequest.LoginDto loginDto,
-		HttpServletResponse res
-	) {
+		@Valid @RequestBody AuthRequest.LoginDto loginDto,
+		HttpServletResponse res) {
 
 		AuthResponse.LoginDto responseDto = userService.login(loginDto);
 
@@ -62,8 +61,7 @@ public class AuthController {
 	@PostMapping("/logout")
 	public ResponseEntity<AuthResponse.LogoutDto> logout(
 		@AuthenticationPrincipal UserDetail userDetail,
-		HttpServletResponse response
-	) {
+		HttpServletResponse response) {
 
 		// JWT 삭제 비우기
 		Cookie jwtCookie = new Cookie(AUTHORIZATION_HEADER, "");
