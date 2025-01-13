@@ -82,8 +82,7 @@ public class ReservationService {
 	@Transactional
 	public ReservationResponse.CompleteDto completeReservation(Long reservationId, Long userId) {
 		// 예약 조회
-		Reservation reservation = reservationRepository.findById(reservationId)
-			.orElseThrow(() -> new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
+		Reservation reservation = reservationRepository.findByIdorThrow(reservationId);
 
 		// 예약과 로그인 사용자 검증
 		if (!reservation.getUser().getId().equals(userId)) {
@@ -107,8 +106,7 @@ public class ReservationService {
 	public ReservationResponse.CancelDto cancelReservation(Long reservationId, Long requestedUserId, ReservationRequest.CancelDto cancelDto) {
 
 		// 예약 찾기
-		Reservation reservation = reservationRepository.findById(reservationId)
-			.orElseThrow(() -> new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
+		Reservation reservation = reservationRepository.findByIdorThrow(reservationId);
 
 		// 예약과 로그인 사용자 검증
 		Long reservedUserId = reservation.getUser().getId();
