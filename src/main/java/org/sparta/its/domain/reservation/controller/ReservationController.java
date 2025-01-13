@@ -65,7 +65,7 @@ public class ReservationController {
 	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.CancelDto} 조회 dto 응답
 	 */
 	@PreAuthorize("hasAuthority('USER')")
-	@PostMapping("/reservations/{reservationId}")
+	@PostMapping("/reservations/{reservationId}/cancel")
 	public ResponseEntity<ReservationResponse.CancelDto> cancelReservation(
 		@PathVariable Long reservationId,
 		@AuthenticationPrincipal UserDetail userDetail,
