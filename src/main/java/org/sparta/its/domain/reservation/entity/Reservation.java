@@ -55,4 +55,11 @@ public class Reservation extends BaseEntity {
 		this.seat = seat;
 		this.status = status;
 	}
+
+	public void completeReservation() {
+		if(this.status != ReservationStatus.PENDING) {
+			throw new IllegalStateException("Reservation is already completed");
+		}
+		this.status = ReservationStatus.COMPLETED;
+	}
 }
