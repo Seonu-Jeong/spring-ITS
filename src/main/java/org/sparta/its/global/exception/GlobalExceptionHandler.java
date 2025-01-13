@@ -42,6 +42,11 @@ public class GlobalExceptionHandler {
 		return ErrorResponseDto.toResponseEntity(exception);
 	}
 
+	@ExceptionHandler(value = {ConcertImageException.class})
+	public ResponseEntity<ErrorResponseDto> handleCustomException(ConcertImageException exception) {
+		return ErrorResponseDto.toResponseEntity(exception);
+	}
+
 	@ExceptionHandler(value = {ImageException.class})
 	public ResponseEntity<ErrorResponseDto> handleCustomException(ImageException exception) {
 		return ErrorResponseDto.toResponseEntity(exception);

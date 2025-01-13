@@ -31,4 +31,44 @@ public class ReservationResponse {
 				.build();
 		}
 	}
+
+	@Getter
+	@Builder
+	public static class CompleteDto {
+		private final Long reservationId;
+
+		private final String userName;
+
+		private final String concertTitle;
+
+		private final int seatNumber;
+
+		private final String status;
+
+		public static CompleteDto toDto(Reservation reservation) {
+			return CompleteDto.builder()
+				.reservationId(reservation.getId())
+				.userName(reservation.getUser().getName())
+				.concertTitle(reservation.getConcert().getTitle())
+				.seatNumber(reservation.getSeat().getSeatNumber())
+				.status(reservation.getStatus().name())
+				.build();
+		}
+	}
+
+	@Getter
+	@Builder
+	public static class CancelDto {
+
+		private final Long reservationId;
+
+		private final Integer seatNumber;
+
+		public static CancelDto toDto(Reservation reservation) {
+			return CancelDto.builder()
+				.reservationId(reservation.getId())
+				.seatNumber(reservation.getSeat().getSeatNumber())
+				.build();
+		}
+	}
 }

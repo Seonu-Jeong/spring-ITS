@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,9 +37,32 @@ public class CancelList extends BaseEntity {
 
 	// 필드
 	@Column(length = 40)
-	private String description;
+	private String rejectComment;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 10)
 	private CancelStatus status;
+
+	@Column(nullable = false, length = 30)
+	private String concertTitle;
+
+	@Column(nullable = false)
+	private Integer seatNum;
+
+	@Builder
+	public CancelList(
+		User user,
+		String rejectComment,
+		CancelStatus status,
+		String concertTitle,
+		Integer seatNum) {
+
+		this.user = user;
+		this.rejectComment = rejectComment;
+		this.status = status;
+		this.concertTitle = concertTitle;
+		this.seatNum = seatNum;
+	}
+
+
 }

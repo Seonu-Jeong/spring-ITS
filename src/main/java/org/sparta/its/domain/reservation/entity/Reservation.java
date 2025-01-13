@@ -1,10 +1,13 @@
 package org.sparta.its.domain.reservation.entity;
 
+import static org.sparta.its.global.exception.errorcode.ReservationErrorCode.*;
+
 import org.hibernate.annotations.DynamicUpdate;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.hall.entity.Seat;
 import org.sparta.its.domain.user.entity.User;
 import org.sparta.its.global.entity.BaseEntity;
+import org.sparta.its.global.exception.ReservationException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,4 +58,13 @@ public class Reservation extends BaseEntity {
 		this.seat = seat;
 		this.status = status;
 	}
+
+	public void completeReservation() {
+		if(ReservationStatus.COMPLETED.equals(status)) {
+			throw new ReservationException(ALREADY_BOOKED);
+		}
+
+		this.status = ReservationStatus.COMPLETED;
+	}
+
 }

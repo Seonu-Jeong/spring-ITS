@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.sparta.its.domain.concertimage.entity.ConcertImage;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.reservation.entity.Reservation;
 
