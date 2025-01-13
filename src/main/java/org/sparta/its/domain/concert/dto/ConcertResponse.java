@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.entity.Concert;
-import org.sparta.its.domain.concert.entity.ConcertImage;
+import org.sparta.its.domain.concertimage.entity.ConcertImage;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -114,7 +114,7 @@ public class ConcertResponse {
 
 		private final List<String> images;
 
-		public static UpdateDto toDto(Concert concert, List<String> imageUrls) {
+		public static UpdateDto toDto(Concert concert) {
 			return UpdateDto.builder()
 				.id(concert.getId())
 				.hallName(concert.getHall().getName())
@@ -125,7 +125,7 @@ public class ConcertResponse {
 				.runningStartTime(concert.getRunningStartTime())
 				.runningEndTime(concert.getRunningEndTime())
 				.price(concert.getPrice())
-				.images(imageUrls)
+				.images(concert.getConcertImages().stream().map(ConcertImage::getImageUrl).toList())
 				.build();
 		}
 	}

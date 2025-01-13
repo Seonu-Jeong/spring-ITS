@@ -37,7 +37,7 @@ public class ConcertRepositoryImpl implements ConcertQuerydslRepository {
 		}
 
 		if (updateDto.getEndAt() != null) {
-			where = where.set(concert.startAt, updateDto.getEndAt());
+			where = where.set(concert.endAt, updateDto.getEndAt());
 		}
 
 		if (updateDto.getRunningStartTime() != null) {
@@ -45,7 +45,7 @@ public class ConcertRepositoryImpl implements ConcertQuerydslRepository {
 		}
 
 		if (updateDto.getRunningEndTime() != null) {
-			where = where.set(concert.runningEndTime, updateDto.getRunningStartTime());
+			where = where.set(concert.runningEndTime, updateDto.getRunningEndTime());
 		}
 
 		where.execute();
