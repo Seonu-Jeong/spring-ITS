@@ -7,9 +7,10 @@ import java.util.List;
 import org.sparta.its.domain.concert.dto.ConcertRequest;
 import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.entity.Concert;
-import org.sparta.its.domain.concert.entity.ConcertImage;
-import org.sparta.its.domain.concert.repository.ConcertImageRepository;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
+import org.sparta.its.domain.concert.util.ConcertValidator;
+import org.sparta.its.domain.concertimage.entity.ConcertImage;
+import org.sparta.its.domain.concertimage.repository.ConcertImageRepository;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.hall.repository.HallRepository;
 import org.sparta.its.global.exception.ConcertException;
@@ -47,6 +48,15 @@ public class ConcertService {
 	public ConcertResponse.CreateDto createConcert(ConcertRequest.CreateDto createDto) {
 
 		Hall findHall = hallRepository.findByIdOrThrow(createDto.getHallId());
+
+		// 콘서트 시작 시간 죵료 시간 비교 예외처리
+		ConcertValidator.validateCrossTimes(createDto);
+
+		// 콘서트 시작 날짜 죵료 날짜 비교 예외처리
+		ConcertValidator.validateCrossDates(createDto);
+
+		// 콘서트 시작 날짜 및 졸료 날짜 현재 시점 기준 예외처리
+		ConcertValidator.isBeforeToday(createDto);
 
 		Concert saveConcert = concertRepository.save(createDto.toEntity(findHall));
 
@@ -99,6 +109,7 @@ public class ConcertService {
 	 * @param concertId 콘서트 고유 식별자
 	 * @return {@link ConcertResponse.ReadDto} 형태로 응답
 	 */
+	@Transactional(readOnly = true)
 	public ConcertResponse.ReadDto getDetailConcert(Long concertId) {
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
 
@@ -107,5 +118,39 @@ public class ConcertService {
 		}
 
 		return ConcertResponse.ReadDto.toDto(concert);
+	}
+
+	/**
+	 * 콘서트 정보 수정
+	 * @param concertId 콘서트 고유 식별자
+	 * @param updateDto 수정 요청 Dto
+	 * @return {@link ConcertResponse.UpdateDto} 형태로 응답
+	 */
+	@Transactional
+	public ConcertResponse.UpdateDto updatedConcert(Long concertId, ConcertRequest.UpdateDto updateDto) {
+		// id 로 콘서트 정보 불러옴
+		Concert concert = concertRepository.findByIdOrThrow(concertId);
+
+		// 기존 콘서트 시작(종료) 날짜와 요청값 콘서트 시작(종료) 날짜 비교 예외처리
+		ConcertValidator.validateCrossDates(updateDto, concert);
+
+		// 기존 콘서트 시작(종료) 시간과 콘서트 종료 시작(종료) 시간 비교 예외처리
+		ConcertValidator.validateCrossTimes(updateDto, concert);
+
+		// 콘서트 시작 시간과 콘서트 종료 시간 비교 예외처리
+		ConcertValidator.validateRunningTime(updateDto);
+
+		// 콘서트 시작 날짜와 콘서트 죵료 날짜 비교 예외처리
+		ConcertValidator.validateStartAndEndDates(updateDto);
+
+		// 콘서트 시작 날짜 및 졸료 날짜 현재 시점 기준 예외처리
+		ConcertValidator.isBeforeToday(updateDto);
+
+		// Querydsl 로 수정된 concert 정보를 받아옴
+		concertRepository.updateConcert(concertId, updateDto);
+
+		Concert updatedConcert = concertRepository.findByIdOrThrow(concertId);
+
+		return ConcertResponse.UpdateDto.toDto(updatedConcert);
 	}
 }

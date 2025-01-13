@@ -1,4 +1,6 @@
-package org.sparta.its.domain.concert.entity;
+package org.sparta.its.domain.concertimage.entity;
+
+import org.sparta.its.domain.concert.entity.Concert;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,8 +32,13 @@ public class ConcertImage {
 	@Column(nullable = false, length = 255)
 	private String imageUrl;
 
+	@Builder
 	public ConcertImage(Concert saveConcert, String publicUrl) {
 		this.concert = saveConcert;
 		this.imageUrl = publicUrl;
+	}
+
+	public void updateImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }

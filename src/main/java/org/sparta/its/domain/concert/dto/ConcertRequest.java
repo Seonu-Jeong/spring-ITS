@@ -8,6 +8,8 @@ import org.sparta.its.domain.hall.entity.Hall;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -62,5 +64,24 @@ public class ConcertRequest {
 				.price(price)
 				.build();
 		}
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	public static class UpdateDto {
+
+		private final String title;
+
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+		private final LocalDateTime startAt;
+
+		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+		private final LocalDateTime endAt;
+
+		@JsonFormat(pattern = "HH:mm")
+		private final LocalTime runningStartTime;
+
+		@JsonFormat(pattern = "HH:mm")
+		private final LocalTime runningEndTime;
 	}
 }
