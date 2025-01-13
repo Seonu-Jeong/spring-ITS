@@ -1,4 +1,6 @@
-package org.sparta.its.domain.concert.entity;
+package org.sparta.its.domain.concertimage.entity;
+
+import org.sparta.its.domain.concert.entity.Concert;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
