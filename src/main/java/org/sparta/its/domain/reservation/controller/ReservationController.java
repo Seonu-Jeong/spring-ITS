@@ -2,7 +2,6 @@ package org.sparta.its.domain.reservation.controller;
 
 import org.sparta.its.domain.reservation.dto.ReservationResponse;
 import org.sparta.its.domain.reservation.service.ReservationService;
-import org.sparta.its.domain.user.repository.UserRepository;
 import org.sparta.its.global.security.UserDetail;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
