@@ -66,6 +66,7 @@ public class ReservationResponse {
 		public static CompleteDto toDto(Reservation reservation) {
 			return CompleteDto.builder()
 				.reservationId(reservation.getId())
+				.seatNumber(reservation.getSeat().getSeatNumber())
 				.build();
 		}
 	}
