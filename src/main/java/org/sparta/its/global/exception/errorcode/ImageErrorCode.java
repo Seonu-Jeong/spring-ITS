@@ -20,7 +20,9 @@ public enum ImageErrorCode {
 	DUPLICATED_NAME(HttpStatus.FORBIDDEN, "중복된 공연장 이름입니다."),
 
 	// 500 INTERNAL SERVER ERROR
-	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드 실패");
+	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드 실패"),
+
+	FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 삭제 실패");
 
 	private final HttpStatus httpStatus;
 	private final String detail;

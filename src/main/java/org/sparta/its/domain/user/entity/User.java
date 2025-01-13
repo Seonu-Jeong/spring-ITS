@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.sparta.its.domain.reservation.entity.CancelList;
-import org.sparta.its.domain.reservation.entity.entity.Reservation;
+import org.sparta.its.domain.cancelList.entity.CancelList;
+import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.global.entity.BaseEntity;
 
 import jakarta.persistence.Column;
