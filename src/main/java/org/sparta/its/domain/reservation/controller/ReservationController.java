@@ -1,11 +1,8 @@
 package org.sparta.its.domain.reservation.controller;
 
-import java.nio.file.attribute.UserPrincipal;
-
 import org.sparta.its.domain.reservation.dto.ReservationResponse;
 import org.sparta.its.domain.reservation.service.ReservationService;
-import org.sparta.its.domain.user.entity.User;
-import org.sparta.its.domain.user.repository.UserRepository;
+import org.sparta.its.global.security.UserDetail;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,13 +21,12 @@ import lombok.RequiredArgsConstructor;
 public class ReservationController {
 
 	private final ReservationService reservationService;
-	private final UserRepository userRepository;
-
 	/**
 	 * 좌석 선택
 	 *
 	 * @param concertId {@link PathVariable}콘서트 ID
 	 * @param seatId {@link PathVariable}좌석 ID
+	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
 	 * @return ResponseEntity<ReservationResponse.SelectDto>
 	 */
 	@PreAuthorize("hasAuthority('USER')")
@@ -38,9 +34,9 @@ public class ReservationController {
 	public ResponseEntity<ReservationResponse.SelectDto> selectSeat(
 		@PathVariable Long concertId,
 		@PathVariable Long seatId,
-		@AuthenticationPrincipal User user
+		@AuthenticationPrincipal UserDetail userDetail
 		) {
-		ReservationResponse.SelectDto selectDto = reservationService.selectSeat(concertId, seatId, user);
+		ReservationResponse.SelectDto selectDto = reservationService.selectSeat(concertId, seatId, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(selectDto);
 	}
@@ -48,9 +44,10 @@ public class ReservationController {
 	/**
 	 * 예약 완료 처리
 	 *
-	 * @param concertId 콘서트 ID
-	 * @param seatId 좌석 ID
-	 * @param reservationId 예약 ID
+	 * @param concertId {@link PathVariable}콘서트 ID
+	 * @param seatId {@link PathVariable}좌석 ID
+	 * @param reservationId {@link PathVariable}예약 ID
+	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
 	 * @return ReservationResponse.CompleteDto 예약 완료된 정보
 	 */
 	@PreAuthorize("hasAuthority('USER')")
@@ -59,9 +56,9 @@ public class ReservationController {
 		@PathVariable Long concertId,
 		@PathVariable Long seatId,
 		@PathVariable Long reservationId,
-		@AuthenticationPrincipal User user
+		@AuthenticationPrincipal UserDetail userDetail
 	) {
-		ReservationResponse.CompleteDto completeDto = reservationService.completeReservation(concertId, seatId, reservationId, user);
+		ReservationResponse.CompleteDto completeDto = reservationService.completeReservation(concertId, seatId, reservationId, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.OK).body(completeDto);
 	}

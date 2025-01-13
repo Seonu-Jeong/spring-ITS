@@ -42,14 +42,14 @@ public class ReservationService {
 	 * @return ReservationResponse.SelectDto 선택된 좌석 예약 정보
 	 */
 	@Transactional
-	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, User userIn) {
+	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, Long userId) {
 		// 콘서트 조회
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
 		// 좌석 조회
 		Seat seat = seatRepository.findByIdOrThrow(seatId);
-		// 로그인된 유저를 DB에서 조회하여 영속 상태로 만듦
-		User user = userRepository.findById(userIn.getId())
-			.orElseThrow(() -> new UserException(UserErrorCode.UNAUTHORIZED_ACCESS));
+		// 유저 확인
+		User user = userRepository.findById(userId)
+			.orElseThrow(()-> new UserException(UserErrorCode.UNAUTHORIZED_ACCESS));
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
 			.findReservationForSeatAndConcert(seat, concert, ReservationStatus.PENDING);
@@ -71,14 +71,23 @@ public class ReservationService {
 		return ReservationResponse.SelectDto.toDto(reservation);
 	}
 
+	/**
+	 * 좌석 선택
+	 *
+	 * @param concertId 콘서트 아이디
+	 * @param seatId 좌석 아이디
+	 * @param reservationId 예약 아이디
+	 * @param userId 유저 아이디
+	 * @return ReservationResponse.SelectDto 선택된 좌석 예약 정보
+	 */
 	@Transactional
-	public ReservationResponse.CompleteDto completeReservation(Long concertId, Long SeatId, Long reservationId, User user) {
+	public ReservationResponse.CompleteDto completeReservation(Long concertId, Long seatId, Long reservationId, Long userId) {
 		// 예약 조회
 		Reservation reservation = reservationRepository.findById(reservationId)
 			.orElseThrow(() -> new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
 
-		// 2. 예약과 로그인 사용자 검증
-		if (!reservation.getUser().getId().equals(user.getId())) {
+		// 예약과 로그인 사용자 검증
+		if (!reservation.getUser().getId().equals(userId)) {
 			throw new UserException(UserErrorCode.UNAUTHORIZED_ACCESS);
 		}
 

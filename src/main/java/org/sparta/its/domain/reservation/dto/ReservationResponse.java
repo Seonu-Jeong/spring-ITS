@@ -2,7 +2,6 @@ package org.sparta.its.domain.reservation.dto;
 
 import java.time.LocalDateTime;
 
-import org.sparta.its.domain.hall.dto.HallResponse;
 import org.sparta.its.domain.reservation.entity.Reservation;
 
 import lombok.Builder;
