@@ -92,8 +92,6 @@ public class ReservationService {
 
 		reservation.completeReservation();
 
-		reservationRepository.save(reservation);
-
 		return ReservationResponse.CompleteDto.toDto(reservation);
 	}
 
