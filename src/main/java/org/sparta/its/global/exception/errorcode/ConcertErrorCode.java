@@ -10,9 +10,13 @@ import lombok.Getter;
 public enum ConcertErrorCode {
 
 	// 400 BAD_REQUEST
-	IS_NOT_AFTER_TIME(HttpStatus.BAD_REQUEST, "콘서트 시작 시간은 종료 시간보다 늦을 수 없습니다."),
+	IS_NOT_AFTER_TIME(HttpStatus.BAD_REQUEST, "콘서트 시작 시간은 종료 시간보다 이후일 수 없습니다."),
 
 	IS_NOT_AFTER_DATE(HttpStatus.BAD_REQUEST, "콘서트 시작 날짜는 종료 날짜보다 늦을 수 없습니다."),
+
+	IS_NOT_AFTER_UPDATE_TIME(HttpStatus.BAD_REQUEST, "콘서트 시간을 수정할 수 없습니다"),
+
+	IS_NOT_AFTER_UPDATE_DATE(HttpStatus.BAD_REQUEST, "콘서트 날짜 수정할 수 없습니다"),
 
 	ALREADY_ENDED(HttpStatus.BAD_REQUEST, "이미 종료된 콘서트입니다."),
 
