@@ -93,7 +93,7 @@ public class ReservationController {
 	 * @param pageable {@link RequestParam}페이징
 	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.ReservationListDto} 조회 dto 응답
 	 */
-	@PreAuthorize("hasAuthority(('USER'))")
+	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/reservations")
 	public ResponseEntity<List<ReservationResponse.ReservationListDto>> getAllReservations(
 		@RequestParam(required = false) LocalDate startDate,
