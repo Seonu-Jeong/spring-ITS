@@ -1,5 +1,7 @@
 package org.sparta.its.domain.cancelList.dto;
 
+import java.time.LocalDate;
+
 import org.sparta.its.domain.cancelList.entity.CancelList;
 
 import lombok.Builder;
@@ -14,6 +16,8 @@ public class CancelListResponse {
 
 		private final String title;
 
+		private final LocalDate date;
+
 		private final String userEmail;
 
 		private final String description;
@@ -24,6 +28,7 @@ public class CancelListResponse {
 			return CancelListDtoRead.builder()
 				.userId(cancelList.getUser().getId())
 				.title(cancelList.getConcertTitle())
+				.date(cancelList.getConcertDate())
 				.userEmail(cancelList.getUser().getEmail())
 				.description(cancelList.getRejectComment())
 				.status(cancelList.getStatus().toString())
