@@ -1,6 +1,7 @@
 package org.sparta.its.domain.reservation.dto;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.sparta.its.domain.reservation.entity.Reservation;
 
@@ -70,5 +71,40 @@ public class ReservationResponse {
 				.seatNumber(reservation.getSeat().getSeatNumber())
 				.build();
 		}
+	}
+
+	@Getter
+	@Builder
+	public static class ReservationListDto {
+
+		private final Long concertId;
+
+		private final String hallName;
+
+		private final String concertTitle;
+
+		private final LocalDateTime startAt;
+
+		private final LocalDateTime endAt;
+
+		private final LocalTime runningStartTime;
+
+		private final LocalTime runningEndTime;
+
+		private final int price;
+
+		public static ReservationListDto toDto(Reservation reservation) {
+			return ReservationListDto.builder()
+				.concertId(reservation.getConcert().getId())
+				.hallName(reservation.getConcert().getHall().getName())
+				.concertTitle(reservation.getConcert().getTitle())
+				.startAt(reservation.getConcert().getStartAt())
+				.endAt(reservation.getConcert().getEndAt())
+				.runningStartTime(reservation.getConcert().getRunningStartTime())
+				.runningEndTime(reservation.getConcert().getRunningEndTime())
+				.price(reservation.getConcert().getPrice())
+				.build();
+		}
+
 	}
 }
