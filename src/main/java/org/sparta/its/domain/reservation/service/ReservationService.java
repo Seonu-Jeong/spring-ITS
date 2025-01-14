@@ -175,15 +175,6 @@ public class ReservationService {
 		String singer,
 		Pageable pageable) {
 
-		// //LocalDate를 LocalDateTime으로 변환
-		// LocalDate startDate = null;
-		// if (startAt != null) {
-		// 	startDate = startAt.
-		// }
-		// LocalDate endDate = null;
-		// if (endAt != null) {
-		// 	endDate = endAt.atTime(23, 59, 59, 999_999_999);
-		// }
 
 		Page<Reservation> reservations
 			= reservationRepository.findAllReservations(startAt, endAt, concertTitle, singer, pageable);
