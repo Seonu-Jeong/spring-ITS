@@ -1,6 +1,7 @@
 package org.sparta.its.domain.concert.util;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
 import org.sparta.its.domain.concert.entity.Concert;
@@ -9,9 +10,9 @@ import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
 
 public class ConcertValidator {
 
-	public static void validateRunningTime(ConcertRequest.UpdateDto updateDto) {
-		if (updateDto.getRunningStartTime() != null && updateDto.getRunningEndTime() != null
-			&& updateDto.getRunningStartTime().isAfter(updateDto.getRunningEndTime())) {
+	public static void startTimeIsAfterEndTimeWithUpdate(LocalTime startTime, LocalTime endTime) {
+		if (startTime != null && endTime != null
+			&& startTime.isAfter(endTime)) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_UPDATE_TIME);
 		}
 	}
@@ -23,7 +24,7 @@ public class ConcertValidator {
 		}
 	}
 
-	public static void startAtIsAfterEndAtWithRead(LocalDateTime startAt, LocalDateTime endAt) {
+	public static void startAtIsAfterEndAtWithNullCheck(LocalDateTime startAt, LocalDateTime endAt) {
 		if (startAt != null && endAt != null &&
 			startAt.isAfter(endAt)) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
@@ -37,7 +38,7 @@ public class ConcertValidator {
 		}
 	}
 
-	public static void validateCrossDates(ConcertRequest.UpdateDto updateDto, Concert concert) {
+	public static void compareDatesUpdateDtoToConcert(ConcertRequest.UpdateDto updateDto, Concert concert) {
 		if (updateDto.getStartAt() == null && updateDto.getEndAt() != null && concert.getStartAt()
 			.isAfter(updateDto.getEndAt())) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_UPDATE_DATE);
@@ -49,7 +50,7 @@ public class ConcertValidator {
 		}
 	}
 
-	public static void validateCrossTimes(ConcertRequest.UpdateDto updateDto, Concert concert) {
+	public static void compareTimesUpdateDtoToConcert(ConcertRequest.UpdateDto updateDto, Concert concert) {
 		if (updateDto.getRunningStartTime() == null && updateDto.getRunningEndTime() != null
 			&& concert.getRunningStartTime()
 			.isAfter(updateDto.getRunningEndTime())) {
@@ -63,8 +64,8 @@ public class ConcertValidator {
 		}
 	}
 
-	public static void validateCrossTimes(ConcertRequest.CreateDto createDto) {
-		if (createDto.getRunningStartTime().isAfter(createDto.getRunningEndTime())) {
+	public static void startTimeIsAfterEndTime(LocalTime startTime, LocalTime endTime) {
+		if (startTime.isAfter(endTime)) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_TIME);
 		}
 	}

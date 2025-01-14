@@ -50,7 +50,7 @@ public class ConcertService {
 		Hall findHall = hallRepository.findByIdOrThrow(createDto.getHallId());
 
 		// 콘서트 시작 시간 죵료 시간 비교 예외처리
-		ConcertValidator.validateCrossTimes(createDto);
+		ConcertValidator.startTimeIsAfterEndTime(createDto.getRunningStartTime(), createDto.getRunningEndTime());
 
 		// 콘서트 시작 날짜 죵료 날짜 비교 예외처리
 		ConcertValidator.startAtIsAfterEndAt(createDto.getStartAt(), createDto.getEndAt());
@@ -132,13 +132,14 @@ public class ConcertService {
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
 
 		// 기존 콘서트 시작(종료) 날짜와 요청값 콘서트 시작(종료) 날짜 비교 예외처리
-		ConcertValidator.validateCrossDates(updateDto, concert);
+		ConcertValidator.compareDatesUpdateDtoToConcert(updateDto, concert);
 
 		// 기존 콘서트 시작(종료) 시간과 콘서트 종료 시작(종료) 시간 비교 예외처리
-		ConcertValidator.validateCrossTimes(updateDto, concert);
+		ConcertValidator.compareTimesUpdateDtoToConcert(updateDto, concert);
 
 		// 콘서트 시작 시간과 콘서트 종료 시간 비교 예외처리
-		ConcertValidator.validateRunningTime(updateDto);
+		ConcertValidator.startTimeIsAfterEndTimeWithUpdate(updateDto.getRunningStartTime(),
+			updateDto.getRunningEndTime());
 
 		// 콘서트 시작 날짜와 콘서트 죵료 날짜 비교 예외처리
 		ConcertValidator.startAtIsAfterEndAtWithUpdate(updateDto.getStartAt(), updateDto.getEndAt());
@@ -167,7 +168,7 @@ public class ConcertService {
 		LocalDateTime endAt, String order, Pageable pageable) {
 
 		// 콘서트 시작 날짜 및 종료 날짜 예외 처리
-		ConcertValidator.startAtIsAfterEndAtWithRead(startAt, endAt);
+		ConcertValidator.startAtIsAfterEndAt(startAt, endAt);
 
 		Page<Concert> findStatisticsWithOrderByTitleAndStartAtAndEndAt = concertRepository
 			.findStatisticsWithOrderByTitleAndStartAtAndEndAt(title, startAt, endAt, order, pageable);
