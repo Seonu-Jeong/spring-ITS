@@ -59,7 +59,7 @@ public class ReservationService {
 
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
-			.findReservationForSeatAndConcert(seat, concert, ReservationStatus.PENDING);
+			.findReservationForSeatAndConcert(seat, concert, date, ReservationStatus.PENDING);
 
 		if (existingReservation.isPresent()) {
 			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
