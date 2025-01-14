@@ -75,15 +75,12 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 		return cancelList.concertTitle.like("%" + title + "%");
 	}
 
-	private OrderSpecifier<?> orderSpecifier(String orderBy) {
-		if("ASC".equalsIgnoreCase(orderBy)) {
-			return cancelList.concertTitle.asc();
-		} else if("DESC".equalsIgnoreCase(orderBy)) {
-			return cancelList.concertTitle.desc();
-		} else {
-			// 기본값 asc로 설정
-			return cancelList.concertTitle.asc();
-		}
+	private OrderSpecifier<String> orderSpecifier(String orderBy) {
+		return switch (orderBy.toUpperCase()) {
+			case "DESC" -> cancelList.concertTitle.desc();
+			case "ASC" -> cancelList.concertTitle.asc();
+			default -> cancelList.concertTitle.asc();
+		};
 	}
 }
 

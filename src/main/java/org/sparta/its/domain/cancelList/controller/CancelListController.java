@@ -9,13 +9,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class CancelListController {
 
@@ -35,7 +35,7 @@ public class CancelListController {
 	public ResponseEntity<List<CancelListResponse.CancelListDtoRead>> getCancelLists(
 		@RequestParam(required = false) String email,
 		@RequestParam(required = false) String title,
-		@RequestParam(required = false) String orderBy,
+		@RequestParam(defaultValue = "ASC") String orderBy,
 		@PageableDefault(value = 5) Pageable pageable) {
 
 		List<CancelListResponse.CancelListDtoRead> cancelLists = cancelListService.getCancelLists(email, title, orderBy, pageable);
