@@ -1,6 +1,7 @@
 package org.sparta.its.domain.concert.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -113,7 +114,7 @@ public class ConcertService {
 	public ConcertResponse.ReadDto getDetailConcert(Long concertId) {
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
 
-		if (concert.getEndAt().isBefore(LocalDateTime.now())) {
+		if (concert.getEndAt().isBefore(LocalDate.now())) {
 			throw new ConcertException(ConcertErrorCode.ALREADY_ENDED);
 		}
 
@@ -164,8 +165,8 @@ public class ConcertService {
 	 * @param pageable 페이징 기본값 설정 및 정렬 방식 결정
 	 * @return {@link List<ConcertResponse.StatisticsDto>}
 	 */
-	public List<ConcertResponse.StatisticsDto> getStatistics(String title, LocalDateTime startAt,
-		LocalDateTime endAt, String order, Pageable pageable) {
+	public List<ConcertResponse.StatisticsDto> getStatistics(String title, LocalDate startAt,
+		LocalDate endAt, String order, Pageable pageable) {
 
 		// 콘서트 시작 날짜 및 종료 날짜 예외 처리
 		ConcertValidator.startAtIsAfterEndAt(startAt, endAt);

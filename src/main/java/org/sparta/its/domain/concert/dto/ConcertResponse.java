@@ -1,6 +1,6 @@
 package org.sparta.its.domain.concert.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -24,9 +24,9 @@ public class ConcertResponse {
 
 		private final String singer;
 
-		private final LocalDateTime startAt;
+		private final LocalDate startAt;
 
-		private final LocalDateTime endAt;
+		private final LocalDate endAt;
 
 		private final LocalTime runningStartTime;
 
@@ -63,9 +63,9 @@ public class ConcertResponse {
 
 		private final String singer;
 
-		private final LocalDateTime startAt;
+		private final LocalDate startAt;
 
-		private final LocalDateTime endAt;
+		private final LocalDate endAt;
 
 		private final LocalTime runningStartTime;
 
@@ -103,9 +103,9 @@ public class ConcertResponse {
 
 		private final String singer;
 
-		private final LocalDateTime startAt;
+		private final LocalDate startAt;
 
-		private final LocalDateTime endAt;
+		private final LocalDate endAt;
 
 		private final LocalTime runningStartTime;
 
@@ -145,7 +145,7 @@ public class ConcertResponse {
 
 		private final Integer sumPrice;
 
-		private final LocalDateTime startAt;
+		private final LocalDate startAt;
 
 		public static StatisticsDto toDto(Concert concert) {
 			return StatisticsDto.builder()
