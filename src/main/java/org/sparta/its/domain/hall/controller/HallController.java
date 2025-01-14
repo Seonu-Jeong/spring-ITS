@@ -12,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +46,7 @@ public class HallController {
 	}
 
 	/**
-	 * 모든 공연장 조회
+	 * 모든 공연장 조회하는 API
 	 * @param name {@link RequestParam} 공연장 이름
 	 * @param location {@link RequestParam} 공연장 위치
 	 * @param pageable {@link RequestParam} page, size 파라미터
@@ -62,7 +64,7 @@ public class HallController {
 	}
 
 	/**
-	 * 공연장 상세 조회
+	 * 공연장 상세 조회하는 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */
@@ -76,7 +78,24 @@ public class HallController {
 	}
 
 	/**
-	 * 공연장 삭제
+	 * 공연장 수정하는 API
+	 * @param hallId {@link PathVariable} 공연장 고유 식별자
+	 * @param updateDto {@link RequestBody} 수정 정보 Dto 요청
+	 * @return {@link ResponseEntity}
+	 */
+	@PatchMapping("/{hallId}")
+	public ResponseEntity<HallResponse.UpdateDto> updateHall(
+		@PathVariable Long hallId,
+		@RequestBody HallRequest.UpdateDto updateDto) {
+
+		HallResponse.UpdateDto updatedHall
+			= hallService.updateHall(hallId, updateDto);
+
+		return ResponseEntity.status(HttpStatus.OK).body(updatedHall);
+	}
+
+	/**
+	 * 공연장 삭제하는 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
 	 */

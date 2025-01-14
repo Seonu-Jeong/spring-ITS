@@ -174,4 +174,5 @@ public class S3Service {
 	private boolean isWhiteList(String fileExtension, String[] whiteList) {
 		return !PatternMatchUtils.simpleMatch(whiteList, fileExtension);
 	}
+
 }

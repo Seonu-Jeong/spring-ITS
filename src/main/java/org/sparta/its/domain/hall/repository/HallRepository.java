@@ -10,6 +10,8 @@ public interface HallRepository extends JpaRepository<Hall, Long>, HallQueryDslR
 	// 쿼리 메소드
 	boolean existsByName(String name);
 
+	Hall findHallByIdAndIsOpen(Long hallId, boolean trueStatus);
+
 	// @Query 작성 메소드
 
 	// Default 메소드
@@ -17,4 +19,5 @@ public interface HallRepository extends JpaRepository<Hall, Long>, HallQueryDslR
 		return findById(hallId)
 			.orElseThrow(() -> new HallException(HallErrorCode.NOT_FOUND_HALL));
 	}
+
 }

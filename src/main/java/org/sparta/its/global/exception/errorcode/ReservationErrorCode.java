@@ -10,6 +10,9 @@ import lombok.Getter;
 public enum ReservationErrorCode {
 
 	// 400 BAD REQUEST
+	ALREADY_STARTED(HttpStatus.BAD_REQUEST, "이미 시작된 콘서트는 예약 취소할 수 없습니다."),
+
+	CANCEL_COMPLETED(HttpStatus.BAD_REQUEST, "완료되지 않은 예약은 취소할 수 없습니다."),
 
 	// 403 FORBIDDEN
 	ALREADY_BOOKED(HttpStatus.FORBIDDEN, "이 자리는 이미 예약되었습니다."),

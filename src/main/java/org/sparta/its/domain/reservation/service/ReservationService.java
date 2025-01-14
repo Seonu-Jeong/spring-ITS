@@ -1,11 +1,17 @@
 package org.sparta.its.domain.reservation.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
+import org.sparta.its.domain.cancelList.entity.CancelList;
+import org.sparta.its.domain.cancelList.repository.CancelListRepository;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
 import org.sparta.its.domain.hall.entity.Seat;
 import org.sparta.its.domain.hall.repository.SeatRepository;
+import org.sparta.its.domain.reservation.dto.ReservationRequest;
 import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import org.sparta.its.domain.reservation.dto.ReservationResponse;
@@ -16,6 +22,8 @@ import org.sparta.its.global.exception.ReservationException;
 import org.sparta.its.global.exception.UserException;
 import org.sparta.its.global.exception.errorcode.ReservationErrorCode;
 import org.sparta.its.global.exception.errorcode.UserErrorCode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +37,14 @@ public class ReservationService {
 	private final SeatRepository seatRepository;
 	private final ConcertRepository concertRepository;
 	private final UserRepository userRepository;
+	private final CancelListRepository cancelListRepository;
 
 	/**
 	 * 좌석 선택
 	 *
 	 * @param concertId 콘서트 아이디
 	 * @param seatId 좌석 아이디
-	 * @return ReservationResponse.SelectDto 선택된 좌석 예약 정보
+	 * @return {@link ReservationResponse.SelectDto} 선택된 좌석 예약 정보
 	 */
 	@Transactional
 	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, Long userId) {
@@ -45,7 +54,7 @@ public class ReservationService {
 		Seat seat = seatRepository.findByIdOrThrow(seatId);
 		// 유저 확인
 		User user = userRepository.findById(userId)
-			.orElseThrow(()-> new UserException(UserErrorCode.UNAUTHORIZED_ACCESS));
+			.orElseThrow(()-> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
 			.findReservationForSeatAndConcert(seat, concert, ReservationStatus.PENDING);
@@ -68,29 +77,102 @@ public class ReservationService {
 	}
 
 	/**
-	 * 좌석 선택
+	 * 좌석 선택 완료
 	 *
-	 * @param concertId 콘서트 아이디
-	 * @param seatId 좌석 아이디
 	 * @param reservationId 예약 아이디
 	 * @param userId 유저 아이디
-	 * @return ReservationResponse.SelectDto 선택된 좌석 예약 정보
+	 * @return {@link ReservationResponse.CompleteDto} 선택된 좌석 예약 정보
 	 */
 	@Transactional
-	public ReservationResponse.CompleteDto completeReservation(Long concertId, Long seatId, Long reservationId, Long userId) {
+	public ReservationResponse.CompleteDto completeReservation(Long reservationId, Long userId) {
 		// 예약 조회
-		Reservation reservation = reservationRepository.findById(reservationId)
-			.orElseThrow(() -> new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
+		Reservation reservation = reservationRepository.findByIdOrThrow(reservationId);
 
 		// 예약과 로그인 사용자 검증
 		if (!reservation.getUser().getId().equals(userId)) {
-			throw new UserException(UserErrorCode.UNAUTHORIZED_ACCESS);
+			throw new UserException(UserErrorCode.FORBIDDEN_ACCESS);
 		}
 
 		reservation.completeReservation();
 
-		reservationRepository.save(reservation);
-
 		return ReservationResponse.CompleteDto.toDto(reservation);
+	}
+
+	/**
+	 * 예매된 좌석 취소
+	 *
+	 * @param reservationId 예약 아이디
+	 * @param requestedUserId 유저 아이디
+	 * @param cancelDto 콘서트 이름, 좌석 번호, 유저 정보
+	 * @return {@link ReservationResponse.CancelDto} 취소 완료된 정보
+	 */
+	@Transactional
+	public ReservationResponse.CancelDto cancelReservation(Long reservationId, Long requestedUserId, ReservationRequest.CancelDto cancelDto) {
+
+		// 예약 찾기
+		Reservation reservation = reservationRepository.findByIdOrThrow(reservationId);
+
+		// 예약과 로그인 사용자 검증
+		Long reservedUserId = reservation.getUser().getId();
+
+		if (!reservedUserId.equals(requestedUserId)) {
+			throw new UserException(UserErrorCode.FORBIDDEN_ACCESS);
+		}
+
+		// 완료된 예약만 취소 가능
+		if (!ReservationStatus.COMPLETED.equals(reservation.getStatus())) {
+			throw new ReservationException(ReservationErrorCode.CANCEL_COMPLETED);
+		}
+
+		// 콘서트 시작 일자 지난 후 취소 예외 처리
+		Concert concert = reservation.getConcert();
+
+		if (concert.getStartAt().isBefore(LocalDateTime.now())) {
+			throw new ReservationException(ReservationErrorCode.ALREADY_STARTED);
+		}
+
+		// 취소 내역 저장
+		CancelList newCancelList = cancelDto.toEntity(
+			concert.getTitle(),
+			reservation.getSeat().getSeatNumber(),
+			reservation.getUser());
+
+		cancelListRepository.save(newCancelList);
+
+		return ReservationResponse.CancelDto.toDto(reservation);
+	}
+
+	/**
+	 * 예약 취소
+	 *
+	 * @param startAt 공연 시작 시간
+	 * @param endAt 공연 끝나는 시간
+	 * @param concertTitle 공연 이름
+	 * @param singer 가수 이름
+	 * @param pageable 페이징
+	 * @return {@link ReservationResponse.ReservationListDto} dto 응답
+	 */
+	@Transactional
+	public List<ReservationResponse.ReservationListDto> getReservations(
+		LocalDate startAt,
+		LocalDate endAt,
+		String concertTitle,
+		String singer,
+		Pageable pageable) {
+
+		//LocalDate를 LocalDateTime으로 변환
+		LocalDateTime startDate = null;
+		if (startAt != null) {
+			startDate = startAt.atStartOfDay();
+		}
+		LocalDateTime endDate = null;
+		if (endAt != null) {
+			endDate = endAt.atTime(23, 59, 59, 999_999_999);
+		}
+
+		Page<Reservation> reservations
+			= reservationRepository.findAllReservations(startDate,endDate,concertTitle, singer, pageable);
+
+		return reservations.stream().map(ReservationResponse.ReservationListDto::toDto).toList();
 	}
 }

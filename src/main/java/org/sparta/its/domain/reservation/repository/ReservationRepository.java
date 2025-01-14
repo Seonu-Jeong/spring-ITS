@@ -6,14 +6,17 @@ import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.hall.entity.Seat;
 import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.domain.reservation.entity.ReservationStatus;
+import org.sparta.its.global.exception.ReservationException;
+import org.sparta.its.global.exception.errorcode.ReservationErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, Long>, ReservationQueryDslRepository {
 	// 쿼리 메소드
 
 	// @Query 작성 메소드
+
 	//특정 자리 조회시 Pessimistic Lock적용
 	//TODO: 동시성 제어해야함
 	@Query("""
@@ -29,5 +32,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 		@Param("status") ReservationStatus status
 	);
 	// Default 메소드
-
+	default Reservation findByIdOrThrow(Long reservationId){
+		return findById(reservationId).orElseThrow(() ->
+			new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
+	}
 }
