@@ -73,4 +73,8 @@ public class Reservation extends BaseEntity {
 		this.status = ReservationStatus.COMPLETED;
 	}
 
+	public void cancleReservation() {
+		this.status = ReservationStatus.CANCEL_WAIT;
+	}
+
 }

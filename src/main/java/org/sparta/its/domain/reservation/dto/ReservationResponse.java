@@ -65,10 +65,13 @@ public class ReservationResponse {
 
 		private final Integer seatNumber;
 
+		private final LocalDate concertDate;
+
 		public static CancelDto toDto(Reservation reservation) {
 			return CancelDto.builder()
 				.reservationId(reservation.getId())
 				.seatNumber(reservation.getSeat().getSeatNumber())
+				.concertDate(reservation.getConcertDate())
 				.build();
 		}
 	}
