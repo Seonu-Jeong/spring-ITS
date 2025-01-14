@@ -1,6 +1,6 @@
 package org.sparta.its.domain.reservation.repository;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.sparta.its.domain.concert.entity.Concert;
@@ -27,8 +27,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 		(:singer IS NULL OR r.concert.singer LIKE %:singer%)
 		""")
 	Page<Reservation> findReservations(
-		@Param("startAt") LocalDate startAt,
-		@Param("endAt") LocalDate endAt,
+		@Param("startAt") LocalDateTime startAt,
+		@Param("endAt") LocalDateTime endAt,
 		@Param("title") String title,
 		@Param("singer") String singer,
 		Pageable pageable

@@ -154,11 +154,15 @@ public class ReservationService {
 	 */
 	@Transactional
 	public List<ReservationResponse.ReservationListDto> getReservations(
-		LocalDate startDate,
-		LocalDate endDate,
+		LocalDate startAt,
+		LocalDate endAt,
 		String concertTitle,
 		String singer,
 		Pageable pageable) {
+		// LocalDate를 LocalDateTime으로 변환
+		LocalDateTime startDate = startAt != null ? startAt.atStartOfDay() : null;
+		LocalDateTime endDate = endAt != null ? endAt.atStartOfDay() : null;
+
 		Page<Reservation> reservations
 			= reservationRepository.findReservations(startDate,endDate,concertTitle, singer, pageable);
 
