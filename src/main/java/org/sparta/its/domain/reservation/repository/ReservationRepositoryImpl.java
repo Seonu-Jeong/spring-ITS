@@ -28,6 +28,7 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 	}
 
 	/**
+	 * 날짜 구간, 콘서트 이름, 가수 이름을 이용한 예약 조회
 	 *
 	 * @param startDate 날짜 구간 시작
 	 * @param endDate 날짜 구간 끝
