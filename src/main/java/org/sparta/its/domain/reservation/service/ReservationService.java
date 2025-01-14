@@ -175,7 +175,6 @@ public class ReservationService {
 		String singer,
 		Pageable pageable) {
 
-
 		Page<Reservation> reservations
 			= reservationRepository.findAllReservations(startAt, endAt, concertTitle, singer, pageable);
 

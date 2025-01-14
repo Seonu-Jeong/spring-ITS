@@ -71,14 +71,14 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 		if (startAt == null) {
 			return null;
 		}
-		return reservation.concert.startAt.goe(startAt);
+		return reservation.concertDate.goe(startAt);
 	}
 
 	private BooleanExpression endDateTo(LocalDate endAt) {
 		if (endAt == null) {
 			return null;
 		}
-		return reservation.concert.startAt.loe(endAt);
+		return reservation.concertDate.loe(endAt);
 	}
 
 	private BooleanExpression concertTitleLike(String concertTitle) {
