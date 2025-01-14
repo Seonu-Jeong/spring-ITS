@@ -1,6 +1,6 @@
 package org.sparta.its.domain.concert.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
@@ -111,8 +111,8 @@ public class ConcertController {
 	@GetMapping("/statistics")
 	public ResponseEntity<List<ConcertResponse.StatisticsDto>> getStatistics(
 		@RequestParam(required = false) String title,
-		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime startAt,
-		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime endAt,
+		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startAt,
+		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endAt,
 		@RequestParam(defaultValue = "DESC") String order,
 		@PageableDefault Pageable pageable) {
 		List<ConcertResponse.StatisticsDto> response = concertService.getStatistics(title, startAt, endAt,

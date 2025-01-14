@@ -1,7 +1,6 @@
 package org.sparta.its.domain.reservation.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +11,9 @@ import org.sparta.its.domain.concert.repository.ConcertRepository;
 import org.sparta.its.domain.hall.entity.Seat;
 import org.sparta.its.domain.hall.repository.SeatRepository;
 import org.sparta.its.domain.reservation.dto.ReservationRequest;
+import org.sparta.its.domain.reservation.dto.ReservationResponse;
 import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.domain.reservation.entity.ReservationStatus;
-import org.sparta.its.domain.reservation.dto.ReservationResponse;
 import org.sparta.its.domain.reservation.repository.ReservationRepository;
 import org.sparta.its.domain.user.entity.User;
 import org.sparta.its.domain.user.repository.UserRepository;
@@ -54,7 +53,7 @@ public class ReservationService {
 		Seat seat = seatRepository.findByIdOrThrow(seatId);
 		// 유저 확인
 		User user = userRepository.findById(userId)
-			.orElseThrow(()-> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
+			.orElseThrow(() -> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
 			.findReservationForSeatAndConcert(seat, concert, ReservationStatus.PENDING);
@@ -107,7 +106,8 @@ public class ReservationService {
 	 * @return {@link ReservationResponse.CancelDto} 취소 완료된 정보
 	 */
 	@Transactional
-	public ReservationResponse.CancelDto cancelReservation(Long reservationId, Long requestedUserId, ReservationRequest.CancelDto cancelDto) {
+	public ReservationResponse.CancelDto cancelReservation(Long reservationId, Long requestedUserId,
+		ReservationRequest.CancelDto cancelDto) {
 
 		// 예약 찾기
 		Reservation reservation = reservationRepository.findByIdOrThrow(reservationId);
@@ -127,7 +127,7 @@ public class ReservationService {
 		// 콘서트 시작 일자 지난 후 취소 예외 처리
 		Concert concert = reservation.getConcert();
 
-		if (concert.getStartAt().isBefore(LocalDateTime.now())) {
+		if (concert.getStartAt().isBefore(LocalDate.now())) {
 			throw new ReservationException(ReservationErrorCode.ALREADY_STARTED);
 		}
 
@@ -160,18 +160,18 @@ public class ReservationService {
 		String singer,
 		Pageable pageable) {
 
-		//LocalDate를 LocalDateTime으로 변환
-		LocalDateTime startDate = null;
-		if (startAt != null) {
-			startDate = startAt.atStartOfDay();
-		}
-		LocalDateTime endDate = null;
-		if (endAt != null) {
-			endDate = endAt.atTime(23, 59, 59, 999_999_999);
-		}
+		// //LocalDate를 LocalDateTime으로 변환
+		// LocalDate startDate = null;
+		// if (startAt != null) {
+		// 	startDate = startAt.
+		// }
+		// LocalDate endDate = null;
+		// if (endAt != null) {
+		// 	endDate = endAt.atTime(23, 59, 59, 999_999_999);
+		// }
 
 		Page<Reservation> reservations
-			= reservationRepository.findAllReservations(startDate,endDate,concertTitle, singer, pageable);
+			= reservationRepository.findAllReservations(startAt, endAt, concertTitle, singer, pageable);
 
 		return reservations.stream().map(ReservationResponse.ReservationListDto::toDto).toList();
 	}

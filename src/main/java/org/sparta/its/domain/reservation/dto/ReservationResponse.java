@@ -1,6 +1,6 @@
 package org.sparta.its.domain.reservation.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.sparta.its.domain.reservation.entity.Reservation;
@@ -20,7 +20,7 @@ public class ReservationResponse {
 
 		private final String concertTitle;
 
-		private final LocalDateTime concertDate;
+		private final LocalDate concertDate;
 
 		public static SelectDto toDto(Reservation reservation) {
 			return SelectDto.builder()
@@ -83,9 +83,9 @@ public class ReservationResponse {
 
 		private final String concertTitle;
 
-		private final LocalDateTime startAt;
+		private final LocalDate startAt;
 
-		private final LocalDateTime endAt;
+		private final LocalDate endAt;
 
 		private final LocalTime runningStartTime;
 

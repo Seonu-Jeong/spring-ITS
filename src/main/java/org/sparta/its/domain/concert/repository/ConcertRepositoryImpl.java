@@ -4,7 +4,7 @@ import static org.sparta.its.domain.concert.entity.QConcert.*;
 import static org.sparta.its.domain.hall.entity.QHall.*;
 import static org.sparta.its.domain.reservation.entity.QReservation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
@@ -85,8 +85,8 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 	 * @return {@link PageableExecutionUtils} 페이지 생성 반환
 	 */
 	@Override
-	public Page<Concert> findStatisticsWithOrderByTitleAndStartAtAndEndAt(String title, LocalDateTime startAt,
-		LocalDateTime endAt, String order, Pageable pageable) {
+	public Page<Concert> findStatisticsWithOrderByTitleAndStartAtAndEndAt(String title, LocalDate startAt,
+		LocalDate endAt, String order, Pageable pageable) {
 		List<Concert> findConcert = jpaQueryFactory
 			.select(concert)
 			.from(concert)
@@ -120,21 +120,21 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 		return concert.title.like("%" + title + "%");
 	}
 
-	private BooleanExpression isAfterStartAt(LocalDateTime startAt) {
+	private BooleanExpression isAfterStartAt(LocalDate startAt) {
 		if (startAt == null) {
 			return null;
 		}
 		return concert.startAt.goe(startAt);
 	}
 
-	private BooleanExpression isBeforeEndAt(LocalDateTime endAt) {
+	private BooleanExpression isBeforeEndAt(LocalDate endAt) {
 		if (endAt == null) {
 			return null;
 		}
 		return concert.endAt.loe(endAt);
 	}
 
-	private OrderSpecifier<LocalDateTime> decideOrderBy(String order) {
+	private OrderSpecifier<LocalDate> decideOrderBy(String order) {
 		return switch (order) {
 			case "DESC" -> concert.startAt.desc();
 			case "ASC" -> concert.startAt.asc();
