@@ -53,10 +53,10 @@ public class ConcertService {
 		ConcertValidator.validateCrossTimes(createDto);
 
 		// 콘서트 시작 날짜 죵료 날짜 비교 예외처리
-		ConcertValidator.validateCrossDates(createDto);
+		ConcertValidator.startAtIsAfterEndAt(createDto.getStartAt(), createDto.getEndAt());
 
 		// 콘서트 시작 날짜 및 졸료 날짜 현재 시점 기준 예외처리
-		ConcertValidator.isBeforeToday(createDto);
+		ConcertValidator.isBeforeToday(createDto.getStartAt(), createDto.getEndAt());
 
 		Concert saveConcert = concertRepository.save(createDto.toEntity(findHall));
 
@@ -90,8 +90,8 @@ public class ConcertService {
 		Sort sort;
 
 		switch (order) {
-			case "오름차순" -> sort = Sort.by(Sort.Order.desc("startAt"));
-			case "내림차순" -> sort = Sort.by(Sort.Order.asc("startAt"));
+			case "DESC" -> sort = Sort.by(Sort.Order.desc("startAt"));
+			case "ASC" -> sort = Sort.by(Sort.Order.asc("startAt"));
 			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
 		}
 
@@ -141,10 +141,10 @@ public class ConcertService {
 		ConcertValidator.validateRunningTime(updateDto);
 
 		// 콘서트 시작 날짜와 콘서트 죵료 날짜 비교 예외처리
-		ConcertValidator.validateStartAndEndDates(updateDto);
+		ConcertValidator.startAtIsAfterEndAtWithUpdate(updateDto.getStartAt(), updateDto.getEndAt());
 
 		// 콘서트 시작 날짜 및 졸료 날짜 현재 시점 기준 예외처리
-		ConcertValidator.isBeforeToday(updateDto);
+		ConcertValidator.isBeforeToday(updateDto.getStartAt(), updateDto.getEndAt());
 
 		// Querydsl 로 수정된 concert 정보를 받아옴
 		concertRepository.updateConcert(concertId, updateDto);
@@ -152,5 +152,27 @@ public class ConcertService {
 		Concert updatedConcert = concertRepository.findByIdOrThrow(concertId);
 
 		return ConcertResponse.UpdateDto.toDto(updatedConcert);
+	}
+
+	/**
+	 * 콘서트 등록 현황 조회
+	 * @param title 콘서트 제목
+	 * @param startAt 콘서트 시작 날짜
+	 * @param endAt 콘서트 종료 날짜
+	 * @param order 정렬 방식
+	 * @param pageable 페이징 기본값 설정 및 정렬 방식 결정
+	 * @return {@link List<ConcertResponse.StatisticsDto>}
+	 */
+	public List<ConcertResponse.StatisticsDto> getStatistics(String title, LocalDateTime startAt,
+		LocalDateTime endAt, String order, Pageable pageable) {
+
+		// 콘서트 시작 날짜 및 종료 날짜 예외 처리
+		ConcertValidator.startAtIsAfterEndAtWithRead(startAt, endAt);
+
+		Page<Concert> findStatisticsWithOrderByTitleAndStartAtAndEndAt = concertRepository
+			.findStatisticsWithOrderByTitleAndStartAtAndEndAt(title, startAt, endAt, order, pageable);
+
+		return findStatisticsWithOrderByTitleAndStartAtAndEndAt.stream()
+			.map(ConcertResponse.StatisticsDto::toDto).toList();
 	}
 }

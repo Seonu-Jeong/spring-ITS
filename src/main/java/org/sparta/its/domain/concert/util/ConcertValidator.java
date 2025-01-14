@@ -16,16 +16,23 @@ public class ConcertValidator {
 		}
 	}
 
-	public static void validateStartAndEndDates(ConcertRequest.UpdateDto updateDto) {
-		if (updateDto.getStartAt() != null && updateDto.getEndAt() != null &&
-			updateDto.getStartAt().isAfter(updateDto.getEndAt())) {
+	public static void startAtIsAfterEndAtWithUpdate(LocalDateTime startAt, LocalDateTime endAt) {
+		if (startAt != null && endAt != null &&
+			startAt.isAfter(endAt)) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_UPDATE_DATE);
 		}
 	}
 
-	public static void isBeforeToday(ConcertRequest.UpdateDto updateDto) {
-		if (updateDto.getStartAt() != null && updateDto.getStartAt().isBefore(LocalDateTime.now()) ||
-			(updateDto.getEndAt() != null && updateDto.getEndAt().isBefore(LocalDateTime.now()))) {
+	public static void startAtIsAfterEndAtWithRead(LocalDateTime startAt, LocalDateTime endAt) {
+		if (startAt != null && endAt != null &&
+			startAt.isAfter(endAt)) {
+			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
+		}
+	}
+
+	public static void isBeforeTodayWithNullCheck(LocalDateTime startAt, LocalDateTime endAt) {
+		if (startAt != null && startAt.isBefore(LocalDateTime.now()) ||
+			(endAt != null && endAt.isBefore(LocalDateTime.now()))) {
 			throw new ConcertException(ConcertErrorCode.ALREADY_PASSED);
 		}
 	}
@@ -62,16 +69,15 @@ public class ConcertValidator {
 		}
 	}
 
-	public static void validateCrossDates(ConcertRequest.CreateDto createDto) {
-		if (createDto.getStartAt().isAfter(createDto.getEndAt())) {
+	public static void startAtIsAfterEndAt(LocalDateTime startAt, LocalDateTime endAt) {
+		if (startAt.isAfter(endAt)) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
 		}
 
 	}
 
-	public static void isBeforeToday(ConcertRequest.CreateDto createDto) {
-		if (createDto.getStartAt().isBefore(LocalDateTime.now()) || createDto.getEndAt()
-			.isBefore(LocalDateTime.now())) {
+	public static void isBeforeToday(LocalDateTime startAt, LocalDateTime endAt) {
+		if (startAt.isBefore(LocalDateTime.now()) || endAt.isBefore(LocalDateTime.now())) {
 			throw new ConcertException(ConcertErrorCode.ALREADY_PASSED);
 		}
 	}
