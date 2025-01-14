@@ -29,8 +29,8 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 
 	/**
 	 *
-	 * @param startAt 시작 날짜
-	 * @param endAt 끝나는 날짜
+	 * @param startDate 날짜 구간 시작
+	 * @param endDate 날짜 구간 끝
 	 * @param concertTitle 콘서트 이름
 	 * @param singer 가수 이름
 	 * @param pageable page = 1, 2, 3 ...번 페이지 번호, size = 페이지 마다 몇 개의 데이터
@@ -38,15 +38,15 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 	 */
 	@Override
 	public Page<Reservation> findAllReservations(
-		LocalDateTime startAt,
-		LocalDateTime endAt,
+		LocalDateTime startDate,
+		LocalDateTime endDate,
 		String concertTitle,
 		String singer,
 		Pageable pageable) {
 		List<Reservation> fetch = jpaQueryFactory.selectFrom(reservation)
 			.where(
-				startAtFrom(startAt),
-				endAtTo(endAt),
+				startDateFrom(startDate),
+				endDateTo(endDate),
 				concertTitleLike(concertTitle),
 				singerLike(singer)
 			)
@@ -58,8 +58,8 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 		JPAQuery<Long> count = jpaQueryFactory.select(reservation.count())
 			.from(reservation)
 			.where(
-				startAtFrom(startAt),
-				endAtTo(endAt),
+				startDateFrom(startDate),
+				endDateTo(endDate),
 				concertTitleLike(concertTitle),
 				singerLike(singer)
 			);
@@ -67,14 +67,14 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 		return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
 	}
 
-	private BooleanExpression startAtFrom(LocalDateTime startAt) {
+	private BooleanExpression startDateFrom(LocalDateTime startAt) {
 		if (startAt == null) {
 			return null;
 		}
 		return reservation.concert.startAt.goe(startAt);
 	}
 
-	private BooleanExpression endAtTo(LocalDateTime endAt) {
+	private BooleanExpression endDateTo(LocalDateTime endAt) {
 		if (endAt == null) {
 			return null;
 		}

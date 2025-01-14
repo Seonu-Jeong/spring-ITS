@@ -84,10 +84,10 @@ public class ReservationController {
 	}
 
 	/**
-	 * 예매된 좌석 취소
+	 * 예약 조회 처리
 	 *
-	 * @param startAt {@link RequestParam}공연 시작 시간
-	 * @param endAt {@link RequestParam}공연 끝나는 시간
+	 * @param startDate {@link RequestParam}공연 시작 시간
+	 * @param endDate {@link RequestParam}공연 끝나는 시간
 	 * @param concertTitle {@link RequestParam}공연 이름
 	 * @param singer {@link RequestParam}가수 이름
 	 * @param pageable {@link RequestParam}페이징
@@ -96,13 +96,13 @@ public class ReservationController {
 	@PreAuthorize("hasAuthority(('USER'))")
 	@GetMapping("/reservations")
 	public ResponseEntity<List<ReservationResponse.ReservationListDto>> getAllReservations(
-		@RequestParam(required = false) LocalDate startAt,
-		@RequestParam(required = false) LocalDate endAt,
+		@RequestParam(required = false) LocalDate startDate,
+		@RequestParam(required = false) LocalDate endDate,
 		@RequestParam(required = false) String concertTitle,
 		@RequestParam(required = false) String singer,
 		@PageableDefault(value = 5) Pageable pageable) {
 
-		List<ReservationResponse.ReservationListDto> reservations = reservationService.getReservations(startAt, endAt, concertTitle, singer, pageable);
+		List<ReservationResponse.ReservationListDto> reservations = reservationService.getReservations(startDate, endDate, concertTitle, singer, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(reservations);
 	}

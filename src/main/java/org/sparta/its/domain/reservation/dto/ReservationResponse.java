@@ -42,7 +42,7 @@ public class ReservationResponse {
 
 		private final String concertTitle;
 
-		private final int seatNumber;
+		private final Integer seatNumber;
 
 		private final String status;
 
@@ -105,6 +105,5 @@ public class ReservationResponse {
 				.price(reservation.getConcert().getPrice())
 				.build();
 		}
-
 	}
 }
