@@ -91,7 +91,7 @@ public class ReservationResponse {
 
 		private final LocalTime runningEndTime;
 
-		private final int price;
+		private final Integer price;
 
 		public static ReservationListDto toDto(Reservation reservation) {
 			return ReservationListDto.builder()

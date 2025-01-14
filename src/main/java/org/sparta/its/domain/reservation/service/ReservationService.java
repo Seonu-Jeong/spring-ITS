@@ -143,7 +143,7 @@ public class ReservationService {
 	}
 
 	/**
-	 * 예매된 좌석 취소
+	 * 예약 취소
 	 *
 	 * @param startAt 공연 시작 시간
 	 * @param endAt 공연 끝나는 시간
@@ -159,6 +159,7 @@ public class ReservationService {
 		String concertTitle,
 		String singer,
 		Pageable pageable) {
+
 		// LocalDate를 LocalDateTime으로 변환
 		LocalDateTime startDate = startAt != null ? startAt.atStartOfDay() : null;
 		LocalDateTime endDate = endAt != null ? endAt.atStartOfDay() : null;

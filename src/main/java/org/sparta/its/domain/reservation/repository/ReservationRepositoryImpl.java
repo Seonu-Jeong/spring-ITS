@@ -50,7 +50,7 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 				concertTitleLike(concertTitle),
 				singerLike(singer)
 			)
-			.orderBy(reservation.concert.startAt.desc(), reservation.concert.title.asc())
+			.orderBy(reservation.concert.startAt.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
