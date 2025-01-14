@@ -9,7 +9,6 @@ import org.sparta.its.domain.reservation.entity.Reservation;
 import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import org.sparta.its.global.exception.ReservationException;
 import org.sparta.its.global.exception.errorcode.ReservationErrorCode;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

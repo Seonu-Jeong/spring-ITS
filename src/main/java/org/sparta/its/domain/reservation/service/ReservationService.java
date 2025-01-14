@@ -69,11 +69,6 @@ public class ReservationService {
 		boolean isCorrectConcertDate
 			= concert.getStartAt().minusDays(1).isBefore(date)
 			&& concert.getEndAt().plusDays(1).isAfter(date);
-		boolean isEqualConcertDate = concert.getStartAt().isEqual(date) || concert.getEndAt().isEqual(date);
-		// concert 1 ~ 1
-
-		// isbefore 주체가 파라미터보다 전인가?
-		// isAfter 주체가 파라미터보다 후인가?
 
 		if (!isCorrectConcertDate) {
 			throw new ReservationException(ReservationErrorCode.NOT_CORRECT_DATE);
