@@ -164,7 +164,7 @@ public class ReservationService {
 		LocalDateTime endDate = endAt != null ? endAt.atStartOfDay() : null;
 
 		Page<Reservation> reservations
-			= reservationRepository.findReservations(startDate,endDate,concertTitle, singer, pageable);
+			= reservationRepository.findAllReservations(startDate,endDate,concertTitle, singer, pageable);
 
 		return reservations.stream().map(ReservationResponse.ReservationListDto::toDto).toList();
 	}
