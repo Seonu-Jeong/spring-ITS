@@ -58,12 +58,14 @@ public class CancelList extends BaseEntity {
 	public CancelList(
 		User user,
 		String rejectComment,
+		LocalDate concertDate,
 		CancelStatus status,
 		String concertTitle,
 		Integer seatNum) {
 
 		this.user = user;
 		this.rejectComment = rejectComment;
+		this.concertDate = concertDate;
 		this.status = status;
 		this.concertTitle = concertTitle;
 		this.seatNum = seatNum;

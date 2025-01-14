@@ -135,8 +135,6 @@ public class ReservationService {
 			throw new ReservationException(ReservationErrorCode.CANCEL_COMPLETED);
 		}
 
-		//TODO: 중복 취소 불가 기능 추가
-
 		// 콘서트 시작 일자 지난 후 취소 예외 처리
 		Concert concert = reservation.getConcert();
 
@@ -144,10 +142,14 @@ public class ReservationService {
 			throw new ReservationException(ReservationErrorCode.ALREADY_STARTED);
 		}
 
+		// 예약 취소 상태 변경
+		reservation.cancleReservation();
+
 		// 취소 내역 저장
 		CancelList newCancelList = cancelDto.toEntity(
 			concert.getTitle(),
 			reservation.getSeat().getSeatNumber(),
+			reservation.getConcertDate(),
 			reservation.getUser());
 
 		cancelListRepository.save(newCancelList);
