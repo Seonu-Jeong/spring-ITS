@@ -2,7 +2,6 @@ package org.sparta.its.domain.concert.service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
@@ -96,7 +95,7 @@ public class ConcertService {
 			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
 		}
 
-		LocalDateTime today = LocalDateTime.now();
+		LocalDate today = LocalDate.now();
 		Pageable SortByStartAt = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
 		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitleAndToday(singer, title, today,

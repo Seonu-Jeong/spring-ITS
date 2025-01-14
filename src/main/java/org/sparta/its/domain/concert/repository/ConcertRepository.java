@@ -1,6 +1,6 @@
 package org.sparta.its.domain.concert.repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.global.exception.ConcertException;
@@ -27,7 +27,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
 	Page<Concert> findAllWithOrderBySingerAndTitleAndToday(
 		@Param("singer") String singer,
 		@Param("title") String title,
-		@Param("today") LocalDateTime today,
+		@Param("today") LocalDate today,
 		Pageable pageable);
 
 	// Default 메소드
