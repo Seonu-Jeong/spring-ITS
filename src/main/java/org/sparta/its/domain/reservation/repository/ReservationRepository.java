@@ -24,7 +24,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 		"(:endAt IS NULL OR r.concert.endAt = :endAt) AND " +
 		"(:title IS NULL OR r.concert.title LIKE %:title%) AND " +
 		"(:singer IS NULL OR r.concert.singer LIKE %:singer%)")
-	Page<Reservation> searchReservations(
+	Page<Reservation> findReservations(
 		@Param("startAt") LocalDate startAt,
 		@Param("endAt") LocalDate endAt,
 		@Param("title") String title,

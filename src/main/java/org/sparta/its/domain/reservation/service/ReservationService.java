@@ -155,7 +155,7 @@ public class ReservationService {
 	@Transactional
 	public List<ReservationResponse.ReservationListDto> getReservations(LocalDate startDate, LocalDate endDate, String concertTitle, String singer, Pageable pageable) {
 		Page<Reservation> reservations
-			= reservationRepository.searchReservations(startDate,endDate,concertTitle, singer, pageable);
+			= reservationRepository.findReservations(startDate,endDate,concertTitle, singer, pageable);
 
 		return reservations.stream().map(ReservationResponse.ReservationListDto::toDto).toList();
 	}
