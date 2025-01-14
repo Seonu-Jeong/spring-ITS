@@ -19,11 +19,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	// 쿼리 메소드
 
 	// @Query 작성 메소드
-	@Query("SELECT r FROM reservation r WHERE " +
-		"(:startAt IS NULL OR r.concert.startAt = :startAt) AND " +
-		"(:endAt IS NULL OR r.concert.endAt = :endAt) AND " +
-		"(:title IS NULL OR r.concert.title LIKE %:title%) AND " +
-		"(:singer IS NULL OR r.concert.singer LIKE %:singer%)")
+	@Query(""" 
+		SELECT r FROM reservation r WHERE
+		(:startAt IS NULL OR r.concert.startAt >= :startAt) AND
+		(:endAt IS NULL OR r.concert.endAt <= :endAt) AND
+		(:title IS NULL OR r.concert.title LIKE %:title%) AND
+		(:singer IS NULL OR r.concert.singer LIKE %:singer%)
+		""")
 	Page<Reservation> findReservations(
 		@Param("startAt") LocalDate startAt,
 		@Param("endAt") LocalDate endAt,
