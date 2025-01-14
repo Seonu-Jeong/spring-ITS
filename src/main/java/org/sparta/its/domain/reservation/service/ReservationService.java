@@ -153,7 +153,12 @@ public class ReservationService {
 	 * @return {@link ReservationResponse.ReservationListDto} dto 응답
 	 */
 	@Transactional
-	public List<ReservationResponse.ReservationListDto> getReservations(LocalDate startDate, LocalDate endDate, String concertTitle, String singer, Pageable pageable) {
+	public List<ReservationResponse.ReservationListDto> getReservations(
+		LocalDate startDate,
+		LocalDate endDate,
+		String concertTitle,
+		String singer,
+		Pageable pageable) {
 		Page<Reservation> reservations
 			= reservationRepository.findReservations(startDate,endDate,concertTitle, singer, pageable);
 
