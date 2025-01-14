@@ -28,7 +28,7 @@ public class ReservationResponse {
 				.seatId(reservation.getSeat().getId())
 				.status(reservation.getStatus().name())
 				.concertTitle(reservation.getConcert().getTitle())
-				.concertDate(reservation.getConcert().getStartAt())
+				.concertDate(date)
 				.build();
 		}
 	}
