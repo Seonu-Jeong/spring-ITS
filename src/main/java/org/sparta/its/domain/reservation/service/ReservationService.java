@@ -46,14 +46,17 @@ public class ReservationService {
 	 * @return {@link ReservationResponse.SelectDto} 선택된 좌석 예약 정보
 	 */
 	@Transactional
-	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, Long userId) {
+	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, LocalDate date, Long userId) {
 		// 콘서트 조회
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
+
 		// 좌석 조회
 		Seat seat = seatRepository.findByIdOrThrow(seatId);
+
 		// 유저 확인
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
+
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
 			.findReservationForSeatAndConcert(seat, concert, ReservationStatus.PENDING);
@@ -62,17 +65,25 @@ public class ReservationService {
 			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
 		}
 
+		// 콘서트 선택 날짜 검증
+		boolean isCorrectConcertDate = concert.getStartAt().isAfter(date) && concert.getEndAt().isBefore(date);
+
+		if (!isCorrectConcertDate) {
+			throw new ReservationException(ReservationErrorCode.NOT_CORRECT_DATE);
+		}
+
 		// 예약 생성
 		Reservation reservation = Reservation.builder()
 			.user(user)
 			.seat(seat)
 			.concert(concert)
 			.status(ReservationStatus.PENDING)
+			.concertDate(date)
 			.build();
 
 		reservationRepository.save(reservation);
 
-		return ReservationResponse.SelectDto.toDto(reservation);
+		return ReservationResponse.SelectDto.toDto(reservation, date);
 	}
 
 	/**
@@ -123,6 +134,8 @@ public class ReservationService {
 		if (!ReservationStatus.COMPLETED.equals(reservation.getStatus())) {
 			throw new ReservationException(ReservationErrorCode.CANCEL_COMPLETED);
 		}
+
+		//TODO: 중복 취소 불가 기능 추가
 
 		// 콘서트 시작 일자 지난 후 취소 예외 처리
 		Concert concert = reservation.getConcert();
