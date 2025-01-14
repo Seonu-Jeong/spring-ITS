@@ -90,8 +90,8 @@ public class ConcertService {
 		Sort sort;
 
 		switch (order) {
-			case "오름차순" -> sort = Sort.by(Sort.Order.desc("startAt"));
-			case "내림차순" -> sort = Sort.by(Sort.Order.asc("startAt"));
+			case "DESC" -> sort = Sort.by(Sort.Order.desc("startAt"));
+			case "ASC" -> sort = Sort.by(Sort.Order.asc("startAt"));
 			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
 		}
 
@@ -161,9 +161,9 @@ public class ConcertService {
 	 * @param endAt 콘서트 종료 날짜
 	 * @param order 정렬 방식
 	 * @param pageable 페이징 기본값 설정 및 정렬 방식 결정
-	 * @return {@link List<ConcertResponse.registrationStatusDto>}
+	 * @return {@link List<ConcertResponse.StatisticsDto>}
 	 */
-	public List<ConcertResponse.registrationStatusDto> getStatistics(String title, LocalDateTime startAt,
+	public List<ConcertResponse.StatisticsDto> getStatistics(String title, LocalDateTime startAt,
 		LocalDateTime endAt, String order, Pageable pageable) {
 
 		// 콘서트 시작 날짜 및 종료 날짜 예외 처리
@@ -173,6 +173,6 @@ public class ConcertService {
 			.findStatisticsWithOrderByTitleAndStartAtAndEndAt(title, startAt, endAt, order, pageable);
 
 		return findStatisticsWithOrderByTitleAndStartAtAndEndAt.stream()
-			.map(ConcertResponse.registrationStatusDto::toDto).toList();
+			.map(ConcertResponse.StatisticsDto::toDto).toList();
 	}
 }

@@ -59,7 +59,7 @@ public class ConcertController {
 	public ResponseEntity<List<ConcertResponse.ReadDto>> getConcerts(
 		@RequestParam(required = false) String singer,
 		@RequestParam(required = false) String concertTitle,
-		@RequestParam(defaultValue = "내림차순") String order,
+		@RequestParam(defaultValue = "DESC") String order,
 		@PageableDefault Pageable pageable) {
 
 		List<ConcertResponse.ReadDto> allConcertDto = concertService.getConcerts(singer, concertTitle, order, pageable);
@@ -105,17 +105,17 @@ public class ConcertController {
 	 * @param endAt {@link RequestParam} 콘서트 종료 날짜로 검색
 	 * @param order {@link RequestParam} 콘서트 정렬 방식 default 내림차순
 	 * @param pageable {@link PageableDefault} 페이징 기본값 설정
-	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.registrationStatusDto} 수정Dto 응답
+	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.StatisticsDto} 수정Dto 응답
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/statistics")
-	public ResponseEntity<List<ConcertResponse.registrationStatusDto>> getStatistics(
+	public ResponseEntity<List<ConcertResponse.StatisticsDto>> getStatistics(
 		@RequestParam(required = false) String title,
 		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime startAt,
 		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime endAt,
-		@RequestParam(defaultValue = "내림차순") String order,
+		@RequestParam(defaultValue = "DESC") String order,
 		@PageableDefault Pageable pageable) {
-		List<ConcertResponse.registrationStatusDto> response = concertService.getStatistics(title, startAt, endAt,
+		List<ConcertResponse.StatisticsDto> response = concertService.getStatistics(title, startAt, endAt,
 			order, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);

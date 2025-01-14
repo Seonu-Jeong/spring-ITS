@@ -22,7 +22,7 @@ public enum ConcertErrorCode {
 
 	ALREADY_PASSED(HttpStatus.BAD_REQUEST, "콘서트 시작 날짜와, 종료 날짜는 현재 날짜보다 이전일 수 없습니다."),
 
-	INCORRECT_VALUE(HttpStatus.BAD_REQUEST, "오름차순 또는 내림차순만 입력 가능합니다."),
+	INCORRECT_VALUE(HttpStatus.BAD_REQUEST, "ASC 또는 DESC 만 입력 가능합니다."),
 
 	// 404 NOT_FOUND
 	NOT_FOUND(HttpStatus.NOT_FOUND, "콘서트 정보를 찾을 수 없습니다.");

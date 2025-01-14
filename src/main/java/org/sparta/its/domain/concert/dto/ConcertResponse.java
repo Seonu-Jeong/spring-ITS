@@ -133,7 +133,7 @@ public class ConcertResponse {
 
 	@Getter
 	@Builder
-	public static class registrationStatusDto {
+	public static class StatisticsDto {
 
 		private final Long concertId;
 
@@ -147,8 +147,8 @@ public class ConcertResponse {
 
 		private final LocalDateTime startAt;
 
-		public static registrationStatusDto toDto(Concert concert) {
-			return registrationStatusDto.builder()
+		public static StatisticsDto toDto(Concert concert) {
+			return StatisticsDto.builder()
 				.concertId(concert.getId())
 				.concertTitle(concert.getTitle())
 				.AllSeat(concert.getHall().getCapacity())

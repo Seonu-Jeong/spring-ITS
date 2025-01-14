@@ -1,20 +1,19 @@
 package org.sparta.its.domain.concert.repository;
 
 import static org.sparta.its.domain.concert.entity.QConcert.*;
+import static org.sparta.its.domain.hall.entity.QHall.*;
+import static org.sparta.its.domain.reservation.entity.QReservation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
 import org.sparta.its.domain.concert.entity.Concert;
-import org.sparta.its.domain.hall.entity.QHall;
-import org.sparta.its.domain.reservation.entity.QReservation;
 import org.sparta.its.global.exception.ConcertException;
 import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -30,13 +29,10 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 	private final EntityManager entityManager;
-	private final PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer;
 
-	public ConcertRepositoryImpl(EntityManager entityManager,
-		PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer) {
+	public ConcertRepositoryImpl(EntityManager entityManager) {
 		this.jpaQueryFactory = new JPAQueryFactory(entityManager);
 		this.entityManager = entityManager;
-		this.pageableCustomizer = pageableCustomizer;
 	}
 
 	// TODO : 성능 개선 JPA 메서드 find 해보기 (영속성 컨텍스트)
@@ -79,12 +75,19 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 		entityManager.clear();
 	}
 
+	/**
+	 * 콘서트 등록 현황 조회
+	 * @param title 콘서트 제목
+	 * @param startAt 콘서트 시작 시간
+	 * @param endAt 콘서트 종료 시간
+	 * @param order 정렬 기준
+	 * @param pageable 페이지 설정
+	 * @return {@link PageableExecutionUtils} 페이지 생성 반환
+	 */
 	@Override
 	public Page<Concert> findStatisticsWithOrderByTitleAndStartAtAndEndAt(String title, LocalDateTime startAt,
 		LocalDateTime endAt, String order, Pageable pageable) {
-		QHall hall = QHall.hall;
-		QReservation reservation = QReservation.reservation;
-		List<Concert> fetch = jpaQueryFactory
+		List<Concert> findConcert = jpaQueryFactory
 			.select(concert)
 			.from(concert)
 			.where(concertTitleLike(title)
@@ -107,7 +110,7 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 					.and(isAfterStartAt(startAt))
 					.and(isBeforeEndAt(endAt)));
 
-		return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
+		return PageableExecutionUtils.getPage(findConcert, pageable, count::fetchOne);
 	}
 
 	private BooleanExpression concertTitleLike(String title) {
@@ -133,8 +136,8 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 
 	private OrderSpecifier<LocalDateTime> decideOrderBy(String order) {
 		return switch (order) {
-			case "오름차순" -> concert.startAt.desc();
-			case "내림차순" -> concert.startAt.asc();
+			case "DESC" -> concert.startAt.desc();
+			case "ASC" -> concert.startAt.asc();
 			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
 		};
 	}
