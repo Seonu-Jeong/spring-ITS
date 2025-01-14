@@ -86,13 +86,13 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 		if (concertTitle == null) {
 			return null;
 		}
-		return hall.name.like("%" + concertTitle + "%");
+		return reservation.concert.title.like("%" + concertTitle + "%");
 	}
 
 	private BooleanExpression singerLike(String singer) {
 		if (singer == null) {
 			return null;
 		}
-		return hall.name.like("%" + singer + "%");
+		return reservation.concert.singer.like("%" + singer + "%");
 	}
 }
