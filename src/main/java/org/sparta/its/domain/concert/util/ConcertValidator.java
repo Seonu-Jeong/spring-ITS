@@ -1,6 +1,6 @@
 package org.sparta.its.domain.concert.util;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
@@ -17,23 +17,23 @@ public class ConcertValidator {
 		}
 	}
 
-	public static void startAtIsAfterEndAtWithUpdate(LocalDateTime startAt, LocalDateTime endAt) {
+	public static void startAtIsAfterEndAtWithUpdate(LocalDate startAt, LocalDate endAt) {
 		if (startAt != null && endAt != null &&
 			startAt.isAfter(endAt)) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_UPDATE_DATE);
 		}
 	}
 
-	public static void startAtIsAfterEndAtWithNullCheck(LocalDateTime startAt, LocalDateTime endAt) {
+	public static void startAtIsAfterEndAtWithNullCheck(LocalDate startAt, LocalDate endAt) {
 		if (startAt != null && endAt != null &&
 			startAt.isAfter(endAt)) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
 		}
 	}
 
-	public static void isBeforeTodayWithNullCheck(LocalDateTime startAt, LocalDateTime endAt) {
-		if (startAt != null && startAt.isBefore(LocalDateTime.now()) ||
-			(endAt != null && endAt.isBefore(LocalDateTime.now()))) {
+	public static void isBeforeTodayWithNullCheck(LocalDate startAt, LocalDate endAt) {
+		if (startAt != null && startAt.isBefore(LocalDate.now()) ||
+			(endAt != null && endAt.isBefore(LocalDate.now()))) {
 			throw new ConcertException(ConcertErrorCode.ALREADY_PASSED);
 		}
 	}
@@ -70,15 +70,15 @@ public class ConcertValidator {
 		}
 	}
 
-	public static void startAtIsAfterEndAt(LocalDateTime startAt, LocalDateTime endAt) {
+	public static void startAtIsAfterEndAt(LocalDate startAt, LocalDate endAt) {
 		if (startAt.isAfter(endAt)) {
 			throw new ConcertException(ConcertErrorCode.IS_NOT_AFTER_DATE);
 		}
 
 	}
 
-	public static void isBeforeToday(LocalDateTime startAt, LocalDateTime endAt) {
-		if (startAt.isBefore(LocalDateTime.now()) || endAt.isBefore(LocalDateTime.now())) {
+	public static void isBeforeToday(LocalDate startAt, LocalDate endAt) {
+		if (startAt.isBefore(LocalDate.now()) || endAt.isBefore(LocalDate.now())) {
 			throw new ConcertException(ConcertErrorCode.ALREADY_PASSED);
 		}
 	}

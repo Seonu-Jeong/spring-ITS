@@ -1,6 +1,6 @@
 package org.sparta.its.domain.concert.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +52,10 @@ public class Concert {
 	private String singer;
 
 	@Column(nullable = false)
-	private LocalDateTime startAt;
+	private LocalDate startAt;
 
 	@Column(nullable = false)
-	private LocalDateTime endAt;
+	private LocalDate endAt;
 
 	@Column(nullable = false)
 	private LocalTime runningStartTime;
@@ -67,7 +67,7 @@ public class Concert {
 	private Integer price;
 
 	@Builder
-	public Concert(Hall hall, String title, String singer, LocalDateTime startAt, LocalDateTime endAt,
+	public Concert(Hall hall, String title, String singer, LocalDate startAt, LocalDate endAt,
 		LocalTime runningStartTime, LocalTime runningEndTime, Integer price) {
 		this.hall = hall;
 		this.title = title;

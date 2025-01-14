@@ -2,7 +2,7 @@ package org.sparta.its.domain.reservation.repository;
 
 import static org.sparta.its.domain.reservation.entity.QReservation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.sparta.its.domain.reservation.entity.Reservation;
@@ -38,8 +38,8 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 	 */
 	@Override
 	public Page<Reservation> findAllReservations(
-		LocalDateTime startDate,
-		LocalDateTime endDate,
+		LocalDate startDate,
+		LocalDate endDate,
 		String concertTitle,
 		String singer,
 		Pageable pageable) {
@@ -67,14 +67,14 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 		return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
 	}
 
-	private BooleanExpression startDateFrom(LocalDateTime startAt) {
+	private BooleanExpression startDateFrom(LocalDate startAt) {
 		if (startAt == null) {
 			return null;
 		}
 		return reservation.concert.startAt.goe(startAt);
 	}
 
-	private BooleanExpression endDateTo(LocalDateTime endAt) {
+	private BooleanExpression endDateTo(LocalDate endAt) {
 		if (endAt == null) {
 			return null;
 		}

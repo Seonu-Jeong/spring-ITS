@@ -1,6 +1,6 @@
 package org.sparta.its.domain.concert.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.sparta.its.domain.concert.entity.Concert;
@@ -31,12 +31,12 @@ public class ConcertRequest {
 		private final String singer;
 
 		@NotNull(message = "공연 시작 날짜 필수값 입니다.")
-		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-		private final LocalDateTime startAt;
+		@DateTimeFormat(pattern = "yyyy-MM-dd")
+		private final LocalDate startAt;
 
 		@NotNull(message = "공연 시작 날짜 필수값 입니다.")
-		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-		private final LocalDateTime endAt;
+		@DateTimeFormat(pattern = "yyyy-MM-dd")
+		private final LocalDate endAt;
 
 		@NotNull(message = "공연 시작 시간 필수값 입니다.")
 		@DateTimeFormat(pattern = "HH:mm")
@@ -72,11 +72,11 @@ public class ConcertRequest {
 
 		private final String title;
 
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-		private final LocalDateTime startAt;
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		private final LocalDate startAt;
 
-		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-		private final LocalDateTime endAt;
+		@JsonFormat(pattern = "yyyy-MM-dd")
+		private final LocalDate endAt;
 
 		@JsonFormat(pattern = "HH:mm")
 		private final LocalTime runningStartTime;
