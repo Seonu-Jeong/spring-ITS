@@ -1,5 +1,6 @@
 package org.sparta.its.domain.reservation.repository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.sparta.its.domain.concert.entity.Concert;
@@ -24,11 +25,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>,
 		FROM reservation r
 		WHERE r.seat = :seatId
 		AND r.concert = :concertId
+		AND r.concertDate = :concertDate
 		AND r.status = :status
 		""")
 	Optional<Reservation> findReservationForSeatAndConcert(
 		@Param("seatId") Seat seat,
 		@Param("concertId") Concert concert,
+		@Param("concertDate") LocalDate concertDate,
 		@Param("status") ReservationStatus status
 	);
 	// Default 메소드

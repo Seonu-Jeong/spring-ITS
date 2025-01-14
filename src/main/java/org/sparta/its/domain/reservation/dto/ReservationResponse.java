@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.sparta.its.domain.reservation.entity.Reservation;
+import org.sparta.its.domain.reservation.entity.ReservationStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -86,9 +87,7 @@ public class ReservationResponse {
 
 		private final String concertTitle;
 
-		private final LocalDate startAt;
-
-		private final LocalDate endAt;
+		private final LocalDate concertDate;
 
 		private final LocalTime runningStartTime;
 
@@ -96,16 +95,18 @@ public class ReservationResponse {
 
 		private final Integer price;
 
+		private final ReservationStatus status;
+
 		public static ReservationListDto toDto(Reservation reservation) {
 			return ReservationListDto.builder()
 				.concertId(reservation.getConcert().getId())
 				.hallName(reservation.getConcert().getHall().getName())
 				.concertTitle(reservation.getConcert().getTitle())
-				.startAt(reservation.getConcert().getStartAt())
-				.endAt(reservation.getConcert().getEndAt())
+				.concertDate(reservation.getConcertDate())
 				.runningStartTime(reservation.getConcert().getRunningStartTime())
 				.runningEndTime(reservation.getConcert().getRunningEndTime())
 				.price(reservation.getConcert().getPrice())
+				.status(reservation.getStatus())
 				.build();
 		}
 	}

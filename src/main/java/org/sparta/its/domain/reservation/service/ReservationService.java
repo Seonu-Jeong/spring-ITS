@@ -59,14 +59,16 @@ public class ReservationService {
 
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
-			.findReservationForSeatAndConcert(seat, concert, ReservationStatus.PENDING);
+			.findReservationForSeatAndConcert(seat, concert, date, ReservationStatus.PENDING);
 
 		if (existingReservation.isPresent()) {
 			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
 		}
 
 		// 콘서트 선택 날짜 검증
-		boolean isCorrectConcertDate = concert.getStartAt().isAfter(date) && concert.getEndAt().isBefore(date);
+		boolean isCorrectConcertDate
+			= concert.getStartAt().minusDays(1).isBefore(date)
+			&& concert.getEndAt().plusDays(1).isAfter(date);
 
 		if (!isCorrectConcertDate) {
 			throw new ReservationException(ReservationErrorCode.NOT_CORRECT_DATE);
@@ -174,7 +176,6 @@ public class ReservationService {
 		String concertTitle,
 		String singer,
 		Pageable pageable) {
-
 
 		Page<Reservation> reservations
 			= reservationRepository.findAllReservations(startAt, endAt, concertTitle, singer, pageable);
