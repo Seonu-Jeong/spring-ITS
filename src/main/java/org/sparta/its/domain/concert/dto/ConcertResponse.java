@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.concertimage.entity.ConcertImage;
+import org.sparta.its.domain.reservation.entity.ReservationStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -126,6 +127,42 @@ public class ConcertResponse {
 				.runningEndTime(concert.getRunningEndTime())
 				.price(concert.getPrice())
 				.images(concert.getConcertImages().stream().map(ConcertImage::getImageUrl).toList())
+				.build();
+		}
+	}
+
+	@Getter
+	@Builder
+	public static class registrationStatusDto {
+
+		private final Long concertId;
+
+		private final String concertTitle;
+
+		private final Integer AllSeat;
+
+		private final Integer reservationSeat;
+
+		private final Integer sumPrice;
+
+		private final LocalDateTime startAt;
+
+		public static registrationStatusDto toDto(Concert concert) {
+			return registrationStatusDto.builder()
+				.concertId(concert.getId())
+				.concertTitle(concert.getTitle())
+				.AllSeat(concert.getHall().getCapacity())
+				.reservationSeat(concert.getReservations()
+					.stream()
+					.filter(reservation -> reservation.getStatus().equals(ReservationStatus.COMPLETED))
+					.toList()
+					.size()) // 예약 상태가 COMPLETED 된 갯수
+				.sumPrice(concert.getReservations()
+					.stream()
+					.filter(reservation -> reservation.getStatus().equals(ReservationStatus.COMPLETED))
+					.toList()
+					.size() * concert.getPrice()) // // 예약 상태가 COMPLETED 된 갯수 * 콘서트 가격
+				.startAt(concert.getStartAt()) // 정렬 기준인데 반환 값에 넣으면
 				.build();
 		}
 	}

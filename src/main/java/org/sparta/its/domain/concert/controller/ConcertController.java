@@ -1,5 +1,6 @@
 package org.sparta.its.domain.concert.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
@@ -7,6 +8,7 @@ import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.service.ConcertService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -96,5 +98,26 @@ public class ConcertController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
-	// public ResponseEntity<>
+	/**
+	 * 콘서트 등록 현황 조회
+	 * @param title {@link RequestParam} 콘서트 제목으로 검색
+	 * @param startAt {@link RequestParam}  콘서트 시작 날짜로 검색
+	 * @param endAt {@link RequestParam} 콘서트 종료 날짜로 검색
+	 * @param order {@link RequestParam} 콘서트 정렬 방식 default 내림차순
+	 * @param pageable {@link PageableDefault} 페이징 기본값 설정
+	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.registrationStatusDto} 수정Dto 응답
+	 */
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping("/statistics")
+	public ResponseEntity<List<ConcertResponse.registrationStatusDto>> getStatistics(
+		@RequestParam(required = false) String title,
+		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime startAt,
+		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime endAt,
+		@RequestParam(defaultValue = "내림차순") String order,
+		@PageableDefault Pageable pageable) {
+		List<ConcertResponse.registrationStatusDto> response = concertService.getStatistics(title, startAt, endAt,
+			order, pageable);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
 }
