@@ -1,6 +1,5 @@
 package org.sparta.its.domain.reservation.repository;
 
-import static org.sparta.its.domain.hall.entity.QHall.*;
 import static org.sparta.its.domain.reservation.entity.QReservation.*;
 
 import java.time.LocalDateTime;

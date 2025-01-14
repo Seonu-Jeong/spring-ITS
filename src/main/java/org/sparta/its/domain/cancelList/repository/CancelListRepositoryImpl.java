@@ -4,7 +4,6 @@ import static org.sparta.its.domain.cancelList.entity.QCancelList.*;
 
 import java.util.List;
 
-import org.sparta.its.domain.cancelList.dto.CancelListResponse;
 import org.sparta.its.domain.cancelList.entity.CancelList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,5 @@
 package org.sparta.its.domain.cancelList.dto;
 
-import static org.sparta.its.domain.user.entity.QUser.*;
-
 import org.sparta.its.domain.cancelList.entity.CancelList;
 
 import lombok.Builder;
