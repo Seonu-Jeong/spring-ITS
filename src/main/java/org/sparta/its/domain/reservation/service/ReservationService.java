@@ -145,8 +145,8 @@ public class ReservationService {
 	/**
 	 * 예매된 좌석 취소
 	 *
-	 * @param startDate 공연 시작 시간
-	 * @param endDate 공연 끝나는 시간
+	 * @param startAt 공연 시작 시간
+	 * @param endAt 공연 끝나는 시간
 	 * @param concertTitle 공연 이름
 	 * @param singer 가수 이름
 	 * @param pageable 페이징
