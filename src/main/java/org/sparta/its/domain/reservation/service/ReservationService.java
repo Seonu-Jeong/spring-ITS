@@ -1,6 +1,8 @@
 package org.sparta.its.domain.reservation.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.sparta.its.domain.cancelList.entity.CancelList;
@@ -20,6 +22,8 @@ import org.sparta.its.global.exception.ReservationException;
 import org.sparta.its.global.exception.UserException;
 import org.sparta.its.global.exception.errorcode.ReservationErrorCode;
 import org.sparta.its.global.exception.errorcode.UserErrorCode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -136,5 +140,39 @@ public class ReservationService {
 		cancelListRepository.save(newCancelList);
 
 		return ReservationResponse.CancelDto.toDto(reservation);
+	}
+
+	/**
+	 * 예약 취소
+	 *
+	 * @param startAt 공연 시작 시간
+	 * @param endAt 공연 끝나는 시간
+	 * @param concertTitle 공연 이름
+	 * @param singer 가수 이름
+	 * @param pageable 페이징
+	 * @return {@link ReservationResponse.ReservationListDto} dto 응답
+	 */
+	@Transactional
+	public List<ReservationResponse.ReservationListDto> getReservations(
+		LocalDate startAt,
+		LocalDate endAt,
+		String concertTitle,
+		String singer,
+		Pageable pageable) {
+
+		//LocalDate를 LocalDateTime으로 변환
+		LocalDateTime startDate = null;
+		if (startAt != null) {
+			startDate = startAt.atStartOfDay();
+		}
+		LocalDateTime endDate = null;
+		if (endAt != null) {
+			endDate = endAt.atTime(23, 59, 59, 999_999_999);
+		}
+
+		Page<Reservation> reservations
+			= reservationRepository.findAllReservations(startDate,endDate,concertTitle, singer, pageable);
+
+		return reservations.stream().map(ReservationResponse.ReservationListDto::toDto).toList();
 	}
 }

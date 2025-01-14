@@ -12,10 +12,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, Long>, ReservationQueryDslRepository {
 	// 쿼리 메소드
 
 	// @Query 작성 메소드
+
 	//특정 자리 조회시 Pessimistic Lock적용
 	//TODO: 동시성 제어해야함
 	@Query("""
