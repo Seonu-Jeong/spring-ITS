@@ -22,7 +22,7 @@ public class ReservationResponse {
 
 		private final LocalDate concertDate;
 
-		public static SelectDto toDto(Reservation reservation) {
+		public static SelectDto toDto(Reservation reservation, LocalDate date) {
 			return SelectDto.builder()
 				.reservationId(reservation.getId())
 				.seatId(reservation.getSeat().getId())

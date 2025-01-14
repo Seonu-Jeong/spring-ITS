@@ -40,8 +40,9 @@ public class ReservationController {
 	public ResponseEntity<ReservationResponse.SelectDto> selectSeat(
 		@PathVariable Long concertId,
 		@PathVariable Long seatId,
+		@RequestParam LocalDate date,
 		@AuthenticationPrincipal UserDetail userDetail) {
-		ReservationResponse.SelectDto selectDto = reservationService.selectSeat(concertId, seatId, userDetail.getId());
+		ReservationResponse.SelectDto selectDto = reservationService.selectSeat(concertId, seatId, date, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(selectDto);
 	}

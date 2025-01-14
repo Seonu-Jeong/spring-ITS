@@ -2,6 +2,8 @@ package org.sparta.its.domain.reservation.entity;
 
 import static org.sparta.its.global.exception.errorcode.ReservationErrorCode.*;
 
+import java.time.LocalDate;
+
 import org.hibernate.annotations.DynamicUpdate;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.hall.entity.Seat;
@@ -51,12 +53,16 @@ public class Reservation extends BaseEntity {
 	@Column(nullable = false, length = 8)
 	private ReservationStatus status;
 
+	@Column(nullable = false)
+	private LocalDate concertDate;
+
 	@Builder
-	public Reservation(User user, Concert concert, Seat seat, ReservationStatus status) {
+	public Reservation(User user, Concert concert, Seat seat, ReservationStatus status, LocalDate concertDate) {
 		this.user = user;
 		this.concert = concert;
 		this.seat = seat;
 		this.status = status;
+		this.concertDate = concertDate;
 	}
 
 	public void completeReservation() {

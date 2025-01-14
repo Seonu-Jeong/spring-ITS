@@ -1,5 +1,7 @@
 package org.sparta.its.domain.cancelList.entity;
 
+import java.time.LocalDate;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.sparta.its.domain.user.entity.User;
@@ -38,6 +40,9 @@ public class CancelList extends BaseEntity {
 	// 필드
 	@Column(length = 40)
 	private String rejectComment;
+
+	@Column(nullable = false)
+	private LocalDate concertDate;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 10)
