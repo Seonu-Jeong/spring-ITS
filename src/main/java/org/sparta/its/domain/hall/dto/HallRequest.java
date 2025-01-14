@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 public class HallRequest {
 
@@ -36,5 +37,15 @@ public class HallRequest {
 				.isOpen(true)
 				.build();
 		}
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	public static class UpdateDto {
+
+		private final String name;
+
+		private final String location;
+
 	}
 }

@@ -6,12 +6,14 @@ import java.util.List;
 import org.sparta.its.domain.hall.dto.HallRequest;
 import org.sparta.its.domain.hall.dto.HallResponse;
 import org.sparta.its.domain.hall.entity.Hall;
-import org.sparta.its.domain.hall.entity.HallImage;
 import org.sparta.its.domain.hall.entity.Seat;
-import org.sparta.its.domain.hall.repository.HallImageRepository;
 import org.sparta.its.domain.hall.repository.HallRepository;
 import org.sparta.its.domain.hall.repository.SeatRepository;
+import org.sparta.its.domain.hallImage.entity.HallImage;
+import org.sparta.its.domain.hallImage.repository.HallImageRepository;
+import org.sparta.its.global.exception.HallException;
 import org.sparta.its.global.exception.ImageException;
+import org.sparta.its.global.exception.errorcode.HallErrorCode;
 import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
@@ -109,6 +111,28 @@ public class HallService {
 	}
 
 	/**
+	 * 공연장 수정
+	 * @param hallId 공연장 고유 식별자
+	 * @param updateDto 이름, 위치
+	 * @return {@link HallResponse.ReadDto} dto 응답
+	 */
+	@Transactional
+	public HallResponse.UpdateDto updateHall(Long hallId, HallRequest.UpdateDto updateDto) {
+		// 공연장 isOpen 상태가 true 인 공연장을 찾음
+		Hall findHallByOpenStatus
+			= hallRepository.findHallByIdAndIsOpen(hallId, true);
+
+		if (findHallByOpenStatus == null) {
+			throw new HallException(HallErrorCode.NOT_FOUND_HALL);
+		}
+
+		hallRepository.updateHall(findHallByOpenStatus.getId(), updateDto);
+
+		Hall updateHall = hallRepository.findByIdOrThrow(hallId);
+		return HallResponse.UpdateDto.toDto(updateHall);
+	}
+
+	/**
 	 * 공연장 Soft Delete + 이미지 삭제 + 이미지 테이블 삭제 + s3 이미지 삭제
 	 * @param hallId 공연장 고유 식별자
 	 */
@@ -132,4 +156,5 @@ public class HallService {
 
 		return HallResponse.DeleteDto.message();
 	}
+
 }
