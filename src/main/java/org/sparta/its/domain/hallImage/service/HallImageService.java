@@ -1,5 +1,8 @@
 package org.sparta.its.domain.hallImage.service;
 
+import static org.sparta.its.global.exception.errorcode.HallImageErrorCode.*;
+import static org.sparta.its.global.exception.errorcode.ImageErrorCode.*;
+
 import java.io.IOException;
 
 import org.sparta.its.domain.hall.entity.Hall;
@@ -10,8 +13,6 @@ import org.sparta.its.domain.hallImage.entity.HallImage;
 import org.sparta.its.domain.hallImage.repository.HallImageRepository;
 import org.sparta.its.global.exception.HallImageException;
 import org.sparta.its.global.exception.ImageException;
-import org.sparta.its.global.exception.errorcode.HallImageErrorCode;
-import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.S3Service;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,7 @@ public class HallImageService {
 		HallImage findHallImage = hallImageRepository.findByIdOrThrow(hallImagesId);
 
 		if (!findHallImage.getHall().getId().equals(findHall.getId())) {
-			throw new HallImageException(HallImageErrorCode.NOT_MATCHING);
+			throw new HallImageException(NOT_MATCHING);
 		}
 
 		String publicUrl;
@@ -67,7 +68,7 @@ public class HallImageService {
 				findHallImage.getImageUrl(),
 				updateImageDto.getImages());
 		} catch (SdkClientException | IOException e) {
-			throw new ImageException(ImageErrorCode.FILE_UPLOAD_FAILED);
+			throw new ImageException(FILE_UPLOAD_FAILED);
 		}
 
 		// url 업데이트

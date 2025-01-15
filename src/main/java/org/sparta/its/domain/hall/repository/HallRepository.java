@@ -1,8 +1,9 @@
 package org.sparta.its.domain.hall.repository;
 
+import static org.sparta.its.global.exception.errorcode.HallErrorCode.*;
+
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.global.exception.HallException;
-import org.sparta.its.global.exception.errorcode.HallErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -25,7 +26,7 @@ public interface HallRepository extends JpaRepository<Hall, Long>, HallQueryDslR
 	// Default 메소드
 	default Hall findByIdOrThrow(Long hallId) {
 		return findById(hallId)
-			.orElseThrow(() -> new HallException(HallErrorCode.NOT_FOUND_HALL));
+			.orElseThrow(() -> new HallException(NOT_FOUND_HALL));
 	}
 
 }

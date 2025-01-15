@@ -1,5 +1,7 @@
 package org.sparta.its.global.s3;
 
+import static org.sparta.its.global.exception.errorcode.ImageErrorCode.*;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -8,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.sparta.its.global.exception.ImageException;
-import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.PatternMatchUtils;
@@ -55,7 +56,7 @@ public class S3Service {
 		// 이미지가 빈값인지 확인
 		long count = Arrays.stream(images).filter(MultipartFile::isEmpty).count();
 		if (count > 0) {
-			throw new ImageException(ImageErrorCode.BAD_IMAGE_FILE);
+			throw new ImageException(BAD_IMAGE_FILE);
 		}
 
 		List<String> uploadedUrls = new ArrayList<>();
@@ -84,7 +85,7 @@ public class S3Service {
 
 		// 이미지파일이 1개 일때만 업데이트 가능
 		if (images.length != 1) {
-			throw new ImageException(ImageErrorCode.BAD_IMAGE_FILE);
+			throw new ImageException(BAD_IMAGE_FILE);
 		}
 
 		// 기존 이미지 삭제
@@ -176,7 +177,7 @@ public class S3Service {
 		int lastIndexOfDot = originalFileName.lastIndexOf('.');
 
 		if (lastIndexOfDot == -1) {
-			throw new ImageException(ImageErrorCode.NO_EXTENSION_FILE);
+			throw new ImageException(NO_EXTENSION_FILE);
 		}
 
 		return originalFileName.substring(lastIndexOfDot);
@@ -190,7 +191,7 @@ public class S3Service {
 	 */
 	private void validateFileExtension(String fileExtension, ImageFormat imageFormat) {
 		if (isWhiteList(fileExtension, imageFormat.getWhiteList())) {
-			throw new ImageException(ImageErrorCode.NOT_ALLOW_FILE_EXTENSION);
+			throw new ImageException(NOT_ALLOW_FILE_EXTENSION);
 		}
 	}
 

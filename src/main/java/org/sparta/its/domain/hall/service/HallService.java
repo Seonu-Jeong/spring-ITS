@@ -1,5 +1,8 @@
 package org.sparta.its.domain.hall.service;
 
+import static org.sparta.its.global.exception.errorcode.HallErrorCode.*;
+import static org.sparta.its.global.exception.errorcode.ImageErrorCode.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -13,8 +16,6 @@ import org.sparta.its.domain.hallImage.entity.HallImage;
 import org.sparta.its.domain.hallImage.repository.HallImageRepository;
 import org.sparta.its.global.exception.HallException;
 import org.sparta.its.global.exception.ImageException;
-import org.sparta.its.global.exception.errorcode.HallErrorCode;
-import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
 import org.springframework.data.domain.Page;
@@ -56,7 +57,7 @@ public class HallService {
 	public HallResponse.CreatDto creatHall(HallRequest.CreateDto createDto) {
 
 		if (hallRepository.existsByName(createDto.getName())) {
-			throw new ImageException(ImageErrorCode.DUPLICATED_NAME);
+			throw new ImageException(DUPLICATED_NAME);
 		}
 
 		Hall savedHall = hallRepository.save(createDto.toEntity());
@@ -68,7 +69,7 @@ public class HallService {
 			// 이미지 저장
 			publicUrls = s3Service.uploadImages(createDto.getImages(), ImageFormat.HALL, savedHall.getId());
 		} catch (SdkClientException | IOException e) {
-			throw new ImageException(ImageErrorCode.FILE_UPLOAD_FAILED);
+			throw new ImageException(FILE_UPLOAD_FAILED);
 		}
 
 		// 성능 낮음
@@ -136,7 +137,7 @@ public class HallService {
 			= hallRepository.findHallByIdAndIsOpen(hallId, true);
 
 		if (findHallByOpenStatus == null) {
-			throw new HallException(HallErrorCode.NOT_FOUND_HALL);
+			throw new HallException(NOT_FOUND_HALL);
 		}
 
 		hallRepository.updateHall(findHallByOpenStatus.getId(), updateDto);
@@ -167,7 +168,7 @@ public class HallService {
 			// 이미지 삭제
 			s3Service.deleteImages(imageUrls);
 		} catch (SdkClientException e) {
-			throw new ImageException(ImageErrorCode.FILE_DELETE_FAILED);
+			throw new ImageException(FILE_DELETE_FAILED);
 		}
 
 		return HallResponse.DeleteDto.message();
