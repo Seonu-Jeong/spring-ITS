@@ -52,8 +52,8 @@ public class ReservationController {
 		@RequestParam LocalDate date,
 		@AuthenticationPrincipal UserDetail userDetail) {
 
-		ReservationResponse.SelectDto selectDto = reservationService.selectSeat(concertId, seatId, date,
-			userDetail.getId());
+		ReservationResponse.SelectDto selectDto
+			= reservationService.selectSeat(concertId, seatId, date, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(selectDto);
 	}
@@ -71,8 +71,8 @@ public class ReservationController {
 		@PathVariable Long reservationId,
 		@AuthenticationPrincipal UserDetail userDetail) {
 
-		ReservationResponse.CompleteDto completeDto = reservationService.completeReservation(reservationId,
-			userDetail.getId());
+		ReservationResponse.CompleteDto completeDto
+			= reservationService.completeReservation(reservationId, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.OK).body(completeDto);
 	}
@@ -82,7 +82,7 @@ public class ReservationController {
 	 *
 	 * @param reservationId {@link PathVariable} 예약 Id
 	 * @param userDetail {@link AuthenticationPrincipal} 유저 Id
-	 * @param cancelDto {@link RequestBody} 취소 Dto
+	 * @param cancelDto {@link RequestBody} 취소 DTO
 	 * {@link ReservationResponse.CancelDto}
 	 */
 	@PreAuthorize("hasAuthority('USER')")
@@ -92,8 +92,8 @@ public class ReservationController {
 		@AuthenticationPrincipal UserDetail userDetail,
 		@RequestBody ReservationRequest.CancelDto cancelDto) {
 
-		ReservationResponse.CancelDto responseDto = reservationService.cancelReservation(reservationId,
-			userDetail.getId(), cancelDto);
+		ReservationResponse.CancelDto responseDto
+			= reservationService.cancelReservation(reservationId, userDetail.getId(), cancelDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
@@ -117,8 +117,8 @@ public class ReservationController {
 		@RequestParam(required = false) String singer,
 		@PageableDefault(value = 5) Pageable pageable) {
 
-		List<ReservationResponse.ReservationListDto> reservations = reservationService.getReservations(startDate,
-			endDate, concertTitle, singer, pageable);
+		List<ReservationResponse.ReservationListDto> reservations
+			= reservationService.getReservations(startDate, endDate, concertTitle, singer, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(reservations);
 	}

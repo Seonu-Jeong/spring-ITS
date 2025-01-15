@@ -67,8 +67,8 @@ public class ReservationService {
 			.orElseThrow(() -> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
 
 		// 예약 가능 여부 확인
-		Optional<Reservation> existingReservation = reservationRepository
-			.findReservationByConcertInfo(seat, concert, date, ReservationStatus.PENDING);
+		Optional<Reservation> existingReservation
+			= reservationRepository.findReservationByConcertInfo(seat, concert, date, ReservationStatus.PENDING);
 
 		if (existingReservation.isPresent()) {
 			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
@@ -125,7 +125,7 @@ public class ReservationService {
 	 *
 	 * @param reservationId 예약 아이디
 	 * @param requestedUserId 유저 아이디
-	 * @param cancelDto 취소 Dto
+	 * @param cancelDto 취소 DTO
 	 * @return {@link ReservationResponse.CancelDto}
 	 */
 	@Transactional(readOnly = true)
