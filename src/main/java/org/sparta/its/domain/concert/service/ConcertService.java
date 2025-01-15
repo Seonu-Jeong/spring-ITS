@@ -176,4 +176,17 @@ public class ConcertService {
 		return findStatisticsWithOrderByTitleAndStartAtAndEndAt.stream()
 			.map(ConcertResponse.StatisticsDto::toDto).toList();
 	}
+
+	/**
+	 * 콘서트 자리 조회
+	 * @param concertId 콘서트 고유 식별자
+	 * @param date 콘서트 날짜
+	 * @return {@link List<ConcertResponse.ConcertSeatDto>}
+	 */
+	public List<ConcertResponse.ConcertSeatDto> getConcertSeats(Long concertId, LocalDate date) {
+		Concert findConcert = concertRepository.findByIdOrThrow(concertId);
+		Long hallId = findConcert.getHall().getId();
+
+		return concertRepository.findSeatsWithReservationByHallIdAndConcertDate(hallId, date);
+	}
 }
