@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * create on 2025. 01. 09.
  * create by IntelliJ IDEA.
  *
- * 공연장 관련 Repository.
+ * 좌석 관련 Repository.
  *
  * @author TaeHyeon Kim
  */

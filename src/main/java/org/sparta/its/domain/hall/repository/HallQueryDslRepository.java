@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
  * create on 2025. 01. 10.
  * create by IntelliJ IDEA.
  *
- * 공연장 관련 Repository.
+ * 공연장 QueryDsl Interface.
  *
  * @author TaeHyeon Kim
  */

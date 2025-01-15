@@ -13,14 +13,14 @@ import lombok.Getter;
  * create on 2025. 01. 09.
  * create by IntelliJ IDEA.
  *
- * 공연장 관련 DTO.
+ * 공연장 관련 응답 DTO.
  *
  * @author TaeHyeon Kim
  */
 public class HallResponse {
 
-	@Builder
 	@Getter
+	@Builder
 	public static class CreatDto {
 		private final Long hallId;
 
@@ -46,8 +46,8 @@ public class HallResponse {
 		}
 	}
 
-	@Builder
 	@Getter
+	@Builder
 	public static class ReadDto {
 		private final Long hallId;
 
@@ -79,8 +79,8 @@ public class HallResponse {
 		}
 	}
 
-	@Builder
 	@Getter
+	@Builder
 	public static class UpdateDto {
 		private final Long hallId;
 
@@ -112,8 +112,8 @@ public class HallResponse {
 		}
 	}
 
-	@Builder
 	@Getter
+	@Builder
 	public static class DeleteDto {
 		private final String message;
 

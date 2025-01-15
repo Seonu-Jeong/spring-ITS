@@ -20,10 +20,10 @@ import org.sparta.its.global.s3.S3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonaws.SdkClientException;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -100,6 +100,7 @@ public class HallService {
 	 * @param pageable 페이징
 	 * @return  {@link HallResponse.ReadDto}
 	 */
+	@Transactional(readOnly = true)
 	public List<HallResponse.ReadDto> getHalls(String name, String location, Pageable pageable) {
 
 		Page<Hall> halls = hallRepository.findByNameAndLocation(name, location, pageable);

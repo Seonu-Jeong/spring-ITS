@@ -17,6 +17,14 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 좌석 Entity.
+ *
+ * @author TaeHyeon Kim
+ */
 @Getter
 @Entity(name = "seat")
 @NoArgsConstructor

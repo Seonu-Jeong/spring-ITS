@@ -18,6 +18,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 Entity.
+ *
+ * @author TaeHyeon Kim
+ */
 @Getter
 @Entity(name = "hall")
 @NoArgsConstructor

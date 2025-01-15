@@ -20,6 +20,14 @@ import com.amazonaws.SdkClientException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 13.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장이미지 관련 Service.
+ *
+ * @author TaeHyeon Kim
+ */
 @Service
 @RequiredArgsConstructor
 public class HallImageService {
@@ -30,20 +38,19 @@ public class HallImageService {
 
 	/**
 	 * 공연장 이미지 업데이트
+	 *
 	 * @param hallId 공연장 고유 식별자
 	 * @param hallImagesId 공연장 이미지 고유 식별자
 	 * @param updateImageDto 공연장 이미지 포맷과 이미지
-	 * @return {@link HallImageResponse.UpdateDto} dto 응답
+	 * @return {@link HallImageResponse.UpdateDto}
 	 */
 	@Transactional
 	public HallImageResponse.UpdateDto updateHallImage(Long hallId, Long hallImagesId,
 		HallImageRequest.UpdateImageDto updateImageDto) {
 
-		Hall findHall
-			= hallRepository.findByIdOrThrow(hallId);
+		Hall findHall = hallRepository.findByIdOrThrow(hallId);
 
-		HallImage findHallImage
-			= hallImageRepository.findByIdOrThrow(hallImagesId);
+		HallImage findHallImage = hallImageRepository.findByIdOrThrow(hallImagesId);
 
 		if (!findHallImage.getHall().getId().equals(findHall.getId())) {
 			throw new HallImageException(HallImageErrorCode.NOT_MATCHING);

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * create on 2025. 01. 09.
  * create by IntelliJ IDEA.
  *
- * 공연장 관련 Repository.
+ * 공연장 관련 JDBCRepository.
  *
  * @author TaeHyeon Kim
  */
