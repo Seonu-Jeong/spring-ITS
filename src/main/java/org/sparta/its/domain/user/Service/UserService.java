@@ -6,7 +6,6 @@ import org.sparta.its.domain.user.dto.AuthRequest;
 import org.sparta.its.domain.user.dto.AuthResponse;
 import org.sparta.its.domain.user.dto.UserRequest;
 import org.sparta.its.domain.user.dto.UserResponse;
-import org.sparta.its.domain.user.entity.Status;
 import org.sparta.its.domain.user.entity.User;
 import org.sparta.its.domain.user.repository.UserRepository;
 import org.sparta.its.global.exception.UserException;
@@ -103,15 +102,12 @@ public class UserService {
 	@Transactional
 	public UserResponse.DeleteDto deleteUser(UserRequest.DeleteDto deleteDto, Long id) {
 
-		User savedUser = userRepository.findByIdOrThrow(id);
+		User savedUser = userRepository.findUserByIdAndStatusIsActivatedOrThrow(id);
 
 		// 요청 비밀번호와 DB 비밀번호 비교
-		if (!passwordEncoder.matches(deleteDto.getPassword(), savedUser.getPassword()))
+		if (!passwordEncoder.matches(deleteDto.getPassword(), savedUser.getPassword())) {
 			throw new UserException(PASSWORD_NOT_MATCH);
-
-		// 이미 회원탈퇴한 유저인지 검즘
-		if (Status.DEACTIVATED.equals(savedUser.getStatus()))
-			throw new UserException(ALREADY_DEACTIVATED);
+		}
 
 		// 유저 비활성화
 		savedUser.deActivate();
