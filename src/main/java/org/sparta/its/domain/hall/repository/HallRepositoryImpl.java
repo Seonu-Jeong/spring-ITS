@@ -38,7 +38,7 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 	}
 
 	/**
-	 *
+	 * 공연장 이름, 공연장 위치를 이용한 공연장 조회
 	 *
 	 * @param name 공연장 이름
 	 * @param location 공연장 위치
@@ -63,6 +63,7 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 
 	/**
 	 * 공연장 수정하는 동적 쿼리
+	 *
 	 * @param hallId 공연장 고유 식별자
 	 * @param updateDto 이름, 위치
 	 */
