@@ -15,16 +15,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 12.
+ * create by IntelliJ IDEA.
+ *
+ * 유저 관련 Service.
+ *
+ * @author Seonu-Jeong
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
 	private final PasswordEncoder passwordEncoder;
-
 	private final UserRepository userRepository;
 
+	/**
+	 * 회원가입
+	 *
+	 * @param signUpDto {@link AuthRequest.SignUpDto} 유저 요청 DTO
+	 * @return {@link AuthResponse.SignUpDto}
+	 */
+	@Transactional
 	public AuthResponse.SignUpDto signUp(AuthRequest.SignUpDto signUpDto) {
 
+		// 이메일 중복 여부 확인
 		if (userRepository.existsUserByEmail(signUpDto.getEmail())) {
 			throw new UserException(ALREADY_EXIST);
 		}
@@ -33,33 +48,33 @@ public class UserService {
 
 		User savedUser = userRepository.save(toSaveUser);
 
-		return new AuthResponse.SignUpDto(
-			savedUser.getId(),
-			savedUser.getEmail(),
-			savedUser.getName(),
-			savedUser.getRole().toString());
+		return AuthResponse.SignUpDto.toDto(savedUser);
 	}
 
+	/**
+	 * 로그인
+	 *
+	 * @param loginDto {@link AuthRequest.LoginDto} 유저 로그인 요청 DTO
+	 * @return {@link AuthResponse.LoginDto}
+	 */
+	@Transactional(readOnly = true)
 	public AuthResponse.LoginDto login(AuthRequest.LoginDto loginDto) {
 
 		User user = userRepository.findUserByEmailAndStatusIsActivatedOrThrow(loginDto.getEmail());
 
+		// 비밀번호 검증
 		if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword()))
 			throw new UserException(INVALID_LOGIN);
 
-		return new AuthResponse.LoginDto(
-			user.getId(),
-			user.getName(),
-			user.getEmail(),
-			user.getRole()
-		);
+		return AuthResponse.LoginDto.toDto(user);
 	}
 
 	/**
-	 * 유저 수정 함수
-	 * @param updateDto {@link UserRequest.UpdateDto} 유저 수정 DTO 요청
+	 * 회원수정
+	 *
+	 * @param updateDto {@link UserRequest.UpdateDto} 유저 수정 요청 DTO
 	 * @param id 유저 식별자
-	 * @return {@link UserResponse.UpdateDto} 유저 수정 DTO 응답
+	 * @return {@link UserResponse.UpdateDto}
 	 */
 	@Transactional
 	public UserResponse.UpdateDto updateUser(UserRequest.UpdateDto updateDto, Long id) {
@@ -94,10 +109,11 @@ public class UserService {
 	}
 
 	/**
-	 * 회원 탈퇴 함수
-	 * @param deleteDto {@link UserRequest.DeleteDto} 유저 삭제 DTO 요청
+	 * 회원탈퇴
+	 *
+	 * @param deleteDto {@link UserRequest.DeleteDto} 유저 삭제 요청 DTO
 	 * @param id 유저 식별자
-	 * @return {@link UserResponse.DeleteDto} 유저 삭제 DTO 응답
+	 * @return {@link UserResponse.DeleteDto}
 	 */
 	@Transactional
 	public UserResponse.DeleteDto deleteUser(UserRequest.DeleteDto deleteDto, Long id) {

@@ -4,6 +4,14 @@ import static org.sparta.its.global.exception.errorcode.UserErrorCode.*;
 
 import org.sparta.its.global.exception.UserException;
 
+/**
+ * create on 2025. 01. 07.
+ * create by IntelliJ IDEA.
+ *
+ * 유저 역할 관련 Enum.
+ *
+ * @author Seonu-Jeong
+ */
 public enum Role {
 	ADMIN, USER;
 
