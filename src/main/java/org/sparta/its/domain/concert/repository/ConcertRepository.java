@@ -1,7 +1,9 @@
 package org.sparta.its.domain.concert.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.global.exception.ConcertException;
 import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
@@ -30,9 +32,22 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
 		@Param("today") LocalDate today,
 		Pageable pageable);
 
+	@Query("""
+		SELECT new org.sparta.its.domain.concert.dto.ConcertResponse$ConcertSeatDto(s.id, s.seatNumber, r.status)
+			FROM seat s
+			LEFT JOIN reservation r
+			ON s.id = r.seat.id AND r.concertDate = :date
+			WHERE s.hall.id = :hallId
+		""")
+	List<ConcertResponse.ConcertSeatDto> findSeatsWithReservationByHallIdAndConcertDate(
+		@Param("hallId") Long hallId,
+		@Param("date") LocalDate date
+	);
+
 	// Default 메소드
 	default Concert findByIdOrThrow(Long concertId) {
 		return findById(concertId).orElseThrow(() ->
 			new ConcertException(ConcertErrorCode.NOT_FOUND));
 	}
+
 }

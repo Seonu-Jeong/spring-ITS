@@ -166,4 +166,20 @@ public class ConcertResponse {
 				.build();
 		}
 	}
+
+	@Getter
+	public static class ConcertSeatDto {
+
+		private final Long seatId;
+
+		private final Integer seatNumber;
+
+		private final String status;
+
+		public ConcertSeatDto(Long seatId, Integer seatNumber, ReservationStatus reservationStatus) {
+			this.seatId = seatId;
+			this.seatNumber = seatNumber;
+			this.status = reservationStatus == null ? "AVAILABLE" : reservationStatus.toString();
+		}
+	}
 }

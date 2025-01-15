@@ -120,4 +120,21 @@ public class ConcertController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
+
+	/**
+	 * 공연장 좌석 조화하는 API
+	 * @param concertId {@link PathVariable} 공연장 고유 식별자
+	 * @param date {@link RequestParam} 공연 날짜
+	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.ConcertSeatDto} 수정Dto 응답
+	 */
+	@GetMapping("/{concertId}/seats")
+	public ResponseEntity<List<ConcertResponse.ConcertSeatDto>> getConcertSeats(
+		@PathVariable Long concertId,
+		@RequestParam(required = false) LocalDate date) {
+
+		List<ConcertResponse.ConcertSeatDto> concertSeats
+			= concertService.getConcertSeats(concertId, date);
+
+		return ResponseEntity.status(HttpStatus.OK).body(concertSeats);
+	}
 }
