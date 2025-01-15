@@ -22,7 +22,6 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-
 	public CancelListRepositoryImpl(EntityManager entityManager) {
 		this.jpaQueryFactory = new JPAQueryFactory(entityManager);
 	}
@@ -32,8 +31,8 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 	 *
 	 * @param email 유저 이메일
 	 * @param title 콘서트 이름
-	 * @param orderBy 오름차순, 내림차순
-	 * @param pageable page = 1, 2, 3 ...번 페이지 번호, size = 페이지 마다 몇 개의 데이터
+	 * @param orderBy 정렬 방식
+	 * @param pageable 페이징
 	 * @return
 	 */
 	@Override
@@ -59,10 +58,10 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 				titleLike(title)
 			);
 		return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
-		}
+	}
 
 	private BooleanExpression correctEmail(String email) {
-		if(email == null || email.isEmpty()) {
+		if (email == null || email.isEmpty()) {
 			return null;
 		}
 		return cancelList.user.email.eq(email);

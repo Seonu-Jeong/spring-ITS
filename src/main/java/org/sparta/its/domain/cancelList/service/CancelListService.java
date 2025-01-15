@@ -12,6 +12,14 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 14.
+ * create by IntelliJ IDEA.
+ *
+ * 취소 리스트 Service.
+ *
+ * @author Jun Heo
+ */
 @Service
 @RequiredArgsConstructor
 public class CancelListService {
@@ -23,9 +31,9 @@ public class CancelListService {
 	 *
 	 * @param email 유저 이메일
 	 * @param title 콘서트 이름
-	 * @param orderBy 오름차순, 내림차순
+	 * @param orderBy 정렬 방식
 	 * @param pageable 페이징
-	 * @return {@link CancelListResponse.CancelListDtoRead} dto 응답
+	 * @return {@link CancelListResponse.CancelListDtoRead}
 	 */
 	@Transactional
 	public List<CancelListResponse.CancelListDtoRead> getCancelLists(
