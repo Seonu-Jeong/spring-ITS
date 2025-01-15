@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
- * create on 2025. 01. 15.
+ * create on 2025. 01. 08.
  * create by IntelliJ IDEA.
  *
  * 콘서트 관련 Repository.
@@ -55,5 +55,4 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
 		return findById(concertId).orElseThrow(() ->
 			new ConcertException(ConcertErrorCode.NOT_FOUND));
 	}
-
 }

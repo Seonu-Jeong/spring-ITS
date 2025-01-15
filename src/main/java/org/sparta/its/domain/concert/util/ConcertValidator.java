@@ -9,11 +9,10 @@ import org.sparta.its.global.exception.ConcertException;
 import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
 
 /**
- * create on 2025. 01. 15.
+ * create on 2025. 01. 13.
  * create by IntelliJ IDEA.
  *
- * 콘서트 시간 및 날짜 관련 예외 경우
- *
+ * 콘서트 시간 및 날짜 관련 예외
  * @author UTae Jang
  */
 public class ConcertValidator {

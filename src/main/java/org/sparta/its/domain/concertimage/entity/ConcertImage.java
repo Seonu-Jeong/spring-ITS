@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * create on 2025. 01. 15.
+ * create on 2025. 01. 13.
  * create by IntelliJ IDEA.
  *
  * 콘서트이미지 관련 Entity.

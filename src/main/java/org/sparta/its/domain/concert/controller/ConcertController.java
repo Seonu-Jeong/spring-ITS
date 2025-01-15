@@ -28,7 +28,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
- * create on 2025. 01. 15.
+ * create on 2025. 01. 08.
  * create by IntelliJ IDEA.
  *
  * 콘서트 관련 Controller.
@@ -45,7 +45,7 @@ public class ConcertController {
 	/**
 	 * 콘서트 등록 API
 	 *
-	 * @param createDto {@link ModelAttribute} 생성 요청 DTO
+	 * @param createDto 생성 요청 DTO
 	 * @return {@link ConcertResponse.CreateDto}
 	 */
 	@PreAuthorize(ROLE_ADMIN)
@@ -61,10 +61,10 @@ public class ConcertController {
 	/**
 	 * 콘서트 다건 조회 API
 	 *
-	 * @param singer {@link RequestParam} 가수명
-	 * @param concertTitle {@link RequestParam} 콘서트명
-	 * @param order {@link RequestParam} 정릴 방식
-	 * @param pageable {@link PageableDefault} 페이징
+	 * @param singer 가수명
+	 * @param concertTitle 콘서트명
+	 * @param order 정릴 방식
+	 * @param pageable 페이징
 	 * @return {@link ConcertResponse.ReadDto}
 	 */
 	@GetMapping
@@ -82,7 +82,7 @@ public class ConcertController {
 	/**
 	 * 콘서트 상세 조회 API
 	 *
-	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
+	 * @param concertId 콘서트 고유 식별자
 	 * @return {@link ConcertResponse.ReadDto}
 	 * */
 	@GetMapping("/{concertId}")
@@ -97,8 +97,8 @@ public class ConcertController {
 	/**
 	 * 콘서트 정보 수정 API
 	 *
-	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
-	 * @param updateDto {@link RequestBody} 수정 요청 DTO
+	 * @param concertId 콘서트 고유 식별자
+	 * @param updateDto 수정 요청 DTO
 	 * @return {@link ConcertResponse.UpdateDto}
 	 */
 	@PreAuthorize(ROLE_ADMIN)
@@ -115,11 +115,11 @@ public class ConcertController {
 	/**
 	 * 콘서트 등록 현황 조회 API
 	 *
-	 * @param title {@link RequestParam} 콘서트명
-	 * @param startAt {@link RequestParam}  콘서트 시작 날짜
-	 * @param endAt {@link RequestParam} 콘서트 종료 날짜
-	 * @param order {@link RequestParam} 정렬 방식
-	 * @param pageable {@link PageableDefault} 페이징
+	 * @param title 콘서트명
+	 * @param startAt 콘서트 시작 날짜
+	 * @param endAt 콘서트 종료 날짜
+	 * @param order 정렬 방식
+	 * @param pageable 페이징
 	 * @return {@link ConcertResponse.StatisticsDto}
 	 */
 	@PreAuthorize(ROLE_ADMIN)
@@ -140,8 +140,8 @@ public class ConcertController {
 	/**
 	 * 콘서트 자리 조회 API
 	 *
-	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
-	 * @param date {@link RequestParam} 콘서트 날짜
+	 * @param concertId  콘서트 고유 식별자
+	 * @param date 콘서트 날짜
 	 * @return {@link ConcertResponse.ConcertSeatDto}
 	 */
 	@PreAuthorize(ROLE_USER)

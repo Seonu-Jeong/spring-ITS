@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * create on 2025. 01. 15.
+ * create on 2025. 01. 07.
  * create by IntelliJ IDEA.
  *
  * 콘서트 관련 Entity.
@@ -84,7 +84,7 @@ public class Concert {
 		LocalTime runningStartTime,
 		LocalTime runningEndTime,
 		Integer price) {
-		
+
 		this.hall = hall;
 		this.title = title;
 		this.singer = singer;

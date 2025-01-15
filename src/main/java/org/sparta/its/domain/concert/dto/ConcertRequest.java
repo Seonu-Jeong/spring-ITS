@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * create on 2025. 01. 15.
+ * create on 2025. 01. 09.
  * create by IntelliJ IDEA.
  *
  * 콘서트 관련 RequestDto.

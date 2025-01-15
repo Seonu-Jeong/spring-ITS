@@ -1,5 +1,7 @@
 package org.sparta.its.domain.concertimage.controller;
 
+import static org.sparta.its.global.constant.GlobalConstant.*;
+
 import org.sparta.its.domain.concertimage.dto.ConcertImageRequest;
 import org.sparta.its.domain.concertimage.dto.ConcertImageResponse;
 import org.sparta.its.domain.concertimage.service.ConcertImageService;
@@ -16,7 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
- * create on 2025. 01. 15.
+ * create on 2025. 01. 13.
  * create by IntelliJ IDEA.
  *
  * 콘서트이미지 관련 Controller.
@@ -33,12 +35,12 @@ public class ConcertImageController {
 	/**
 	 * 콘서트 이미지 단건 수정
 	 *
-	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
-	 * @param concertImageId {@link PathVariable} 콘서트 이미지 고유 식별자
-	 * @param updateDto {@link ModelAttribute} 수정 요청 Dto
+	 * @param concertId 콘서트 고유 식별자
+	 * @param concertImageId 콘서트 이미지 고유 식별자
+	 * @param updateDto 수정 요청 Dto
 	 * @return {@link ConcertImageResponse.UpdateDto}
 	 */
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	@PatchMapping("/concertImages/{concertImageId}")
 	public ResponseEntity<ConcertImageResponse.UpdateDto> updateConcertImage(
 		@PathVariable Long concertId,
@@ -50,5 +52,4 @@ public class ConcertImageController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-
 }
