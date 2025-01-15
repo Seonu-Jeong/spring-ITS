@@ -6,6 +6,7 @@ import org.sparta.its.domain.user.dto.AuthRequest;
 import org.sparta.its.domain.user.dto.AuthResponse;
 import org.sparta.its.domain.user.dto.UserRequest;
 import org.sparta.its.domain.user.dto.UserResponse;
+import org.sparta.its.domain.user.entity.Status;
 import org.sparta.its.domain.user.entity.User;
 import org.sparta.its.domain.user.repository.UserRepository;
 import org.sparta.its.global.exception.UserException;
@@ -98,8 +99,11 @@ public class UserService {
 
 		User savedUser = userRepository.findByIdOrThrow(id);
 
-		if (!passwordEncoder.matches(savedUser.getPassword(), deleteDto.getPassword()))
+		if (!passwordEncoder.matches(deleteDto.getPassword(), savedUser.getPassword()))
 			throw new UserException(PASSWORD_NOT_MATCH);
+
+		if (Status.DEACTIVATED.equals(savedUser.getStatus()))
+			throw new UserException(ALREADY_DEACTIVATED);
 
 		savedUser.deActivate();
 

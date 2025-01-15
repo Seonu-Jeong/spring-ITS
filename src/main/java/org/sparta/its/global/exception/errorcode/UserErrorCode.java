@@ -18,6 +18,8 @@ public enum UserErrorCode {
 
 	PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "비밀번호가 불일치합니다"),
 
+	ALREADY_DEACTIVATED(HttpStatus.BAD_REQUEST, "이미 회원탈퇴된 계정입니다."),
+
 	// 401 UNAUTHORIZED
 	UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "인증에 실패했습니다."),
 

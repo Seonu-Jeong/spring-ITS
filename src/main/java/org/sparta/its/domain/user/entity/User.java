@@ -67,4 +67,8 @@ public class User extends BaseEntity {
 		this.role = role;
 	}
 
+	public void deActivate() {
+		this.status = Status.DEACTIVATED;
+	}
+
 }
