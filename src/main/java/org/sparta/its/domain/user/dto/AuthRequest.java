@@ -10,6 +10,14 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 인증 관련 요청 DTO.
+ *
+ * @author Seonu-Jeong
+ */
 public class AuthRequest {
 
 	@Getter
@@ -45,6 +53,7 @@ public class AuthRequest {
 	}
 
 	@Getter
+	@RequiredArgsConstructor
 	public static class LoginDto {
 
 		@NotBlank(message = "이메일을 입력해주세요")

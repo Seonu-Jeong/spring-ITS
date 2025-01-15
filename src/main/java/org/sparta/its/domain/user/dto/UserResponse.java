@@ -5,6 +5,14 @@ import org.sparta.its.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * create on 2025. 01. 12.
+ * create by IntelliJ IDEA.
+ *
+ * 유저 관련 응답 DTO.
+ *
+ * @author Seonu-Jeong
+ */
 public class UserResponse {
 
 	@Getter
@@ -20,6 +28,7 @@ public class UserResponse {
 		private final String phoneNumber;
 
 		public static UpdateDto toDto(User user) {
+			
 			return UpdateDto.builder()
 				.id(user.getId())
 				.email(user.getEmail())
@@ -36,6 +45,7 @@ public class UserResponse {
 		private final String message;
 
 		public static DeleteDto toDto(String message) {
+
 			return DeleteDto.builder().message(message).build();
 		}
 	}
