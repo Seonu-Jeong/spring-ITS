@@ -71,7 +71,7 @@ public class ConcertController {
 	public ResponseEntity<List<ConcertResponse.ReadDto>> getConcerts(
 		@RequestParam(required = false) String singer,
 		@RequestParam(required = false) String concertTitle,
-		@RequestParam(defaultValue = "DESC") String order,
+		@RequestParam(defaultValue = ORDER_DESC) String order,
 		@PageableDefault Pageable pageable) {
 
 		List<ConcertResponse.ReadDto> allConcertDto = concertService.getConcerts(singer, concertTitle, order, pageable);
@@ -128,7 +128,7 @@ public class ConcertController {
 		@RequestParam(required = false) String title,
 		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startAt,
 		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endAt,
-		@RequestParam(defaultValue = "DESC") String order,
+		@RequestParam(defaultValue = ORDER_DESC) String order,
 		@PageableDefault Pageable pageable) {
 
 		List<ConcertResponse.StatisticsDto> response
