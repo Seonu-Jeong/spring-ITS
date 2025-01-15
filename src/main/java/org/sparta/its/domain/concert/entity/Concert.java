@@ -23,6 +23,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트 관련 Entity.
+ *
+ * @author UTae Jang
+ */
 @Getter
 @Entity(name = "concert")
 @NoArgsConstructor
@@ -67,8 +75,16 @@ public class Concert {
 	private Integer price;
 
 	@Builder
-	public Concert(Hall hall, String title, String singer, LocalDate startAt, LocalDate endAt,
-		LocalTime runningStartTime, LocalTime runningEndTime, Integer price) {
+	public Concert(
+		Hall hall,
+		String title,
+		String singer,
+		LocalDate startAt,
+		LocalDate endAt,
+		LocalTime runningStartTime,
+		LocalTime runningEndTime,
+		Integer price) {
+		
 		this.hall = hall;
 		this.title = title;
 		this.singer = singer;

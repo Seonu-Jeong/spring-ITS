@@ -20,6 +20,14 @@ import com.amazonaws.SdkClientException;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트이미지 관련 Service.
+ *
+ * @author UTae Jang
+ */
 @Service
 @RequiredArgsConstructor
 public class ConcertImageService {
@@ -30,13 +38,16 @@ public class ConcertImageService {
 
 	/**
 	 * 콘서트 이미지 단건 수정
+	 *
 	 * @param concertId 콘서트 고유 식별자
 	 * @param concertImageId 콘서트 이미지 고유 식별자
-	 * @param updateDto 요청 Dto
-	 * @return {@link ConcertImageResponse.UpdateDto} 응답 Dto
+	 * @param updateDto 수정 요청 Dto
+	 * @return {@link ConcertImageResponse.UpdateDto}
 	 */
 	@Transactional
-	public ConcertImageResponse.UpdateDto updatedConcertImage(Long concertId, Long concertImageId,
+	public ConcertImageResponse.UpdateDto updatedConcertImage(
+		Long concertId,
+		Long concertImageId,
 		ConcertImageRequest.UpdateDto updateDto) {
 		Concert findConcert = concertRepository.findByIdOrThrow(concertId);
 		ConcertImage findConcertImage = concertImageRepository.findByIdOrThrow(concertImageId);

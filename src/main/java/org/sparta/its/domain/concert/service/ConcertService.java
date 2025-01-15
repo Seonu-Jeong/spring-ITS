@@ -1,5 +1,7 @@
 package org.sparta.its.domain.concert.service;
 
+import static org.sparta.its.global.constant.GlobalConstant.*;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +32,14 @@ import com.amazonaws.SdkClientException;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트 관련 Service.
+ *
+ * @author UTae Jang
+ */
 @Service
 @RequiredArgsConstructor
 public class ConcertService {
@@ -40,9 +50,10 @@ public class ConcertService {
 	private final S3Service s3Service;
 
 	/**
-	 * 콘서트 등록 및 콘서트 이미지 생성
-	 * @param createDto 요청 값
-	 * @return {@link ConcertResponse.CreateDto} 반환 값
+	 * 콘서트 등록
+	 *
+	 * @param createDto 생성 요청 DTO
+	 * @return {@link ConcertResponse.CreateDto}
 	 */
 	@Transactional
 	public ConcertResponse.CreateDto createConcert(ConcertRequest.CreateDto createDto) {
@@ -77,37 +88,39 @@ public class ConcertService {
 	}
 
 	/**
-	 * 콘서트 가수명 및 콘서트명으로 다건 조회
-	 * @param singer 가수명 검색 조건
-	 * @param title  콘서트명 검색 조건
-	 * @param order {@link Sort} 오름차순과 내림차순 결정
-	 * @param pageable {@link Pageable} 페이지 번호와 사이즈 결정
-	 * @return {@link ConcertResponse.ReadDto}  응답 Dto
+	 * 콘서트 다건 조회
+	 *
+	 * @param singer 가수명
+	 * @param title  콘서트명
+	 * @param order 정렬 방식
+	 * @param pageable 페이징
+	 * @return {@link ConcertResponse.ReadDto}
 	 */
 	@Transactional(readOnly = true)
 	public List<ConcertResponse.ReadDto> getConcerts(String singer, String title, String order, Pageable pageable) {
 		// 정렬 변수 설정
 		Sort sort;
 
-		switch (order) {
-			case "DESC" -> sort = Sort.by(Sort.Order.desc("startAt"));
-			case "ASC" -> sort = Sort.by(Sort.Order.asc("startAt"));
+		switch (order.toUpperCase()) {
+			case ORDER_DESC -> sort = Sort.by(Sort.Order.desc(ORDER_START_AT));
+			case ORDER_ASC -> sort = Sort.by(Sort.Order.asc(ORDER_START_AT));
 			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
 		}
 
 		LocalDate today = LocalDate.now();
-		Pageable SortByStartAt = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+		Pageable sortByStartAt = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
-		Page<Concert> allConcerts = concertRepository.findAllWithOrderBySingerAndTitleAndToday(singer, title, today,
-			SortByStartAt);
+		Page<Concert> allConcerts
+			= concertRepository.findConcertsBySingerAndTitleAndTodayOrderByStartAt(singer, title, today, sortByStartAt);
 
 		return allConcerts.stream().map(ConcertResponse.ReadDto::toDto).toList();
 	}
 
 	/**
 	 * 콘서트 상세 조회
+	 *
 	 * @param concertId 콘서트 고유 식별자
-	 * @return {@link ConcertResponse.ReadDto} 형태로 응답
+	 * @return {@link ConcertResponse.ReadDto}
 	 */
 	@Transactional(readOnly = true)
 	public ConcertResponse.ReadDto getDetailConcert(Long concertId) {
@@ -122,9 +135,10 @@ public class ConcertService {
 
 	/**
 	 * 콘서트 정보 수정
+	 *
 	 * @param concertId 콘서트 고유 식별자
-	 * @param updateDto 수정 요청 Dto
-	 * @return {@link ConcertResponse.UpdateDto} 형태로 응답
+	 * @param updateDto 수정 요청 DTO
+	 * @return {@link ConcertResponse.UpdateDto}
 	 */
 	@Transactional
 	public ConcertResponse.UpdateDto updatedConcert(Long concertId, ConcertRequest.UpdateDto updateDto) {
@@ -138,14 +152,15 @@ public class ConcertService {
 		ConcertValidator.compareTimesUpdateDtoToConcert(updateDto, concert);
 
 		// 콘서트 시작 시간과 콘서트 종료 시간 비교 예외처리
-		ConcertValidator.startTimeIsAfterEndTimeWithUpdate(updateDto.getRunningStartTime(),
+		ConcertValidator.startTimeIsAfterEndTimeWithUpdate(
+			updateDto.getRunningStartTime(),
 			updateDto.getRunningEndTime());
 
 		// 콘서트 시작 날짜와 콘서트 죵료 날짜 비교 예외처리
 		ConcertValidator.startAtIsAfterEndAtWithUpdate(updateDto.getStartAt(), updateDto.getEndAt());
 
 		// 콘서트 시작 날짜 및 졸료 날짜 현재 시점 기준 예외처리
-		ConcertValidator.isBeforeToday(updateDto.getStartAt(), updateDto.getEndAt());
+		ConcertValidator.isBeforeTodayWithNullCheck(updateDto.getStartAt(), updateDto.getEndAt());
 
 		// Querydsl 로 수정된 concert 정보를 받아옴
 		concertRepository.updateConcert(concertId, updateDto);
@@ -157,32 +172,38 @@ public class ConcertService {
 
 	/**
 	 * 콘서트 등록 현황 조회
-	 * @param title 콘서트 제목
+	 *
+	 * @param title 콘서트명
 	 * @param startAt 콘서트 시작 날짜
 	 * @param endAt 콘서트 종료 날짜
 	 * @param order 정렬 방식
-	 * @param pageable 페이징 기본값 설정 및 정렬 방식 결정
+	 * @param pageable 페이징
 	 * @return {@link List<ConcertResponse.StatisticsDto>}
 	 */
-	public List<ConcertResponse.StatisticsDto> getStatistics(String title, LocalDate startAt,
-		LocalDate endAt, String order, Pageable pageable) {
-
+	@Transactional(readOnly = true)
+	public List<ConcertResponse.StatisticsDto> getStatistics(
+		String title,
+		LocalDate startAt,
+		LocalDate endAt,
+		String order,
+		Pageable pageable) {
 		// 콘서트 시작 날짜 및 종료 날짜 예외 처리
 		ConcertValidator.startAtIsAfterEndAt(startAt, endAt);
 
-		Page<Concert> findStatisticsWithOrderByTitleAndStartAtAndEndAt = concertRepository
-			.findStatisticsWithOrderByTitleAndStartAtAndEndAt(title, startAt, endAt, order, pageable);
+		Page<Concert> getStatistics
+			= concertRepository.findStatisticsWithOrderByConcertInfo(title, startAt, endAt, order, pageable);
 
-		return findStatisticsWithOrderByTitleAndStartAtAndEndAt.stream()
-			.map(ConcertResponse.StatisticsDto::toDto).toList();
+		return getStatistics.stream().map(ConcertResponse.StatisticsDto::toDto).toList();
 	}
 
 	/**
 	 * 콘서트 자리 조회
+	 *
 	 * @param concertId 콘서트 고유 식별자
 	 * @param date 콘서트 날짜
 	 * @return {@link List<ConcertResponse.ConcertSeatDto>}
 	 */
+	@Transactional(readOnly = true)
 	public List<ConcertResponse.ConcertSeatDto> getConcertSeats(Long concertId, LocalDate date) {
 		Concert findConcert = concertRepository.findByIdOrThrow(concertId);
 		Long hallId = findConcert.getHall().getId();
