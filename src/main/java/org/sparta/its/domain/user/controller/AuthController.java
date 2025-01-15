@@ -39,7 +39,7 @@ public class AuthController {
 	/**
 	 * 회원가입 API
 	 *
-	 * @param signUpDto {@link Valid} {@link RequestBody} 회원가입 DTO
+	 * @param signUpDto 회원가입 DTO
 	 * @return {@link AuthResponse.SignUpDto}
 	 */
 	@PostMapping("/signup")
@@ -54,7 +54,7 @@ public class AuthController {
 	/**
 	 * 로그인 API
 	 *
-	 * @param loginDto {@link RequestBody} 로그인 DTO
+	 * @param loginDto 로그인 DTO
 	 * @param res http 응답 객체
 	 * @return {@link AuthResponse.LoginDto}
 	 */
@@ -81,7 +81,7 @@ public class AuthController {
 	/**
 	 * 로그아웃 API
 	 *
-	 * @param userDetail {@link AuthenticationPrincipal} 유저 인증 객체
+	 * @param userDetail 유저 인증 객체
 	 * @param res http 응답 객체
 	 * @return {@link HttpServletResponse}
 	 */

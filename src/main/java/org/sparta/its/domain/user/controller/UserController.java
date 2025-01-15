@@ -34,8 +34,8 @@ public class UserController {
 	/**
 	 * 회원수정 API
 	 *
-	 * @param updateDto {@link Valid} {@link RequestBody} 유저 수정 DTO
-	 * @param userDetail {@link AuthenticationPrincipal} 유저 인증 객체
+	 * @param updateDto 유저 수정 DTO
+	 * @param userDetail 유저 인증 객체
 	 * @return {@link UserResponse.UpdateDto}
 	 */
 	@PatchMapping
@@ -51,8 +51,8 @@ public class UserController {
 	/**
 	 * 회원탈퇴 API
 	 *
-	 * @param deleteDto {@link Valid} {@link RequestBody} 유저 삭제 DTO
-	 * @param userDetail {@link AuthenticationPrincipal} 유저 인증 객체
+	 * @param deleteDto 유저 삭제 DTO
+	 * @param userDetail 유저 인증 객체
 	 * @return {@link UserResponse.DeleteDto}
 	 */
 	@DeleteMapping

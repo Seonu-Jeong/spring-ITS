@@ -57,10 +57,10 @@ public class AuthRequest {
 	public static class LoginDto {
 
 		@NotBlank(message = "이메일을 입력해주세요")
-		private String email;
+		private final String email;
 
 		@NotBlank(message = "비밀번호를 입력해주세요")
-		private String password;
+		private final String password;
 
 	}
 }

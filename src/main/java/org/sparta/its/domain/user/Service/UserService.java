@@ -33,7 +33,7 @@ public class UserService {
 	/**
 	 * 회원가입
 	 *
-	 * @param signUpDto {@link AuthRequest.SignUpDto} 유저 요청 DTO
+	 * @param signUpDto 유저 요청 DTO
 	 * @return {@link AuthResponse.SignUpDto}
 	 */
 	@Transactional
@@ -54,7 +54,7 @@ public class UserService {
 	/**
 	 * 로그인
 	 *
-	 * @param loginDto {@link AuthRequest.LoginDto} 유저 로그인 요청 DTO
+	 * @param loginDto 유저 로그인 요청 DTO
 	 * @return {@link AuthResponse.LoginDto}
 	 */
 	@Transactional(readOnly = true)
@@ -72,7 +72,7 @@ public class UserService {
 	/**
 	 * 회원수정
 	 *
-	 * @param updateDto {@link UserRequest.UpdateDto} 유저 수정 요청 DTO
+	 * @param updateDto 유저 수정 요청 DTO
 	 * @param id 유저 식별자
 	 * @return {@link UserResponse.UpdateDto}
 	 */
@@ -111,7 +111,7 @@ public class UserService {
 	/**
 	 * 회원탈퇴
 	 *
-	 * @param deleteDto {@link UserRequest.DeleteDto} 유저 삭제 요청 DTO
+	 * @param deleteDto 유저 삭제 요청 DTO
 	 * @param id 유저 식별자
 	 * @return {@link UserResponse.DeleteDto}
 	 */
