@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
  * create on 2025. 01. 13.
  * create by IntelliJ IDEA.
  *
- * 콘서트 관련 Repository.
+ * 콘서트 QueryDslRepository.
  *
  * @author UTae Jang
  */

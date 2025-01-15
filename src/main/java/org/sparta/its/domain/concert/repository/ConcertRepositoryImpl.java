@@ -29,7 +29,7 @@ import jakarta.persistence.EntityManager;
  * create on 2025. 01. 15.
  * create by IntelliJ IDEA.
  *
- * 콘서트 관련 Repository.
+ * 콘서트 관련 Repository 구현체.
  *
  * @author UTae Jang
  */
