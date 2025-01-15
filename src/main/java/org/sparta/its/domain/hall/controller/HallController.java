@@ -39,9 +39,9 @@ public class HallController {
 	private final HallService hallService;
 
 	/**
-	 * 공연장을 등록하는 API
-	 * @param createDto {@link ModelAttribute} 이름, 지역, 수용 인원, 이미지 필수 값
-	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.CreatDto} dto 응답
+	 * 공연장 등록 API
+	 * @param createDto {@link ModelAttribute} 공연장 등록 DTO
+	 * @return {@link HallResponse.CreatDto}
 	 */
 	@PostMapping
 	public ResponseEntity<HallResponse.CreatDto> createHall(
@@ -54,11 +54,11 @@ public class HallController {
 	}
 
 	/**
-	 * 모든 공연장 조회하는 API
+	 * 곤연장 정보 다건 조회 API
 	 * @param name {@link RequestParam} 공연장 이름
 	 * @param location {@link RequestParam} 공연장 위치
 	 * @param pageable {@link RequestParam} page, size 파라미터
-	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
+	 * @return {@link HallResponse.ReadDto}
 	 */
 	@GetMapping
 	public ResponseEntity<List<HallResponse.ReadDto>> getHalls(
@@ -72,9 +72,9 @@ public class HallController {
 	}
 
 	/**
-	 * 공연장 상세 조회하는 API
+	 * 공연장 정보 상세 조회 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
-	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
+	 * @return {@link HallResponse.ReadDto}
 	 */
 	@GetMapping("/{hallId}")
 	public ResponseEntity<HallResponse.ReadDto> getDetailHall(
@@ -86,10 +86,10 @@ public class HallController {
 	}
 
 	/**
-	 * 공연장 수정하는 API
+	 * 공연장 정보 수정 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
-	 * @param updateDto {@link RequestBody} 수정 정보 Dto 요청
-	 * @return {@link ResponseEntity}
+	 * @param updateDto {@link RequestBody} 수정 정보 Dto
+	 * @return {@link HallResponse.UpdateDto}
 	 */
 	@PatchMapping("/{hallId}")
 	public ResponseEntity<HallResponse.UpdateDto> updateHall(
@@ -103,9 +103,9 @@ public class HallController {
 	}
 
 	/**
-	 * 공연장 삭제하는 API
+	 * 공연장 삭제 API
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
-	 * @return {@link ResponseEntity} httpStatus 와 {@link HallResponse.ReadDto} 조회 dto 응답
+	 * @return {@link HallResponse.ReadDto}
 	 */
 	@DeleteMapping("/{hallId}")
 	public ResponseEntity<HallResponse.DeleteDto> deleteHall(
