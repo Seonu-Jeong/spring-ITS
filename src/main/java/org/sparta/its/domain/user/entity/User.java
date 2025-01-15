@@ -66,4 +66,5 @@ public class User extends BaseEntity {
 		this.phoneNumber = phoneNumber;
 		this.role = role;
 	}
+
 }
