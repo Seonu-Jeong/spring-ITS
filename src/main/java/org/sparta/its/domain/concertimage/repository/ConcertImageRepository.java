@@ -5,6 +5,14 @@ import org.sparta.its.global.exception.ConcertImageException;
 import org.sparta.its.global.exception.errorcode.ConcertImageErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트이미지 관련 Repository.
+ *
+ * @author UTae Jang
+ */
 public interface ConcertImageRepository extends JpaRepository<ConcertImage, Long> {
 
 	// 쿼리 메소드

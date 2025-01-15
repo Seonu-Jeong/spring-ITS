@@ -3,6 +3,7 @@ package org.sparta.its.domain.concert.repository;
 import static org.sparta.its.domain.concert.entity.QConcert.*;
 import static org.sparta.its.domain.hall.entity.QHall.*;
 import static org.sparta.its.domain.reservation.entity.QReservation.*;
+import static org.sparta.its.global.constant.GlobalConstant.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +25,14 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import jakarta.persistence.EntityManager;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트 관련 Repository.
+ *
+ * @author UTae Jang
+ */
 @Repository
 public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 
@@ -39,6 +48,7 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 
 	/**
 	 * 콘서트 정보 수정
+	 *
 	 * @param concertId 콘서트 고유 식별자
 	 * @param updateDto 수정 요청 Dto
 	 */
@@ -77,16 +87,22 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 
 	/**
 	 * 콘서트 등록 현황 조회
+	 *
 	 * @param title 콘서트 제목
 	 * @param startAt 콘서트 시작 시간
 	 * @param endAt 콘서트 종료 시간
-	 * @param order 정렬 기준
+	 * @param order 정렬 방식
 	 * @param pageable 페이지 설정
-	 * @return {@link PageableExecutionUtils} 페이지 생성 반환
+	 * @return {@link PageableExecutionUtils}
 	 */
 	@Override
-	public Page<Concert> findStatisticsWithOrderByTitleAndStartAtAndEndAt(String title, LocalDate startAt,
-		LocalDate endAt, String order, Pageable pageable) {
+	public Page<Concert> findStatisticsWithOrderByConcertInfo(
+		String title,
+		LocalDate startAt,
+		LocalDate endAt,
+		String order,
+		Pageable pageable) {
+
 		List<Concert> findConcert = jpaQueryFactory
 			.select(concert)
 			.from(concert)
@@ -135,11 +151,10 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 	}
 
 	private OrderSpecifier<LocalDate> decideOrderBy(String order) {
-		return switch (order) {
-			case "DESC" -> concert.startAt.desc();
-			case "ASC" -> concert.startAt.asc();
+		return switch (order.toUpperCase()) {
+			case ORDER_DESC -> concert.startAt.desc();
+			case ORDER_ASC -> concert.startAt.asc();
 			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
 		};
 	}
-
 }

@@ -7,6 +7,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트이미지 관련 RequestDto.
+ *
+ * @author UTae Jang
+ */
 public class ConcertImageRequest {
 
 	@Getter

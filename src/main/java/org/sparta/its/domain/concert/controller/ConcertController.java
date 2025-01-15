@@ -1,5 +1,7 @@
 package org.sparta.its.domain.concert.controller;
 
+import static org.sparta.its.global.constant.GlobalConstant.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트 관련 Controller.
+ *
+ * @author UTae Jang
+ */
 @RestController
 @RequestMapping("/concerts")
 @RequiredArgsConstructor
@@ -33,27 +43,29 @@ public class ConcertController {
 	private final ConcertService concertService;
 
 	/**
-	 * 콘서트 등록
-	 * @param createDto {@link ConcertResponse.CreateDto} {@link ModelAttribute} 생성 Dto 요청
-	 * @return {@link ResponseEntity} HttpStatus 상태값과 body 응답 {@link ConcertResponse.CreateDto} 조회Dto 응답
+	 * 콘서트 등록 API
+	 *
+	 * @param createDto {@link ModelAttribute} 생성 요청 DTO
+	 * @return {@link ConcertResponse.CreateDto}
 	 */
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	@PostMapping
 	public ResponseEntity<ConcertResponse.CreateDto> createConcert(
 		@Valid @ModelAttribute ConcertRequest.CreateDto createDto) {
 
 		ConcertResponse.CreateDto response = concertService.createConcert(createDto);
 
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	/**
-	 * 콘서트 가수명 및 콘서트명으로 다건 조회
-	 * @param singer {@link RequestParam} 가수명 검색 조건
-	 * @param concertTitle {@link RequestParam} 콘서트 검색 조건
-	 * @param order {@link RequestParam} 내림차순 or 오름차순 정렬
-	 * @param pageable {@link PageableDefault} pageable 인터페이스 size 및 page default 값 설정
-	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.ReadDto} 조회Dto 응답
+	 * 콘서트 다건 조회 API
+	 *
+	 * @param singer {@link RequestParam} 가수명
+	 * @param concertTitle {@link RequestParam} 콘서트명
+	 * @param order {@link RequestParam} 정릴 방식
+	 * @param pageable {@link PageableDefault} 페이징
+	 * @return {@link ConcertResponse.ReadDto}
 	 */
 	@GetMapping
 	public ResponseEntity<List<ConcertResponse.ReadDto>> getConcerts(
@@ -68,9 +80,10 @@ public class ConcertController {
 	}
 
 	/**
-	 * 콘서트 상세 조회
+	 * 콘서트 상세 조회 API
+	 *
 	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
-	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.ReadDto} 조회Dto 응답
+	 * @return {@link ConcertResponse.ReadDto}
 	 * */
 	@GetMapping("/{concertId}")
 	public ResponseEntity<ConcertResponse.ReadDto> getDetailConcert(
@@ -82,12 +95,13 @@ public class ConcertController {
 	}
 
 	/**
-	 * 콘서트 정보 수정
+	 * 콘서트 정보 수정 API
+	 *
 	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
-	 * @param updateDto {@link RequestBody} 수정 정보 Dto 요청
-	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.UpdateDto} 수정Dto 응답
+	 * @param updateDto {@link RequestBody} 수정 요청 DTO
+	 * @return {@link ConcertResponse.UpdateDto}
 	 */
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	@PatchMapping("/{concertId}")
 	public ResponseEntity<ConcertResponse.UpdateDto> updateConcert(
 		@PathVariable Long concertId,
@@ -99,15 +113,16 @@ public class ConcertController {
 	}
 
 	/**
-	 * 콘서트 등록 현황 조회
-	 * @param title {@link RequestParam} 콘서트 제목으로 검색
-	 * @param startAt {@link RequestParam}  콘서트 시작 날짜로 검색
-	 * @param endAt {@link RequestParam} 콘서트 종료 날짜로 검색
-	 * @param order {@link RequestParam} 콘서트 정렬 방식 default 내림차순
-	 * @param pageable {@link PageableDefault} 페이징 기본값 설정
-	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.StatisticsDto} 수정Dto 응답
+	 * 콘서트 등록 현황 조회 API
+	 *
+	 * @param title {@link RequestParam} 콘서트명
+	 * @param startAt {@link RequestParam}  콘서트 시작 날짜
+	 * @param endAt {@link RequestParam} 콘서트 종료 날짜
+	 * @param order {@link RequestParam} 정렬 방식
+	 * @param pageable {@link PageableDefault} 페이징
+	 * @return {@link ConcertResponse.StatisticsDto}
 	 */
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	@GetMapping("/statistics")
 	public ResponseEntity<List<ConcertResponse.StatisticsDto>> getStatistics(
 		@RequestParam(required = false) String title,
@@ -115,25 +130,27 @@ public class ConcertController {
 		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endAt,
 		@RequestParam(defaultValue = "DESC") String order,
 		@PageableDefault Pageable pageable) {
-		List<ConcertResponse.StatisticsDto> response = concertService.getStatistics(title, startAt, endAt,
-			order, pageable);
+
+		List<ConcertResponse.StatisticsDto> response
+			= concertService.getStatistics(title, startAt, endAt, order, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	/**
-	 * 공연장 좌석 조화하는 API
-	 * @param concertId {@link PathVariable} 공연장 고유 식별자
-	 * @param date {@link RequestParam} 공연 날짜
-	 * @return {@link ResponseEntity} HttpStatus 상태 값과 {@link ConcertResponse.ConcertSeatDto} 수정Dto 응답
+	 * 콘서트 자리 조회 API
+	 *
+	 * @param concertId {@link PathVariable} 콘서트 고유 식별자
+	 * @param date {@link RequestParam} 콘서트 날짜
+	 * @return {@link ConcertResponse.ConcertSeatDto}
 	 */
+	@PreAuthorize(ROLE_USER)
 	@GetMapping("/{concertId}/seats")
 	public ResponseEntity<List<ConcertResponse.ConcertSeatDto>> getConcertSeats(
 		@PathVariable Long concertId,
 		@RequestParam(required = false) LocalDate date) {
 
-		List<ConcertResponse.ConcertSeatDto> concertSeats
-			= concertService.getConcertSeats(concertId, date);
+		List<ConcertResponse.ConcertSeatDto> concertSeats = concertService.getConcertSeats(concertId, date);
 
 		return ResponseEntity.status(HttpStatus.OK).body(concertSeats);
 	}

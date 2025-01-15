@@ -11,6 +11,14 @@ import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트 관련 ResponseDto.
+ *
+ * @author UTae Jang
+ */
 public class ConcertResponse {
 
 	@Getter
