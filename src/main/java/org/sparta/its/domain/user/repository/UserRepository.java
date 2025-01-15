@@ -24,6 +24,14 @@ public interface UserRepository extends JpaRepository<User, Long>, UserQueryDslR
 		""")
 	Optional<User> findUserByEmailAndStatusIsActivated(@Param("email") String email);
 
+	@Query("""
+		SELECT u
+		FROM user u
+		WHERE u.id = :id
+		AND u.status = 'ACTIVATED'
+		""")
+	Optional<User> findUserByIdAndStatusIsActivated(@Param("id") Long id);
+
 	// Default 메소드
 	default User findUserByEmailAndStatusIsActivatedOrThrow(String email) {
 		return findUserByEmailAndStatusIsActivated(email).orElseThrow(() ->
@@ -32,5 +40,10 @@ public interface UserRepository extends JpaRepository<User, Long>, UserQueryDslR
 
 	default User findByIdOrThrow(Long id) {
 		return findById(id).orElseThrow(() -> new UserException(NO_EXIST_ID));
+	}
+
+	default User findUserByIdAndStatusIsActivatedOrThrow(Long id) {
+		return findUserByIdAndStatusIsActivated(id).orElseThrow(() ->
+			new UserException(NO_EXIST_ID));
 	}
 }

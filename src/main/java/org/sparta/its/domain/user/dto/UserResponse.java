@@ -28,4 +28,15 @@ public class UserResponse {
 				.build();
 		}
 	}
+
+	@Getter
+	@Builder
+	public static class DeleteDto {
+
+		private final String message;
+
+		public static DeleteDto toDto(String message) {
+			return DeleteDto.builder().message(message).build();
+		}
+	}
 }

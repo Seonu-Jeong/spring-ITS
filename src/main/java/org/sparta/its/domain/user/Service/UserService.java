@@ -92,4 +92,27 @@ public class UserService {
 
 		return UserResponse.UpdateDto.toDto(updatedUser);
 	}
+
+	/**
+	 * 회원 탈퇴 함수
+	 * @param deleteDto {@link UserRequest.DeleteDto} 유저 삭제 DTO 요청
+	 * @param id 유저 식별자
+	 * @return {@link UserResponse.DeleteDto} 유저 삭제 DTO 응답
+	 */
+	@Transactional
+	public UserResponse.DeleteDto deleteUser(UserRequest.DeleteDto deleteDto, Long id) {
+
+		User savedUser = userRepository.findUserByIdAndStatusIsActivatedOrThrow(id);
+
+		// 요청 비밀번호와 DB 비밀번호 비교
+		if (!passwordEncoder.matches(deleteDto.getPassword(), savedUser.getPassword())) {
+			throw new UserException(PASSWORD_NOT_MATCH);
+		}
+
+		// 유저 비활성화
+		savedUser.deActivate();
+
+		return UserResponse.DeleteDto.toDto("회원탈퇴 완료");
+	}
+
 }
