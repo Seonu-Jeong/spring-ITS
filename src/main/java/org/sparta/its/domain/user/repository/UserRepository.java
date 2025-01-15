@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long>, UserQueryDslRepository {
 
 	// 쿼리 메소드
 	Boolean existsUserByEmail(@Param("email") String email);
@@ -24,9 +24,26 @@ public interface UserRepository extends JpaRepository<User, Long> {
 		""")
 	Optional<User> findUserByEmailAndStatusIsActivated(@Param("email") String email);
 
+	@Query("""
+		SELECT u
+		FROM user u
+		WHERE u.id = :id
+		AND u.status = 'ACTIVATED'
+		""")
+	Optional<User> findUserByIdAndStatusIsActivated(@Param("id") Long id);
+
 	// Default 메소드
 	default User findUserByEmailAndStatusIsActivatedOrThrow(String email) {
 		return findUserByEmailAndStatusIsActivated(email).orElseThrow(() ->
 			new UserException(INVALID_LOGIN));
+	}
+
+	default User findByIdOrThrow(Long id) {
+		return findById(id).orElseThrow(() -> new UserException(NO_EXIST_ID));
+	}
+
+	default User findUserByIdAndStatusIsActivatedOrThrow(Long id) {
+		return findUserByIdAndStatusIsActivated(id).orElseThrow(() ->
+			new UserException(NO_EXIST_ID));
 	}
 }

@@ -66,4 +66,9 @@ public class User extends BaseEntity {
 		this.phoneNumber = phoneNumber;
 		this.role = role;
 	}
+
+	public void deActivate() {
+		this.status = Status.DEACTIVATED;
+	}
+
 }
