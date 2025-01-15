@@ -129,7 +129,9 @@ public class ReservationService {
 	 * @return {@link ReservationResponse.CancelDto}
 	 */
 	@Transactional(readOnly = true)
-	public ReservationResponse.CancelDto cancelReservation(Long reservationId, Long requestedUserId,
+	public ReservationResponse.CancelDto cancelReservation(
+		Long reservationId,
+		Long requestedUserId,
 		ReservationRequest.CancelDto cancelDto) {
 
 		// 예약 찾기
@@ -187,9 +189,8 @@ public class ReservationService {
 		String singer,
 		Pageable pageable) {
 
-		Page<Reservation> reservations
-			= reservationRepository.findReservationsByBetweenDateAndConcertInfo(
-			startAt, endAt, concertTitle, singer, pageable);
+		Page<Reservation> reservations = reservationRepository
+			.findReservationsByBetweenDateAndConcertInfo(startAt, endAt, concertTitle, singer, pageable);
 
 		return reservations.stream().map(ReservationResponse.ReservationListDto::toDto).toList();
 	}

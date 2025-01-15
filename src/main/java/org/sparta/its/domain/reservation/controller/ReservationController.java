@@ -44,7 +44,7 @@ public class ReservationController {
 	 * @param userDetail {@link AuthenticationPrincipal} 유저 Id
 	 * @return {@link ReservationResponse.SelectDto}
 	 */
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@PostMapping("/concerts/{concertId}/seats/{seatId}/select")
 	public ResponseEntity<ReservationResponse.SelectDto> selectSeat(
 		@PathVariable Long concertId,
@@ -65,7 +65,7 @@ public class ReservationController {
 	 * @param userDetail {@link AuthenticationPrincipal} 유저 Id
 	 * @return {@link ReservationResponse.CompleteDto}
 	 */
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@PostMapping("/reservations/{reservationId}")
 	public ResponseEntity<ReservationResponse.CompleteDto> completeReservation(
 		@PathVariable Long reservationId,
@@ -85,7 +85,7 @@ public class ReservationController {
 	 * @param cancelDto {@link RequestBody} 취소 DTO
 	 * {@link ReservationResponse.CancelDto}
 	 */
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@PostMapping("/reservations/{reservationId}/cancel")
 	public ResponseEntity<ReservationResponse.CancelDto> cancelReservation(
 		@PathVariable Long reservationId,
@@ -108,7 +108,7 @@ public class ReservationController {
 	 * @param pageable {@link RequestParam} 페이징
 	 * @return {@link ReservationResponse.ReservationListDto}
 	 */
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@GetMapping("/reservations")
 	public ResponseEntity<List<ReservationResponse.ReservationListDto>> getAllReservations(
 		@RequestParam(required = false) LocalDate startDate,
