@@ -10,6 +10,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 유저 관련 Repository.
+ *
+ * @author Seonu-Jeong
+ */
 public interface UserRepository extends JpaRepository<User, Long>, UserQueryDslRepository {
 
 	// 쿼리 메소드
