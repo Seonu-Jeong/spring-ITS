@@ -5,6 +5,14 @@ import org.sparta.its.global.exception.HallException;
 import org.sparta.its.global.exception.errorcode.HallErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 관련 Repository.
+ *
+ * @author TaeHyeon Kim
+ */
 public interface HallRepository extends JpaRepository<Hall, Long>, HallQueryDslRepository {
 
 	// 쿼리 메소드

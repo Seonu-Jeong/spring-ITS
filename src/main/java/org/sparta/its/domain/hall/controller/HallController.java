@@ -40,6 +40,7 @@ public class HallController {
 
 	/**
 	 * 공연장 등록 API
+	 *
 	 * @param createDto {@link ModelAttribute} 공연장 등록 DTO
 	 * @return {@link HallResponse.CreatDto}
 	 */
@@ -55,6 +56,7 @@ public class HallController {
 
 	/**
 	 * 곤연장 정보 다건 조회 API
+	 *
 	 * @param name {@link RequestParam} 공연장 이름
 	 * @param location {@link RequestParam} 공연장 위치
 	 * @param pageable {@link RequestParam} page, size 파라미터
@@ -73,6 +75,7 @@ public class HallController {
 
 	/**
 	 * 공연장 정보 상세 조회 API
+	 *
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @return {@link HallResponse.ReadDto}
 	 */
@@ -87,6 +90,7 @@ public class HallController {
 
 	/**
 	 * 공연장 정보 수정 API
+	 *
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @param updateDto {@link RequestBody} 수정 정보 Dto
 	 * @return {@link HallResponse.UpdateDto}
@@ -104,6 +108,7 @@ public class HallController {
 
 	/**
 	 * 공연장 삭제 API
+	 *
 	 * @param hallId {@link PathVariable} 공연장 고유 식별자
 	 * @return {@link HallResponse.ReadDto}
 	 */

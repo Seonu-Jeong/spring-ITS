@@ -9,6 +9,14 @@ import org.sparta.its.domain.hallImage.entity.HallImage;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 관련 DTO.
+ *
+ * @author TaeHyeon Kim
+ */
 public class HallResponse {
 
 	@Builder

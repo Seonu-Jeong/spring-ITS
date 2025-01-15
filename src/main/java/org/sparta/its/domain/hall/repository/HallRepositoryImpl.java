@@ -18,6 +18,14 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import jakarta.persistence.EntityManager;
 
+/**
+ * create on 2025. 01. 10.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 관련 Repository.
+ *
+ * @author TaeHyeon Kim
+ */
 @Repository
 public class HallRepositoryImpl implements HallQueryDslRepository {
 

@@ -26,6 +26,14 @@ import com.amazonaws.SdkClientException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 관련 Service.
+ *
+ * @author TaeHyeon Kim
+ */
 @Service
 @RequiredArgsConstructor
 public class HallService {
@@ -40,8 +48,9 @@ public class HallService {
 
 	/**
 	 * 공연장을 저장 + 공연장 이미지 S3 업로드 + 업로드 URL 저장
+	 *
 	 * @param createDto 제목, 위치, 수용인원, 이미지
-	 * @return {@link HallResponse.CreatDto} dto 응답
+	 * @return {@link HallResponse.CreatDto}
 	 */
 	@Transactional
 	public HallResponse.CreatDto creatHall(HallRequest.CreateDto createDto) {
@@ -57,9 +66,7 @@ public class HallService {
 		// TODO 좋지 않은 방법 예외 전환으로 생각해볼 것
 		try {
 			// 이미지 저장
-			publicUrls
-				= s3Service.uploadImages(
-				createDto.getImages(), ImageFormat.HALL, savedHall.getId());
+			publicUrls = s3Service.uploadImages(createDto.getImages(), ImageFormat.HALL, savedHall.getId());
 		} catch (SdkClientException | IOException e) {
 			throw new ImageException(ImageErrorCode.FILE_UPLOAD_FAILED);
 		}
@@ -87,24 +94,27 @@ public class HallService {
 
 	/**
 	 * 동적 쿼리(이름, 위치에 따른) + 페이징을 통한 공연장 조회
+	 *
 	 * @param name 공연장 이름
 	 * @param location 공연장 위치
 	 * @param pageable 페이징
-	 * @return  {@link HallResponse.ReadDto} dto 응답
+	 * @return  {@link HallResponse.ReadDto}
 	 */
 	public List<HallResponse.ReadDto> getHalls(String name, String location, Pageable pageable) {
-		Page<Hall> halls
-			= hallRepository.findByNameAndLocation(name, location, pageable);
+
+		Page<Hall> halls = hallRepository.findByNameAndLocation(name, location, pageable);
 
 		return halls.stream().map(HallResponse.ReadDto::toDto).toList();
 	}
 
 	/**
 	 * 공연장 세부 조회
+	 *
 	 * @param hallId 공연장 고유 식별자
 	 * @return {@link HallResponse.ReadDto} dto 응답
 	 */
 	public HallResponse.ReadDto getDetailHall(Long hallId) {
+
 		Hall findHall = hallRepository.findByIdOrThrow(hallId);
 
 		return HallResponse.ReadDto.toDto(findHall);
@@ -112,12 +122,14 @@ public class HallService {
 
 	/**
 	 * 공연장 수정
+	 *
 	 * @param hallId 공연장 고유 식별자
 	 * @param updateDto 이름, 위치
 	 * @return {@link HallResponse.ReadDto} dto 응답
 	 */
 	@Transactional
 	public HallResponse.UpdateDto updateHall(Long hallId, HallRequest.UpdateDto updateDto) {
+
 		// 공연장 isOpen 상태가 true 인 공연장을 찾음
 		Hall findHallByOpenStatus
 			= hallRepository.findHallByIdAndIsOpen(hallId, true);
@@ -134,10 +146,13 @@ public class HallService {
 
 	/**
 	 * 공연장 Soft Delete + 이미지 삭제 + 이미지 테이블 삭제 + s3 이미지 삭제
+	 *
 	 * @param hallId 공연장 고유 식별자
+	 * @return {@link HallResponse.DeleteDto}
 	 */
 	@Transactional
 	public HallResponse.DeleteDto deleteHall(Long hallId) {
+
 		Hall findHall = hallRepository.findByIdOrThrow(hallId);
 
 		// 삭제를 원하는 공연장에 저장된 이미지 urlList 을 받아옴
