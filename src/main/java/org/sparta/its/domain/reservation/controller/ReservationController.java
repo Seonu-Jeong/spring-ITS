@@ -39,9 +39,9 @@ public class ReservationController {
 	/**
 	 * 좌석 선택 API
 	 *
-	 * @param concertId {@link PathVariable} 콘서트 Id
-	 * @param seatId {@link PathVariable} 좌석 Id
-	 * @param userDetail {@link AuthenticationPrincipal} 유저 Id
+	 * @param concertId 콘서트 Id
+	 * @param seatId 좌석 Id
+	 * @param userDetail 유저 Id
 	 * @return {@link ReservationResponse.SelectDto}
 	 */
 	@PreAuthorize("hasAuthority('ROLE_USER')")
@@ -61,8 +61,8 @@ public class ReservationController {
 	/**
 	 * 예약 완료 처리 API
 	 *
-	 * @param reservationId {@link PathVariable} 예약 Id
-	 * @param userDetail {@link AuthenticationPrincipal} 유저 Id
+	 * @param reservationId 예약 Id
+	 * @param userDetail 유저 Id
 	 * @return {@link ReservationResponse.CompleteDto}
 	 */
 	@PreAuthorize("hasAuthority('ROLE_USER')")
@@ -80,9 +80,9 @@ public class ReservationController {
 	/**
 	 * 예약 취소 요청 API
 	 *
-	 * @param reservationId {@link PathVariable} 예약 Id
-	 * @param userDetail {@link AuthenticationPrincipal} 유저 Id
-	 * @param cancelDto {@link RequestBody} 취소 DTO
+	 * @param reservationId 예약 Id
+	 * @param userDetail 유저 Id
+	 * @param cancelDto 취소 DTO
 	 * {@link ReservationResponse.CancelDto}
 	 */
 	@PreAuthorize("hasAuthority('ROLE_USER')")
@@ -101,11 +101,11 @@ public class ReservationController {
 	/**
 	 * 예약 조회 API
 	 *
-	 * @param startDate {@link RequestParam} 공연 시작 시간
-	 * @param endDate {@link RequestParam} 공연 끝나는 시간
-	 * @param concertTitle {@link RequestParam} 공연 이름
-	 * @param singer {@link RequestParam} 가수 이름
-	 * @param pageable {@link RequestParam} 페이징
+	 * @param startDate 공연 시작 시간
+	 * @param endDate 공연 끝나는 시간
+	 * @param concertTitle 공연 이름
+	 * @param singer 가수 이름
+	 * @param pageable 페이징
 	 * @return {@link ReservationResponse.ReservationListDto}
 	 */
 	@PreAuthorize("hasAuthority('ROLE_USER')")
