@@ -74,9 +74,22 @@ public class UserService {
 		if (isChangePassword && !passwordEncoder.matches(updateDto.getOriginPassword(), savedUser.getPassword()))
 			throw new UserException(PASSWORD_NOT_MATCH);
 
-		// 유저 수정
-		savedUser.updateUser(updateDto, passwordEncoder);
+		// 비밀번호 인코딩
+		String encodedNewPassword = null;
 
-		return UserResponse.UpdateDto.toDto(savedUser);
+		if (isChangePassword)
+			encodedNewPassword = passwordEncoder.encode(updateDto.getNewPassword());
+
+		// 유저 수정
+		userRepository.updateUser(
+			id,
+			updateDto.getEmail(),
+			updateDto.getName(),
+			updateDto.getPhoneNumber(),
+			encodedNewPassword);
+
+		User updatedUser = userRepository.findByIdOrThrow(id);
+
+		return UserResponse.UpdateDto.toDto(updatedUser);
 	}
 }
