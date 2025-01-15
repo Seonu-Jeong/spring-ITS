@@ -15,6 +15,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트 관련 RequestDto.
+ *
+ * @author UTae Jang
+ */
 public class ConcertRequest {
 
 	@Getter

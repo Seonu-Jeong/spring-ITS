@@ -13,12 +13,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * create on 2025. 01. 08.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트 관련 Repository.
+ *
+ * @author UTae Jang
+ */
 public interface ConcertRepository extends JpaRepository<Concert, Long>, ConcertQueryDslRepository {
 
 	// 쿼리 메소드
 
 	// @Query 작성 메소드
-	//TODO : order 고민 Pageable 안에 정렬 정보로 내림차순 or 오름차순 결정
 	@Query("""
 		SELECT c
 			FROM concert c
@@ -26,7 +33,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
 			AND c.title LIKE %:title%
 			AND c.endAt >:today
 		""")
-	Page<Concert> findAllWithOrderBySingerAndTitleAndToday(
+	Page<Concert> findConcertsBySingerAndTitleAndTodayOrderByStartAt(
 		@Param("singer") String singer,
 		@Param("title") String title,
 		@Param("today") LocalDate today,
@@ -41,13 +48,11 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
 		""")
 	List<ConcertResponse.ConcertSeatDto> findSeatsWithReservationByHallIdAndConcertDate(
 		@Param("hallId") Long hallId,
-		@Param("date") LocalDate date
-	);
+		@Param("date") LocalDate date);
 
 	// Default 메소드
 	default Concert findByIdOrThrow(Long concertId) {
 		return findById(concertId).orElseThrow(() ->
 			new ConcertException(ConcertErrorCode.NOT_FOUND));
 	}
-
 }

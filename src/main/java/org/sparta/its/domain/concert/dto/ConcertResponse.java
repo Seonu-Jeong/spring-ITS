@@ -11,6 +11,14 @@ import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트 관련 ResponseDto.
+ *
+ * @author UTae Jang
+ */
 public class ConcertResponse {
 
 	@Getter
@@ -139,7 +147,7 @@ public class ConcertResponse {
 
 		private final String concertTitle;
 
-		private final Integer AllSeat;
+		private final Integer allSeat;
 
 		private final Integer reservationSeat;
 
@@ -151,7 +159,7 @@ public class ConcertResponse {
 			return StatisticsDto.builder()
 				.concertId(concert.getId())
 				.concertTitle(concert.getTitle())
-				.AllSeat(concert.getHall().getCapacity())
+				.allSeat(concert.getHall().getCapacity())
 				.reservationSeat(concert.getReservations()
 					.stream()
 					.filter(reservation -> reservation.getStatus().equals(ReservationStatus.COMPLETED))
