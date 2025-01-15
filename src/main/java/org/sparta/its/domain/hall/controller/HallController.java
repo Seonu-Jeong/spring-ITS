@@ -23,6 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 19.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 관련 Controller.
+ *
+ * @author TaeHyeon Kim
+ */
 @RestController
 @RequestMapping("/halls")
 @RequiredArgsConstructor
