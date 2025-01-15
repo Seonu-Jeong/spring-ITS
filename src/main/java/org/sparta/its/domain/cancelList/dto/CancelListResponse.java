@@ -11,7 +11,7 @@ import lombok.Getter;
  * create on 2025. 01. 14.
  * create by IntelliJ IDEA.
  *
- * 취소 리스트 ResponseDto.
+ * 취소 리스트 응답 DTO.
  *
  * @author Jun Heo
  */

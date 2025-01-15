@@ -32,10 +32,10 @@ public class CancelListController {
 	/**
 	 * 취소 리스트 조회 API
 	 *
-	 * @param email {@link RequestParam} 유저 이메일
-	 * @param title {@link RequestParam} 콘서트 이름
-	 * @param orderBy {@link RequestParam} 정렬 방식
-	 * @param pageable {@link PageableDefault} 페이징
+	 * @param email 유저 이메일
+	 * @param title 콘서트 이름
+	 * @param orderBy 정렬 방식
+	 * @param pageable 페이징
 	 * @return {@link CancelListResponse.CancelListDtoRead}
 	 */
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")

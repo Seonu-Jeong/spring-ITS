@@ -8,8 +8,8 @@ import org.sparta.its.domain.cancelList.repository.CancelListRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -35,7 +35,7 @@ public class CancelListService {
 	 * @param pageable 페이징
 	 * @return {@link CancelListResponse.CancelListDtoRead}
 	 */
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<CancelListResponse.CancelListDtoRead> getCancelLists(
 		String email,
 		String title,
