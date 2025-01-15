@@ -13,6 +13,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 예약 관련 Repository.
+ *
+ * @author Jun Heo
+ */
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, ReservationQueryDslRepository {
 	// 쿼리 메소드
 
@@ -28,14 +36,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>,
 		AND r.concertDate = :concertDate
 		AND r.status = :status
 		""")
-	Optional<Reservation> findReservationForSeatAndConcert(
+	Optional<Reservation> findReservationByConcertInfo(
 		@Param("seatId") Seat seat,
 		@Param("concertId") Concert concert,
 		@Param("concertDate") LocalDate concertDate,
 		@Param("status") ReservationStatus status
 	);
+
 	// Default 메소드
-	default Reservation findByIdOrThrow(Long reservationId){
+	default Reservation findByIdOrThrow(Long reservationId) {
 		return findById(reservationId).orElseThrow(() ->
 			new ReservationException(ReservationErrorCode.NOT_FOUND_RESERVATION));
 	}

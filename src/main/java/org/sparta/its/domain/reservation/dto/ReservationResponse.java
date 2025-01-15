@@ -9,10 +9,19 @@ import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * create on 2025. 01. 10.
+ * create by IntelliJ IDEA.
+ *
+ * 예약 관련 ResponseDto.
+ *
+ * @author Jun Heo
+ */
 public class ReservationResponse {
 	@Getter
 	@Builder
 	public static class SelectDto {
+
 		private final Long reservationId;
 
 		private final Long seatId;

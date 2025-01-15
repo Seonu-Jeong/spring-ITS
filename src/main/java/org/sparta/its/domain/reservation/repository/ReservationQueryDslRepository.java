@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ReservationQueryDslRepository {
-	Page<Reservation> findAllReservations(
+	Page<Reservation> findReservationsByBetweenDateAndConcertInfo(
 		LocalDate startAt,
 		LocalDate endAt,
 		String concertTitle,

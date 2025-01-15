@@ -37,7 +37,7 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 	 * @return
 	 */
 	@Override
-	public Page<Reservation> findAllReservations(
+	public Page<Reservation> findReservationsByBetweenDateAndConcertInfo(
 		LocalDate startDate,
 		LocalDate endDate,
 		String concertTitle,

@@ -28,6 +28,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 25.
+ * create by IntelliJ IDEA.
+ *
+ * 예약 관련 Service.
+ *
+ * @author Jun Heo
+ */
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
@@ -43,10 +51,11 @@ public class ReservationService {
 	 *
 	 * @param concertId 콘서트 아이디
 	 * @param seatId 좌석 아이디
-	 * @return {@link ReservationResponse.SelectDto} 선택된 좌석 예약 정보
+	 * @return {@link ReservationResponse.SelectDto}
 	 */
 	@Transactional
 	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, LocalDate date, Long userId) {
+
 		// 콘서트 조회
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
 
@@ -59,7 +68,7 @@ public class ReservationService {
 
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation = reservationRepository
-			.findReservationForSeatAndConcert(seat, concert, date, ReservationStatus.PENDING);
+			.findReservationByConcertInfo(seat, concert, date, ReservationStatus.PENDING);
 
 		if (existingReservation.isPresent()) {
 			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
@@ -93,10 +102,11 @@ public class ReservationService {
 	 *
 	 * @param reservationId 예약 아이디
 	 * @param userId 유저 아이디
-	 * @return {@link ReservationResponse.CompleteDto} 선택된 좌석 예약 정보
+	 * @return {@link ReservationResponse.CompleteDto}
 	 */
 	@Transactional
 	public ReservationResponse.CompleteDto completeReservation(Long reservationId, Long userId) {
+
 		// 예약 조회
 		Reservation reservation = reservationRepository.findByIdOrThrow(reservationId);
 
@@ -115,10 +125,10 @@ public class ReservationService {
 	 *
 	 * @param reservationId 예약 아이디
 	 * @param requestedUserId 유저 아이디
-	 * @param cancelDto 콘서트 이름, 좌석 번호, 유저 정보
-	 * @return {@link ReservationResponse.CancelDto} 취소 완료된 정보
+	 * @param cancelDto 취소 Dto
+	 * @return {@link ReservationResponse.CancelDto}
 	 */
-	@Transactional
+	@Transactional(readOnly = true)
 	public ReservationResponse.CancelDto cancelReservation(Long reservationId, Long requestedUserId,
 		ReservationRequest.CancelDto cancelDto) {
 
@@ -167,7 +177,7 @@ public class ReservationService {
 	 * @param concertTitle 공연 이름
 	 * @param singer 가수 이름
 	 * @param pageable 페이징
-	 * @return {@link ReservationResponse.ReservationListDto} dto 응답
+	 * @return {@link ReservationResponse.ReservationListDto}
 	 */
 	@Transactional
 	public List<ReservationResponse.ReservationListDto> getReservations(
@@ -178,7 +188,8 @@ public class ReservationService {
 		Pageable pageable) {
 
 		Page<Reservation> reservations
-			= reservationRepository.findAllReservations(startAt, endAt, concertTitle, singer, pageable);
+			= reservationRepository.findReservationsByBetweenDateAndConcertInfo(
+			startAt, endAt, concertTitle, singer, pageable);
 
 		return reservations.stream().map(ReservationResponse.ReservationListDto::toDto).toList();
 	}
