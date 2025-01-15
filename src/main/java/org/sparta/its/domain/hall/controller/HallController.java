@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
- * create on 2025. 01. 19.
+ * create on 2025. 01. 09.
  * create by IntelliJ IDEA.
  *
  * 공연장 관련 Controller.
