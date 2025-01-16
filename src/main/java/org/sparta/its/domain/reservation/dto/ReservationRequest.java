@@ -24,7 +24,7 @@ public class ReservationRequest {
 	@RequiredArgsConstructor
 	public static class CancelDto {
 
-		@NotBlank(message = "취소사유는 필수 입니다")
+		@NotBlank(message = "취소 사유는 필수 입니다")
 		private final String rejectComment;
 
 		public CancelList toEntity(String concertTitle, Integer seatNum, LocalDate date, User user) {

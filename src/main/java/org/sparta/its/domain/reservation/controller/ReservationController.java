@@ -1,5 +1,7 @@
 package org.sparta.its.domain.reservation.controller;
 
+import static org.sparta.its.global.constant.GlobalConstant.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class ReservationController {
 	 * @param userDetail 유저 Id
 	 * @return {@link ReservationResponse.SelectDto}
 	 */
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize(ROLE_USER)
 	@PostMapping("/concerts/{concertId}/seats/{seatId}/select")
 	public ResponseEntity<ReservationResponse.SelectDto> selectSeat(
 		@PathVariable Long concertId,
@@ -65,7 +67,7 @@ public class ReservationController {
 	 * @param userDetail 유저 Id
 	 * @return {@link ReservationResponse.CompleteDto}
 	 */
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize(ROLE_USER)
 	@PostMapping("/reservations/{reservationId}")
 	public ResponseEntity<ReservationResponse.CompleteDto> completeReservation(
 		@PathVariable Long reservationId,
@@ -85,7 +87,7 @@ public class ReservationController {
 	 * @param cancelDto 취소 DTO
 	 * {@link ReservationResponse.CancelDto}
 	 */
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize(ROLE_USER)
 	@PostMapping("/reservations/{reservationId}/cancel")
 	public ResponseEntity<ReservationResponse.CancelDto> cancelReservation(
 		@PathVariable Long reservationId,
@@ -108,7 +110,7 @@ public class ReservationController {
 	 * @param pageable 페이징
 	 * @return {@link ReservationResponse.ReservationListDto}
 	 */
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize(ROLE_USER)
 	@GetMapping("/reservations")
 	public ResponseEntity<List<ReservationResponse.ReservationListDto>> getAllReservations(
 		@RequestParam(required = false) LocalDate startDate,

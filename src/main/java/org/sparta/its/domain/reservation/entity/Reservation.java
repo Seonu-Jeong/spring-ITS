@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
  * create on 2025. 01. 09.
  * create by IntelliJ IDEA.
  *
- * 예약 관련 Entity.
+ * 예약 Entity.
  *
  * @author Jun Heo
  */
@@ -81,7 +81,7 @@ public class Reservation extends BaseEntity {
 		this.status = ReservationStatus.COMPLETED;
 	}
 
-	public void cancleReservation() {
+	public void canclReservation() {
 		this.status = ReservationStatus.CANCEL_WAIT;
 	}
 
