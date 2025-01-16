@@ -25,6 +25,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 예약 Entity.
+ *
+ * @author Jun Heo
+ */
 @Getter
 @Entity(name = "reservation")
 @NoArgsConstructor
@@ -66,14 +74,14 @@ public class Reservation extends BaseEntity {
 	}
 
 	public void completeReservation() {
-		if(ReservationStatus.COMPLETED.equals(status)) {
+		if (ReservationStatus.COMPLETED.equals(status)) {
 			throw new ReservationException(ALREADY_BOOKED);
 		}
 
 		this.status = ReservationStatus.COMPLETED;
 	}
 
-	public void cancleReservation() {
+	public void cancelReservation() {
 		this.status = ReservationStatus.CANCEL_WAIT;
 	}
 

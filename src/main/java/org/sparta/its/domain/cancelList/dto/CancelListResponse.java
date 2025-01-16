@@ -7,10 +7,18 @@ import org.sparta.its.domain.cancelList.entity.CancelList;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * create on 2025. 01. 14.
+ * create by IntelliJ IDEA.
+ *
+ * 취소 리스트 응답 DTO.
+ *
+ * @author Jun Heo
+ */
 public class CancelListResponse {
 	@Getter
 	@Builder
-	public static class CancelListDtoRead{
+	public static class CancelListDtoRead {
 
 		private final Long userId;
 

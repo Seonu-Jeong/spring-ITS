@@ -1,5 +1,7 @@
 package org.sparta.its.domain.reservation.controller;
 
+import static org.sparta.its.global.constant.GlobalConstant.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,79 +24,93 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 10.
+ * create by IntelliJ IDEA.
+ *
+ * 예약 관련 Controller.
+ *
+ * @author Jun Heo
+ */
 @RestController
 @RequiredArgsConstructor
 public class ReservationController {
 
 	private final ReservationService reservationService;
+
 	/**
-	 * 좌석 선택
+	 * 좌석 선택 API
 	 *
-	 * @param concertId {@link PathVariable}콘서트 ID
-	 * @param seatId {@link PathVariable}좌석 ID
-	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
-	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.SelectDto} 선택 dto 응답
+	 * @param concertId 콘서트 고유 식별자
+	 * @param seatId 좌석 고유 식별자
+	 * @param userDetail 유저 고유 식별자
+	 * @return {@link ReservationResponse.SelectDto}
 	 */
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize(ROLE_USER)
 	@PostMapping("/concerts/{concertId}/seats/{seatId}/select")
 	public ResponseEntity<ReservationResponse.SelectDto> selectSeat(
 		@PathVariable Long concertId,
 		@PathVariable Long seatId,
 		@RequestParam LocalDate date,
 		@AuthenticationPrincipal UserDetail userDetail) {
-		ReservationResponse.SelectDto selectDto = reservationService.selectSeat(concertId, seatId, date, userDetail.getId());
+
+		ReservationResponse.SelectDto selectDto
+			= reservationService.selectSeat(concertId, seatId, date, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(selectDto);
 	}
 
 	/**
-	 * 예약 완료 처리
+	 * 예약 완료 처리 API
 	 *
-	 * @param reservationId {@link PathVariable}예약 ID
-	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
-	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.CompleteDto} 예약 완료 dto 응답
+	 * @param reservationId 예약 고유 식별자
+	 * @param userDetail 유저 고유 식별자
+	 * @return {@link ReservationResponse.CompleteDto}
 	 */
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize(ROLE_USER)
 	@PostMapping("/reservations/{reservationId}")
 	public ResponseEntity<ReservationResponse.CompleteDto> completeReservation(
 		@PathVariable Long reservationId,
 		@AuthenticationPrincipal UserDetail userDetail) {
-		ReservationResponse.CompleteDto completeDto = reservationService.completeReservation(reservationId, userDetail.getId());
+
+		ReservationResponse.CompleteDto completeDto
+			= reservationService.completeReservation(reservationId, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.OK).body(completeDto);
 	}
 
 	/**
-	 * 예약 취소 처리
+	 * 예약 취소 요청 API
 	 *
-	 * @param reservationId {@link PathVariable}예약 ID
-	 * @param userDetail {@link AuthenticationPrincipal}유저 ID
-	 * @param cancelDto {@link RequestBody} 취소 관련 정보
-	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.CancelDto} 삭제 dto 응답
+	 * @param reservationId 예약 고유 식별자
+	 * @param userDetail 유저 고유 식별자
+	 * @param cancelDto 취소 DTO
+	 * @return {@link ReservationResponse.CancelDto}
 	 */
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize(ROLE_USER)
 	@PostMapping("/reservations/{reservationId}/cancel")
 	public ResponseEntity<ReservationResponse.CancelDto> cancelReservation(
 		@PathVariable Long reservationId,
 		@AuthenticationPrincipal UserDetail userDetail,
 		@RequestBody ReservationRequest.CancelDto cancelDto) {
 
-		ReservationResponse.CancelDto responseDto = reservationService.cancelReservation(reservationId, userDetail.getId(), cancelDto);
+		ReservationResponse.CancelDto responseDto
+			= reservationService.cancelReservation(reservationId, userDetail.getId(), cancelDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
 	/**
-	 * 예약 조회 처리
+	 * 예약 조회 API
 	 *
-	 * @param startDate {@link RequestParam}공연 시작 시간
-	 * @param endDate {@link RequestParam}공연 끝나는 시간
-	 * @param concertTitle {@link RequestParam}공연 이름
-	 * @param singer {@link RequestParam}가수 이름
-	 * @param pageable {@link RequestParam}페이징
-	 * @return {@link ResponseEntity} httpStatus 와 {@link ReservationResponse.ReservationListDto} 조회 dto 응답
+	 * @param startDate 공연 시작 시간
+	 * @param endDate 공연 끝나는 시간
+	 * @param concertTitle 공연 이름
+	 * @param singer 가수 이름
+	 * @param pageable 페이징
+	 * @return {@link ReservationResponse.ReservationListDto}
 	 */
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize(ROLE_USER)
 	@GetMapping("/reservations")
 	public ResponseEntity<List<ReservationResponse.ReservationListDto>> getAllReservations(
 		@RequestParam(required = false) LocalDate startDate,
@@ -103,7 +119,8 @@ public class ReservationController {
 		@RequestParam(required = false) String singer,
 		@PageableDefault(value = 5) Pageable pageable) {
 
-		List<ReservationResponse.ReservationListDto> reservations = reservationService.getReservations(startDate, endDate, concertTitle, singer, pageable);
+		List<ReservationResponse.ReservationListDto> reservations
+			= reservationService.getReservations(startDate, endDate, concertTitle, singer, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(reservations);
 	}
