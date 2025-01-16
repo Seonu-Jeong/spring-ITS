@@ -55,7 +55,7 @@ public class HallController {
 	}
 
 	/**
-	 * 곤연장 정보 다건 조회 API
+	 * 공연장 정보 다건 조회 API
 	 *
 	 * @param name 공연장 이름
 	 * @param location 공연장 위치

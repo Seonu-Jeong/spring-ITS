@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
  */
 public class HallImageRequest {
 
-	@RequiredArgsConstructor
 	@Getter
+	@RequiredArgsConstructor
 	public static class UpdateImageDto {
 
 		@NotNull(message = "imageFormat 는 필수입니다.")
