@@ -157,7 +157,7 @@ public class ReservationService {
 		}
 
 		// 예약 취소 상태 변경
-		reservation.cancleReservation();
+		reservation.cancelReservation();
 
 		// 취소 내역 저장
 		CancelList newCancelList = cancelDto.toEntity(
