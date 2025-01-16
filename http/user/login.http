@@ -1,0 +1,20 @@
+### 회원 가입
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "email": "user6@gmail.com",
+  "password": "Password1234@",
+  "name": "JEONG",
+  "phoneNumber": "010-2149-0922",
+  "role": "USER"
+}
+
+### 로그인
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "user6@gmail.com",
+  "password": "Password1234@"
+}
