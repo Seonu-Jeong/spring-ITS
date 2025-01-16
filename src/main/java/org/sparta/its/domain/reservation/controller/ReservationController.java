@@ -85,7 +85,7 @@ public class ReservationController {
 	 * @param reservationId 예약 Id
 	 * @param userDetail 유저 Id
 	 * @param cancelDto 취소 DTO
-	 * {@link ReservationResponse.CancelDto}
+	 * @return {@link ReservationResponse.CancelDto}
 	 */
 	@PreAuthorize(ROLE_USER)
 	@PostMapping("/reservations/{reservationId}/cancel")
