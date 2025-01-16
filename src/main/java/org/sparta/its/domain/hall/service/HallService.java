@@ -166,7 +166,7 @@ public class HallService {
 
 		try {
 			// 이미지 삭제
-			s3Service.deleteImages(imageUrls);
+			s3Service.deleteImprovementDelete(hallId, ImageFormat.HALL);
 		} catch (SdkClientException e) {
 			throw new ImageException(FILE_DELETE_FAILED);
 		}
