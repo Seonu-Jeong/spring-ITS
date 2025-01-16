@@ -45,7 +45,7 @@ public class CancelListController {
 	public ResponseEntity<List<CancelListResponse.CancelListDtoRead>> getCancelLists(
 		@RequestParam(required = false) String email,
 		@RequestParam(required = false) String title,
-		@RequestParam(defaultValue = "ASC") String orderBy,
+		@RequestParam(defaultValue = ORDER_ASC) String orderBy,
 		@PageableDefault(value = 5) Pageable pageable) {
 
 		List<CancelListResponse.CancelListDtoRead> cancelLists
