@@ -16,7 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectsRequest;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 import lombok.RequiredArgsConstructor;
 
@@ -97,18 +101,66 @@ public class S3Service {
 	}
 
 	/**
-	 * aws s3 이미지 삭제하는 함수
+	 * S3 폴더 단위 이미지 삭제
 	 *
-	 * @param imageUrls 공연장 이미지 urlList
+	 * @param hallId 공연장 고유 식별자
+	 * @param imageFormat S3 관련 이미지 포멧팅
 	 */
-	public void deleteImages(
-		List<String> imageUrls) {
+	public void deleteImprovementDelete(Long hallId, ImageFormat imageFormat) {
+		ListObjectsV2Result result;
+		List<String> keysToDelete = new ArrayList<>();
+		String folderName = imageFormat.getPath().substring(1) + "/" + hallId;
 
-		for (String imageUrl : imageUrls) {
-			String objectKey = getObjectKey(imageUrl);
-			amazonS3.deleteObject(BUCKET, objectKey);
+		ListObjectsV2Request listRequest = new ListObjectsV2Request()
+			.withBucketName(BUCKET)
+			.withPrefix(folderName);
+
+		do {
+			/**
+			 * S3에서 path에 존재하는 객체 목록 가져오기
+			 */
+			result = amazonS3.listObjectsV2(listRequest);
+
+			/**
+			 * 객체(파일) Key 수집
+			 * 최대 1000개씩 잘라서 DeleteObjectsRequest를 보내야 함
+			 */
+			for (S3ObjectSummary objectSummary : result.getObjectSummaries()) {
+				keysToDelete.add(objectSummary.getKey());
+
+				/**
+				 * keysToDelete 사이즈가 1000개에 도달하면, 즉시 deleteObjects() 호출[삭제]
+				 * getObjectSummaries는 1000개씩 들고 오는 것으로 알고 있으나 테스트 해보아야함
+				 */
+				if (keysToDelete.size() == 1000) {
+					deleteObjectsBatch(keysToDelete);
+					keysToDelete.clear();
+				}
+			}
+
+			/**
+			 * S3 객체 목록을 페이징 방식으로 계속해서 불러오기 위한 토큰셋팅
+			 */
+			listRequest.setContinuationToken(result.getNextContinuationToken());
+		} while (result.isTruncated());
+
+		/**
+		 * 반복문 끝났는데, 1000개 미만으로 남은 key가 있다면 마지막으로 한번 더 요청
+		 */
+		if (!keysToDelete.isEmpty()) {
+			deleteObjectsBatch(keysToDelete);
 		}
+	}
 
+	/**
+	 *  S3 삭제를 위한 함수
+	 *
+	 * @param keysToDelete 삭제할 이미지의 키 리스트
+	 */
+	private void deleteObjectsBatch(List<String> keysToDelete) {
+		DeleteObjectsRequest deleteRequest = new DeleteObjectsRequest(BUCKET)
+			.withKeys(keysToDelete.toArray(new String[0]));
+		amazonS3.deleteObjects(deleteRequest);
 	}
 
 	/**
@@ -200,4 +252,5 @@ public class S3Service {
 			throw new ImageException(NOT_ALLOW_FILE_EXTENSION);
 		}
 	}
+
 }
