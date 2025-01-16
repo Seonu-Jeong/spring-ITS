@@ -12,7 +12,6 @@ import java.util.List;
 import org.sparta.its.global.exception.ImageException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -190,14 +189,8 @@ public class S3Service {
 	 * @param imageFormat 이미지 관련 포맷팅
 	 */
 	private void validateFileExtension(String fileExtension, ImageFormat imageFormat) {
-		if (isNotWhiteList(fileExtension, imageFormat.getWhiteList())) {
+		if (!Arrays.asList(imageFormat.getWhiteList()).contains(fileExtension)) {
 			throw new ImageException(NOT_ALLOW_FILE_EXTENSION);
 		}
 	}
-
-	// PatternMatchUtils 으로 enum 의 whiteList 에 명시된 것 만 허용
-	private boolean isNotWhiteList(String fileExtension, String[] whiteList) {
-		return !PatternMatchUtils.simpleMatch(whiteList, fileExtension);
-	}
-
 }
