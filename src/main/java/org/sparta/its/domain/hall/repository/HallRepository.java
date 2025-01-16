@@ -1,10 +1,19 @@
 package org.sparta.its.domain.hall.repository;
 
+import static org.sparta.its.global.exception.errorcode.HallErrorCode.*;
+
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.global.exception.HallException;
-import org.sparta.its.global.exception.errorcode.HallErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 관련 Repository.
+ *
+ * @author TaeHyeon Kim
+ */
 public interface HallRepository extends JpaRepository<Hall, Long>, HallQueryDslRepository {
 
 	// 쿼리 메소드
@@ -17,7 +26,7 @@ public interface HallRepository extends JpaRepository<Hall, Long>, HallQueryDslR
 	// Default 메소드
 	default Hall findByIdOrThrow(Long hallId) {
 		return findById(hallId)
-			.orElseThrow(() -> new HallException(HallErrorCode.NOT_FOUND_HALL));
+			.orElseThrow(() -> new HallException(NOT_FOUND_HALL));
 	}
 
 }

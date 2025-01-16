@@ -18,6 +18,14 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import jakarta.persistence.EntityManager;
 
+/**
+ * create on 2025. 01. 10.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 QueryDsl 인터페이스 구현체.
+ *
+ * @author TaeHyeon Kim
+ */
 @Repository
 public class HallRepositoryImpl implements HallQueryDslRepository {
 
@@ -30,11 +38,12 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 	}
 
 	/**
-	 * TODO	N+1 문제 해결해야함
+	 * 공연장 이름, 공연장 위치를 이용한 공연장 조회
+	 *
 	 * @param name 공연장 이름
 	 * @param location 공연장 위치
-	 * @param pageable page = 1, 2, 3 ...번 페이지 번호, size = 페이지 마다 몇 개의 데이터
-	 * @return
+	 * @param pageable 페이징
+	 * @return {@link Page<Hall>}
 	 */
 	@Override
 	public Page<Hall> findByNameAndLocation(String name, String location, Pageable pageable) {
@@ -54,6 +63,7 @@ public class HallRepositoryImpl implements HallQueryDslRepository {
 
 	/**
 	 * 공연장 수정하는 동적 쿼리
+	 *
 	 * @param hallId 공연장 고유 식별자
 	 * @param updateDto 이름, 위치
 	 */

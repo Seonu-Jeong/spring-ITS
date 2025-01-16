@@ -10,6 +10,14 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
+/**
+ * create on 2025. 01. 08.
+ * create by IntelliJ IDEA.
+ *
+ * S3 관련 Config.
+ *
+ * @author TaeHyeon Kim
+ */
 @Configuration
 public class S3Config {
 	@Value("${spring.cloud.aws.credentials.access-key}")

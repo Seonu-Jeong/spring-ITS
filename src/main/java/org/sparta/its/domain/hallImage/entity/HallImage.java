@@ -13,6 +13,14 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * create on 2025. 01. 13.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장이미지 Entity.
+ *
+ * @author TaeHyeon Kim
+ */
 @Getter
 @Entity(name = "hall_image")
 @NoArgsConstructor

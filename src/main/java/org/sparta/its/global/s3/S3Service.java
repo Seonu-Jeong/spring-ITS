@@ -1,5 +1,7 @@
 package org.sparta.its.global.s3;
 
+import static org.sparta.its.global.exception.errorcode.ImageErrorCode.*;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -8,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.sparta.its.global.exception.ImageException;
-import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.PatternMatchUtils;
@@ -19,22 +20,33 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 08.
+ * create by IntelliJ IDEA.
+ *
+ * S3 관련 Service.
+ *
+ * @author TaeHyeon Kim
+ */
 @Service
 @RequiredArgsConstructor
 public class S3Service {
 
 	private final AmazonS3Client amazonS3;
 
+	private static final String TOP_LEVEL_DOMAIN_WITH_DOT_AND_SLASH = ".com/";
+
 	@Value("${spring.cloud.aws.s3.bucket}")
 	private String BUCKET;
 
 	/**
-	 * aws s3에 올리기 위한 함수
-	 * @param images
-	 * @param imageFormat
-	 * @param domainId
-	 * @return
-	 * @throws IOException
+	 * 이미지 파일 전처리
+	 *
+	 * @param images 이미지파일
+	 * @param imageFormat 이미지 관련 포맷팅
+	 * @param domainId 이미지 저장을 원하는 도메인 고유 식별자
+	 * @return {@link List<String>} S3에 저장된 이미지 URL 리스트
+	 * @throws IOException S3 관련 IO 예외
 	 */
 	public List<String> uploadImages(
 		MultipartFile[] images,
@@ -44,7 +56,7 @@ public class S3Service {
 		// 이미지가 빈값인지 확인
 		long count = Arrays.stream(images).filter(MultipartFile::isEmpty).count();
 		if (count > 0) {
-			throw new ImageException(ImageErrorCode.BAD_IMAGE_FILE);
+			throw new ImageException(BAD_IMAGE_FILE);
 		}
 
 		List<String> uploadedUrls = new ArrayList<>();
@@ -55,6 +67,16 @@ public class S3Service {
 		return uploadedUrls;
 	}
 
+	/**
+	 * S3 이미지를 업데이트
+	 *
+	 * @param imageFormat 이미지 관련 포맷팅
+	 * @param id 이미지 수정을 원하는 도메인 고유 식별자
+	 * @param imageUrl 이미지 수정을 원하는 이미지 URL
+	 * @param images 이미지파일
+	 * @return {@link String} S3에 저장된 이미지 URL
+	 * @throws IOException S3 관련 IO 예외
+	 */
 	public String updateImage(
 		ImageFormat imageFormat,
 		Long id,
@@ -63,7 +85,7 @@ public class S3Service {
 
 		// 이미지파일이 1개 일때만 업데이트 가능
 		if (images.length != 1) {
-			throw new ImageException(ImageErrorCode.BAD_IMAGE_FILE);
+			throw new ImageException(BAD_IMAGE_FILE);
 		}
 
 		// 기존 이미지 삭제
@@ -71,13 +93,12 @@ public class S3Service {
 		amazonS3.deleteObject(BUCKET, objectKey);
 
 		// 이미지를 새로 업로드하고 url 을 받아옴
-		String fileUrl = saveFileToS3(images[0], imageFormat, id);
-
-		return fileUrl;
+		return saveFileToS3(images[0], imageFormat, id);
 	}
 
 	/**
 	 * aws s3 이미지 삭제하는 함수
+	 *
 	 * @param imageUrls 공연장 이미지 urlList
 	 */
 	public void deleteImages(
@@ -92,12 +113,13 @@ public class S3Service {
 
 	/**
 	 * url 을 통해 aws-s3에 오브젝트 경로를 찾는 함수
+	 *
 	 * @param imageUrl 이미지 url
-	 * @return ex) HALL/7/김태현2.jpg
+	 * @return {@link String} S3 에 필요한 오브젝트 키
 	 */
 	private String getObjectKey(String imageUrl) {
 		// ".com/" 이후의 위치를 찾음
-		int objectKeyStartIndex = imageUrl.indexOf(".com/") + 5; // ".com/" 다음 위치
+		int objectKeyStartIndex = imageUrl.indexOf(TOP_LEVEL_DOMAIN_WITH_DOT_AND_SLASH) + 5; // ".com/" 다음 위치
 		String objectKeyEncoded = imageUrl.substring(objectKeyStartIndex);
 
 		// 객체 키 디코딩
@@ -106,10 +128,11 @@ public class S3Service {
 
 	/**
 	 * 실질적으로 s3에 저장하는 함수
-	 * @param image
-	 * @param imageFormat
-	 * @param id
-	 * @return
+	 *
+	 * @param image 이미지파일
+	 * @param imageFormat 이미지 관련 포맷팅
+	 * @param id 이미지 수정을 원하는 도메인 고유 식별자
+	 * @return {@link String} S3에 저장된 이미지 URL
 	 * @throws IOException
 	 */
 	private String saveFileToS3(MultipartFile image, ImageFormat imageFormat, Long id) throws IOException {
@@ -146,14 +169,15 @@ public class S3Service {
 
 	/**
 	 * 확장자가 있는지 확인하기 위함
-	 * @param originalFileName
-	 * @return
+	 *
+	 * @param originalFileName 이미지 파일의 이름과 파일 확장자
+	 * @return 파일 확장자
 	 */
 	private String getFileExtensionWithDot(String originalFileName) {
 		int lastIndexOfDot = originalFileName.lastIndexOf('.');
 
 		if (lastIndexOfDot == -1) {
-			throw new ImageException(ImageErrorCode.NO_EXTENSION_FILE);
+			throw new ImageException(NO_EXTENSION_FILE);
 		}
 
 		return originalFileName.substring(lastIndexOfDot);
@@ -161,17 +185,18 @@ public class S3Service {
 
 	/**
 	 * 허용된 확장자인지 확인하기 위함
-	 * @param fileExtension
-	 * @param imageFormat
+	 *
+	 * @param fileExtension 파일 확장자
+	 * @param imageFormat 이미지 관련 포맷팅
 	 */
 	private void validateFileExtension(String fileExtension, ImageFormat imageFormat) {
-		if (isWhiteList(fileExtension, imageFormat.getWhiteList())) {
-			throw new ImageException(ImageErrorCode.NOT_ALLOW_FILE_EXTENSION);
+		if (isNotWhiteList(fileExtension, imageFormat.getWhiteList())) {
+			throw new ImageException(NOT_ALLOW_FILE_EXTENSION);
 		}
 	}
 
 	// PatternMatchUtils 으로 enum 의 whiteList 에 명시된 것 만 허용
-	private boolean isWhiteList(String fileExtension, String[] whiteList) {
+	private boolean isNotWhiteList(String fileExtension, String[] whiteList) {
 		return !PatternMatchUtils.simpleMatch(whiteList, fileExtension);
 	}
 

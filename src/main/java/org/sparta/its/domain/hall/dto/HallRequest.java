@@ -6,28 +6,35 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 공연장 관련 요청 DTO.
+ *
+ * @author TaeHyeon Kim
+ */
 public class HallRequest {
 
-	@AllArgsConstructor
 	@Getter
+	@RequiredArgsConstructor
 	public static class CreateDto {
 
 		@NotBlank(message = "name 은 필수입니다.")
-		private String name;
+		private final String name;
 
 		@NotBlank(message = "location 은 필수입니다.")
-		private String location;
+		private final String location;
 
 		@NotNull(message = "capacity 은 필수입니다.")
 		@Positive(message = "수용 인원은 1명 이상으로 적어주세요")
-		private Integer capacity;
+		private final Integer capacity;
 
 		@NotNull(message = "images 는 필수입니다.")
-		private MultipartFile[] images;
+		private final MultipartFile[] images;
 
 		public Hall toEntity() {
 			return Hall.builder()

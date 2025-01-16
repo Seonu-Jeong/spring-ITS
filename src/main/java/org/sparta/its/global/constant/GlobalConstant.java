@@ -2,9 +2,9 @@ package org.sparta.its.global.constant;
 
 public abstract class GlobalConstant {
 
-	public static final String ROLE_ADMIN = "hasAuthority('ADMIN')";
+	public final static String ROLE_ADMIN = "hasAuthority('ADMIN')";
 
-	public static final String ROLE_USER = "hasAuthority('USER')";
+	public final static String ROLE_USER = "hasAuthority('USER')";
 
 	public static final String ORDER_DESC = "DESC";
 
