@@ -18,6 +18,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 취소 리스트 QueryDsl 인터페이스 구현체.
+ *
+ * @author Jun Heo
+ */
 @Repository
 public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 
