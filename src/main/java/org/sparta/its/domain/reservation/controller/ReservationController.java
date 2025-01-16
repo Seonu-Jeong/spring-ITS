@@ -41,9 +41,9 @@ public class ReservationController {
 	/**
 	 * 좌석 선택 API
 	 *
-	 * @param concertId 콘서트 Id
-	 * @param seatId 좌석 Id
-	 * @param userDetail 유저 Id
+	 * @param concertId 콘서트 고유 식별자
+	 * @param seatId 좌석 고유 식별자
+	 * @param userDetail 유저 고유 식별자
 	 * @return {@link ReservationResponse.SelectDto}
 	 */
 	@PreAuthorize(ROLE_USER)
@@ -63,8 +63,8 @@ public class ReservationController {
 	/**
 	 * 예약 완료 처리 API
 	 *
-	 * @param reservationId 예약 Id
-	 * @param userDetail 유저 Id
+	 * @param reservationId 예약 고유 식별자
+	 * @param userDetail 유저 고유 식별자
 	 * @return {@link ReservationResponse.CompleteDto}
 	 */
 	@PreAuthorize(ROLE_USER)
@@ -82,8 +82,8 @@ public class ReservationController {
 	/**
 	 * 예약 취소 요청 API
 	 *
-	 * @param reservationId 예약 Id
-	 * @param userDetail 유저 Id
+	 * @param reservationId 예약 고유 식별자
+	 * @param userDetail 유저 고유 식별자
 	 * @param cancelDto 취소 DTO
 	 * @return {@link ReservationResponse.CancelDto}
 	 */

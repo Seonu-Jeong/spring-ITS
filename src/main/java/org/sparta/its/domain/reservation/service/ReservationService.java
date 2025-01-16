@@ -49,8 +49,8 @@ public class ReservationService {
 	/**
 	 * 좌석 선택
 	 *
-	 * @param concertId 콘서트 아이디
-	 * @param seatId 좌석 아이디
+	 * @param concertId 콘서트 고유 식별자
+	 * @param seatId 좌석 고유 식별자
 	 * @return {@link ReservationResponse.SelectDto}
 	 */
 	@Transactional
@@ -100,8 +100,8 @@ public class ReservationService {
 	/**
 	 * 좌석 선택 완료
 	 *
-	 * @param reservationId 예약 아이디
-	 * @param userId 유저 아이디
+	 * @param reservationId 예약 고유 식별자
+	 * @param userId 유저 고유 식별자
 	 * @return {@link ReservationResponse.CompleteDto}
 	 */
 	@Transactional
@@ -123,8 +123,8 @@ public class ReservationService {
 	/**
 	 * 예매된 좌석 취소
 	 *
-	 * @param reservationId 예약 아이디
-	 * @param requestedUserId 유저 아이디
+	 * @param reservationId 예약 고유 식별자
+	 * @param requestedUserId 유저 고유 식별자
 	 * @param cancelDto 취소 DTO
 	 * @return {@link ReservationResponse.CancelDto}
 	 */
