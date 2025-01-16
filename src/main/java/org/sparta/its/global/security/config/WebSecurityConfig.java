@@ -40,14 +40,28 @@ public class WebSecurityConfig {
 
 		http.authorizeHttpRequests((authorizeHttpRequests) ->
 			authorizeHttpRequests
-				// auth
-				.requestMatchers("/auth/signup", "/auth/login").permitAll()
-				// concert
+				// cancleList 도메인
+				.requestMatchers("/cancelLists/**").authenticated()
+
+				// concert 도메인, concertImage 도메인
 				.requestMatchers(HttpMethod.GET, "/concerts", "/concerts/*").permitAll()
-				// hall
-				.requestMatchers("/halls").hasAuthority("ADMIN")
+				.requestMatchers("/concerts/**").authenticated()
+
+				// hall 도메인, hallImage 도메인
+				.requestMatchers("/halls/**").hasAuthority("ADMIN")
+
+				// reservation 도메인
+				.requestMatchers("/reservations/**").authenticated()
+
+				// auth (유저 인증)
+				.requestMatchers("/auth/signup", "/auth/login").permitAll()
+				.requestMatchers("/auth/logout").authenticated()
+
+				// user 도메인
+				.requestMatchers("/users/**").authenticated()
+
 				//나머지
-				.anyRequest().authenticated()
+				.anyRequest().permitAll()
 		);
 
 		// 필터 관리
