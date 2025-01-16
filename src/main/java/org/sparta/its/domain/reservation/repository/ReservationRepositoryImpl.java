@@ -17,6 +17,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 
+/**
+ * create on 2025. 01. 14.
+ * create by IntelliJ IDEA.
+ *
+ * 예약 관련 QueryDsl 인터페이스 구현체.
+ *
+ * @author Jun Heo
+ */
 @Repository
 public class ReservationRepositoryImpl implements ReservationQueryDslRepository {
 
