@@ -3,6 +3,7 @@ package org.sparta.its.global.s3;
 import static org.sparta.its.global.exception.errorcode.ImageErrorCode.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -159,8 +160,14 @@ public class S3Service {
 
 		// s3 저장
 		ObjectMetadata objMeta = new ObjectMetadata();
-		objMeta.setContentLength(image.getInputStream().available());
-		amazonS3.putObject(packageName.toString(), s3FileName, image.getInputStream(), objMeta);
+
+		try (InputStream inputStream = image.getInputStream()) {
+			objMeta.setContentLength(inputStream.available());
+			amazonS3.putObject(packageName.toString(), s3FileName, inputStream, objMeta);
+		} catch (IOException e) {
+			// 예외 처리 로직
+			throw new ImageException(FILE_UPLOAD_FAILED);
+		}
 
 		// substring 은 '/' 해주기 위함
 		return amazonS3.getResourceUrl(BUCKET, secondPackageName.substring(1) + "/" + s3FileName);
