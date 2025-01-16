@@ -76,8 +76,8 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 
 	private OrderSpecifier<String> orderSpecifier(String orderBy) {
 		return switch (orderBy.toUpperCase()) {
-			case "DESC" -> cancelList.concertTitle.desc();
-			case "ASC" -> cancelList.concertTitle.asc();
+			case ORDER_DESC -> cancelList.concertTitle.desc();
+			case ORDER_ASC -> cancelList.concertTitle.asc();
 			default -> cancelList.concertTitle.asc();
 		};
 	}
