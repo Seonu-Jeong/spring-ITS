@@ -21,6 +21,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 취소 리스트 Entity.
+ *
+ * @author Jun Heo
+ */
 @Getter
 @Entity(name = "cancel_list")
 @NoArgsConstructor
@@ -70,6 +78,5 @@ public class CancelList extends BaseEntity {
 		this.concertTitle = concertTitle;
 		this.seatNum = seatNum;
 	}
-
 
 }

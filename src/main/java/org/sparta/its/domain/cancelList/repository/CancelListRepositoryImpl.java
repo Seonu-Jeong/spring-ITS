@@ -1,6 +1,7 @@
 package org.sparta.its.domain.cancelList.repository;
 
 import static org.sparta.its.domain.cancelList.entity.QCancelList.*;
+import static org.sparta.its.global.constant.GlobalConstant.*;
 
 import java.util.List;
 
@@ -17,11 +18,18 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 취소 리스트 QueryDsl 인터페이스 구현체.
+ *
+ * @author Jun Heo
+ */
 @Repository
 public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
-
 
 	public CancelListRepositoryImpl(EntityManager entityManager) {
 		this.jpaQueryFactory = new JPAQueryFactory(entityManager);
@@ -32,9 +40,9 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 	 *
 	 * @param email 유저 이메일
 	 * @param title 콘서트 이름
-	 * @param orderBy 오름차순, 내림차순
-	 * @param pageable page = 1, 2, 3 ...번 페이지 번호, size = 페이지 마다 몇 개의 데이터
-	 * @return
+	 * @param orderBy 정렬 방식
+	 * @param pageable 페이징
+	 * @return {@link Page<CancelList>}
 	 */
 	@Override
 	public Page<CancelList> findCancelLists(
@@ -59,10 +67,10 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 				titleLike(title)
 			);
 		return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
-		}
+	}
 
 	private BooleanExpression correctEmail(String email) {
-		if(email == null || email.isEmpty()) {
+		if (email == null || email.isEmpty()) {
 			return null;
 		}
 		return cancelList.user.email.eq(email);
@@ -77,8 +85,8 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 
 	private OrderSpecifier<String> orderSpecifier(String orderBy) {
 		return switch (orderBy.toUpperCase()) {
-			case "DESC" -> cancelList.concertTitle.desc();
-			case "ASC" -> cancelList.concertTitle.asc();
+			case ORDER_DESC -> cancelList.concertTitle.desc();
+			case ORDER_ASC -> cancelList.concertTitle.asc();
 			default -> cancelList.concertTitle.asc();
 		};
 	}
