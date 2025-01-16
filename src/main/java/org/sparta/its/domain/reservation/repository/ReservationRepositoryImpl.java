@@ -17,6 +17,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 
+/**
+ * create on 2025. 01. 14.
+ * create by IntelliJ IDEA.
+ *
+ * 예약 관련 QueryDsl 인터페이스 구현체.
+ *
+ * @author Jun Heo
+ */
 @Repository
 public class ReservationRepositoryImpl implements ReservationQueryDslRepository {
 
@@ -33,11 +41,11 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 	 * @param endDate 날짜 구간 끝
 	 * @param concertTitle 콘서트 이름
 	 * @param singer 가수 이름
-	 * @param pageable page = 1, 2, 3 ...번 페이지 번호, size = 페이지 마다 몇 개의 데이터
-	 * @return
+	 * @param pageable 페이징
+	 * @return {@link Page<Reservation>}
 	 */
 	@Override
-	public Page<Reservation> findAllReservations(
+	public Page<Reservation> findReservationsByBetweenDateAndConcertInfo(
 		LocalDate startDate,
 		LocalDate endDate,
 		String concertTitle,
