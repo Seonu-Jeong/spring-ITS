@@ -1,6 +1,7 @@
 package org.sparta.its.domain.cancelList.repository;
 
 import static org.sparta.its.domain.cancelList.entity.QCancelList.*;
+import static org.sparta.its.global.constant.GlobalConstant.*;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 	 * @param title 콘서트 이름
 	 * @param orderBy 정렬 방식
 	 * @param pageable 페이징
-	 * @return {@link PageableExecutionUtils}
+	 * @return {@link Page<CancelList>}
 	 */
 	@Override
 	public Page<CancelList> findCancelLists(
