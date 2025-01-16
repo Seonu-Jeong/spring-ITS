@@ -20,15 +20,28 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 09.
+ * create by IntelliJ IDEA.
+ *
+ * 인증 관련 Controller.
+ *
+ * @author Seonu-Jeong
+ */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
 	private final JwtUtil jwtUtil;
-
 	private final UserService userService;
 
+	/**
+	 * 회원가입 API
+	 *
+	 * @param signUpDto 회원가입 DTO
+	 * @return {@link AuthResponse.SignUpDto}
+	 */
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse.SignUpDto> signup(
 		@Valid @RequestBody AuthRequest.SignUpDto signUpDto) {
@@ -38,6 +51,13 @@ public class AuthController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 	}
 
+	/**
+	 * 로그인 API
+	 *
+	 * @param loginDto 로그인 DTO
+	 * @param res http 응답 객체
+	 * @return {@link AuthResponse.LoginDto}
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse.LoginDto> login(
 		@Valid @RequestBody AuthRequest.LoginDto loginDto,
@@ -58,24 +78,28 @@ public class AuthController {
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
+	/**
+	 * 로그아웃 API
+	 *
+	 * @param userDetail 유저 인증 객체
+	 * @param res http 응답 객체
+	 * @return {@link HttpServletResponse}
+	 */
 	@PostMapping("/logout")
 	public ResponseEntity<AuthResponse.LogoutDto> logout(
 		@AuthenticationPrincipal UserDetail userDetail,
-		HttpServletResponse response) {
+		HttpServletResponse res) {
 
-		// JWT 삭제 비우기
+		// JWT 삭제
 		Cookie jwtCookie = new Cookie(AUTHORIZATION_HEADER, "");
 
 		jwtCookie.setMaxAge(0);
 		jwtCookie.setPath("/");
 
-		response.addCookie(jwtCookie);
+		res.addCookie(jwtCookie);
 
 		// 응답 DTO 생성
-		AuthResponse.LogoutDto responseDto = new AuthResponse.LogoutDto(
-			userDetail.getId(),
-			userDetail.getName()
-		);
+		AuthResponse.LogoutDto responseDto = AuthResponse.LogoutDto.toDto(userDetail.getId(), userDetail.getName());
 
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

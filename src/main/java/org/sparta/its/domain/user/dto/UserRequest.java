@@ -6,6 +6,14 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 12.
+ * create by IntelliJ IDEA.
+ *
+ * 유저 관련 요청 DTO.
+ *
+ * @author Seonu-Jeong
+ */
 public class UserRequest {
 
 	@Getter

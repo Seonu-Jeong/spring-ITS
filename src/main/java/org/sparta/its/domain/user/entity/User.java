@@ -20,6 +20,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * create on 2025. 01. 07.
+ * create by IntelliJ IDEA.
+ *
+ * 유저 Entity.
+ *
+ * @author Seonu-Jeong
+ */
 @Getter
 @Entity(name = "user")
 @NoArgsConstructor

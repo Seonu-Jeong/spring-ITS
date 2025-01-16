@@ -9,6 +9,14 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import jakarta.persistence.EntityManager;
 
+/**
+ * create on 2025. 01. 15.
+ * create by IntelliJ IDEA.
+ *
+ * 유저 QueryDsl 인터페이스 구현체.
+ *
+ * @author Seonu-Jeong
+ */
 @Repository
 public class UserRepositoryImpl implements UserQueryDslRepository {
 
@@ -22,6 +30,7 @@ public class UserRepositoryImpl implements UserQueryDslRepository {
 
 	/**
 	 * 유저 정보 수정 동적 쿼리
+	 *
 	 * @param id 유저 id
 	 * @param email 유저 이메일
 	 * @param name 수정할 이름
