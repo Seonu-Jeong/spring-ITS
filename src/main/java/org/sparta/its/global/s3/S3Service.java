@@ -190,13 +190,13 @@ public class S3Service {
 	 * @param imageFormat 이미지 관련 포맷팅
 	 */
 	private void validateFileExtension(String fileExtension, ImageFormat imageFormat) {
-		if (isWhiteList(fileExtension, imageFormat.getWhiteList())) {
+		if (isNotWhiteList(fileExtension, imageFormat.getWhiteList())) {
 			throw new ImageException(NOT_ALLOW_FILE_EXTENSION);
 		}
 	}
 
 	// PatternMatchUtils 으로 enum 의 whiteList 에 명시된 것 만 허용
-	private boolean isWhiteList(String fileExtension, String[] whiteList) {
+	private boolean isNotWhiteList(String fileExtension, String[] whiteList) {
 		return !PatternMatchUtils.simpleMatch(whiteList, fileExtension);
 	}
 
