@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
  * create on 2025. 01. 13.
  * create by IntelliJ IDEA.
  *
- * 예약 관련 RequestDto.
+ * 예약 RequestDto.
  *
  * @author Jun Heo
  */
