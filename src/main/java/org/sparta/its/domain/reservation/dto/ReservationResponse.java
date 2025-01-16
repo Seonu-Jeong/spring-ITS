@@ -13,7 +13,7 @@ import lombok.Getter;
  * create on 2025. 01. 10.
  * create by IntelliJ IDEA.
  *
- * 예약 관련 ResponseDto.
+ * 예약 관련 응답 DTO.
  *
  * @author Jun Heo
  */
