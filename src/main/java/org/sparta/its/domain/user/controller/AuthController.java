@@ -1,7 +1,5 @@
 package org.sparta.its.domain.user.controller;
 
-import static org.sparta.its.global.security.JwtUtil.*;
-
 import org.sparta.its.domain.user.Service.UserService;
 import org.sparta.its.domain.user.dto.AuthRequest;
 import org.sparta.its.domain.user.dto.AuthResponse;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +70,7 @@ public class AuthController {
 			responseDto.getRole());
 
 		// 쿠키에 토큰 등록
-		jwtUtil.addJwtToCookie(token, res);
+		jwtUtil.addJwtToHeader(token, res);
 
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
@@ -90,13 +87,7 @@ public class AuthController {
 		@AuthenticationPrincipal UserDetail userDetail,
 		HttpServletResponse res) {
 
-		// JWT 삭제
-		Cookie jwtCookie = new Cookie(AUTHORIZATION_HEADER, "");
-
-		jwtCookie.setMaxAge(0);
-		jwtCookie.setPath("/");
-
-		res.addCookie(jwtCookie);
+		// TODO JWT 로그아웃 방식으로 변경
 
 		// 응답 DTO 생성
 		AuthResponse.LogoutDto responseDto = AuthResponse.LogoutDto.toDto(userDetail.getId(), userDetail.getName());

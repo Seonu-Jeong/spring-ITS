@@ -75,7 +75,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	}
 
 	private Collection<GrantedAuthority> getGrantedAuthorities(Claims info) {
-		String authority = info.get(AUTHORIZATION_KEY, String.class);
+		String authority = info.get(ROLE, String.class);
 
 		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
 		Collection<GrantedAuthority> authorities = new ArrayList<>();

@@ -32,7 +32,7 @@ public class JwtUtil {
 	// Header KEY 값
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 	// 사용자 권한 값의 KEY
-	public static final String AUTHORIZATION_KEY = "auth";
+	public static final String ROLE = "role";
 	// 사용자 ID 값
 	public static final String USER_ID = "id";
 	// 사용자 이름
@@ -52,7 +52,7 @@ public class JwtUtil {
 
 	@PostConstruct
 	public void init() {
-		byte[] bytes = Base64.getDecoder().decode(secretKey);
+		byte[] bytes = secretKey.getBytes(StandardCharsets.UTF_8);
 		key = Keys.hmacShaKeyFor(bytes);
 	}
 
@@ -63,7 +63,7 @@ public class JwtUtil {
 		final String token = BEARER_PREFIX +
 			Jwts.builder()
 				.setSubject(userEmail) // 사용자 식별자값(ID)
-				.claim(AUTHORIZATION_KEY, role) // 사용자 권한
+				.claim(ROLE, role) // 사용자 권한
 				.claim(USER_ID, id)
 				.claim(USER_NAME, name)
 				.setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
@@ -74,19 +74,8 @@ public class JwtUtil {
 		return token;
 	}
 
-	// JWT Cookie 에 저장
-	public void addJwtToCookie(String token, HttpServletResponse res) {
-		try {
-			token = URLEncoder.encode(token, "utf-8").replaceAll("\\+", "%20"); // Cookie Value 에는 공백이 불가능해서 encoding 진행
-
-			Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token); // Name-Value
-			cookie.setPath("/");
-
-			// Response 객체에 Cookie 추가
-			res.addCookie(cookie);
-		} catch (UnsupportedEncodingException e) {
-			logger.error(e.getMessage());
-		}
+	public void addJwtToHeader(String token, HttpServletResponse res) {
+		res.addHeader(AUTHORIZATION_HEADER, token);
 	}
 
 	// JWT 토큰 substring
@@ -121,25 +110,12 @@ public class JwtUtil {
 		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 	}
 
-	// HttpServletRequest 에서 Cookie Value : JWT 가져오기
+	// HttpServletRequest 에서 JWT 가져오기
 	public String getTokenFromRequest(HttpServletRequest req) {
 
-		String requestKey = null;
+		// 헤더에서 AccessToken 가져오기
+		String requestKey = req.getHeader(AUTHORIZATION_HEADER);
 
-		if (req.getCookies() != null) {
-			for (Cookie cookie : req.getCookies()) {
-				if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
-					requestKey = cookie.getValue();
-				}
-			}
-		}
-
-		String decode = null;
-
-		if (StringUtils.hasText(requestKey)) {
-			decode = URLDecoder.decode(requestKey, StandardCharsets.UTF_8); // Encode 되어 넘어간 Value 다시 Decode
-		}
-
-		return decode;
+		return requestKey;
 	}
 }
