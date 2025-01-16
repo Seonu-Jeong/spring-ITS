@@ -5,6 +5,14 @@ import org.sparta.its.domain.concertimage.entity.ConcertImage;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * create on 2025. 01. 13.
+ * create by IntelliJ IDEA.
+ *
+ * 콘서트이미지 관련 ResponseDto.
+ *
+ * @author UTae Jang
+ */
 public class ConcertImageResponse {
 
 	@Getter
@@ -24,6 +32,5 @@ public class ConcertImageResponse {
 				.imageUrl(concertImage.getImageUrl())
 				.build();
 		}
-		
 	}
 }

@@ -16,6 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * create on 2025. 01. 12.
+ * create by IntelliJ IDEA.
+ *
+ * 유저 관련 Controller.
+ *
+ * @author Seonu-Jeong
+ */
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -24,25 +32,28 @@ public class UserController {
 	private final UserService userService;
 
 	/**
-	 * 유저 수정 API
-	 * @param updateDto {@link Valid} {@link RequestBody} 유저 수정 DTO
-	 * @param userDetail {@link AuthenticationPrincipal} 유저 인증 객체
-	 * @return {@link ResponseEntity} HttpStatus 상태값과 body 응답 {@link UserResponse.UpdateDto} 수정 Dto 응답
+	 * 회원수정 API
+	 *
+	 * @param updateDto 유저 수정 DTO
+	 * @param userDetail 유저 인증 객체
+	 * @return {@link UserResponse.UpdateDto}
 	 */
 	@PatchMapping
 	public ResponseEntity<UserResponse.UpdateDto> updateUser(
 		@Valid @RequestBody UserRequest.UpdateDto updateDto,
 		@AuthenticationPrincipal UserDetail userDetail) {
+
 		UserResponse.UpdateDto responseDto = userService.updateUser(updateDto, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
 	/**
-	 * 유저 회원탈퇴 API
-	 * @param deleteDto {@link Valid} {@link RequestBody} 유저 삭제 DTO
-	 * @param userDetail {@link AuthenticationPrincipal} 유저 인증 객체
-	 * @return {@link ResponseEntity} HttpStatus 상태값과 body 응답 {@link UserResponse.DeleteDto} 삭제 Dto 응답
+	 * 회원탈퇴 API
+	 *
+	 * @param deleteDto 유저 삭제 DTO
+	 * @param userDetail 유저 인증 객체
+	 * @return {@link UserResponse.DeleteDto}
 	 */
 	@DeleteMapping
 	public ResponseEntity<UserResponse.DeleteDto> deleteUser(
