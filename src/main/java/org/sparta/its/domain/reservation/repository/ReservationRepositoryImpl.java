@@ -34,7 +34,7 @@ public class ReservationRepositoryImpl implements ReservationQueryDslRepository 
 	 * @param concertTitle 콘서트 이름
 	 * @param singer 가수 이름
 	 * @param pageable page = 1, 2, 3 ...번 페이지 번호, size = 페이지 마다 몇 개의 데이터
-	 * @return
+	 * @return {@link PageableExecutionUtils}
 	 */
 	@Override
 	public Page<Reservation> findReservationsByBetweenDateAndConcertInfo(
