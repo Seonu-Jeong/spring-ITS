@@ -33,7 +33,7 @@ public class CancelListRepositoryImpl implements CancelListQueryDslRepository {
 	 * @param title 콘서트 이름
 	 * @param orderBy 정렬 방식
 	 * @param pageable 페이징
-	 * @return
+	 * @return {@link PageableExecutionUtils}
 	 */
 	@Override
 	public Page<CancelList> findCancelLists(
