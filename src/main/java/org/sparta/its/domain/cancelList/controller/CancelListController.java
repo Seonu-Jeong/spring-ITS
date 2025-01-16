@@ -1,5 +1,7 @@
 package org.sparta.its.domain.cancelList.controller;
 
+import static org.sparta.its.global.constant.GlobalConstant.*;
+
 import java.util.List;
 
 import org.sparta.its.domain.cancelList.dto.CancelListResponse;
@@ -38,7 +40,7 @@ public class CancelListController {
 	 * @param pageable 페이징
 	 * @return {@link CancelListResponse.CancelListDtoRead}
 	 */
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	@GetMapping("/cancelLists")
 	public ResponseEntity<List<CancelListResponse.CancelListDtoRead>> getCancelLists(
 		@RequestParam(required = false) String email,
