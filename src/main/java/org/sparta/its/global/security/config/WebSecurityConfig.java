@@ -3,6 +3,7 @@ package org.sparta.its.global.security.config;
 import org.sparta.its.global.security.exception.JwtAccessDeniedHandler;
 import org.sparta.its.global.security.exception.JwtAuthenticationEntryPoint;
 import org.sparta.its.global.security.filter.JwtAuthorizationFilter;
+import org.sparta.its.global.security.filter.JwtExceptionFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,10 +24,10 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	private final JwtAuthorizationFilter jwtAuthorizationFilter;
+	private final JwtExceptionFilter jwtExceptionFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -66,6 +67,7 @@ public class WebSecurityConfig {
 
 		// 필터 관리
 		http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtExceptionFilter, JwtAuthorizationFilter.class);
 
 		http.exceptionHandling(exceptionHandling ->
 			exceptionHandling
