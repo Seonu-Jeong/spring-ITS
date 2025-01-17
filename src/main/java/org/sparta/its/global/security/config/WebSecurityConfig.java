@@ -3,6 +3,7 @@ package org.sparta.its.global.security.config;
 import org.sparta.its.global.security.exception.JwtAccessDeniedHandler;
 import org.sparta.its.global.security.exception.JwtAuthenticationEntryPoint;
 import org.sparta.its.global.security.filter.JwtAuthorizationFilter;
+import org.sparta.its.global.security.filter.JwtExceptionFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,10 +24,10 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	private final JwtAuthorizationFilter jwtAuthorizationFilter;
+	private final JwtExceptionFilter jwtExceptionFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,18 +41,33 @@ public class WebSecurityConfig {
 
 		http.authorizeHttpRequests((authorizeHttpRequests) ->
 			authorizeHttpRequests
-				// auth
-				.requestMatchers("/auth/signup", "/auth/login").permitAll()
-				// concert
+				// cancleList 도메인
+				.requestMatchers("/cancelLists/**").authenticated()
+
+				// concert 도메인, concertImage 도메인
 				.requestMatchers(HttpMethod.GET, "/concerts", "/concerts/*").permitAll()
-				// hall
-				.requestMatchers("/halls").hasAuthority("ADMIN")
+				.requestMatchers("/concerts/**").authenticated()
+
+				// hall 도메인, hallImage 도메인
+				.requestMatchers("/halls/**").hasAuthority("ADMIN")
+
+				// reservation 도메인
+				.requestMatchers("/reservations/**").authenticated()
+
+				// auth (유저 인증)
+				.requestMatchers("/auth/signup", "/auth/login").permitAll()
+				.requestMatchers("/auth/logout").authenticated()
+
+				// user 도메인
+				.requestMatchers("/users/**").authenticated()
+
 				//나머지
-				.anyRequest().authenticated()
+				.anyRequest().permitAll()
 		);
 
 		// 필터 관리
 		http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtExceptionFilter, JwtAuthorizationFilter.class);
 
 		http.exceptionHandling(exceptionHandling ->
 			exceptionHandling
