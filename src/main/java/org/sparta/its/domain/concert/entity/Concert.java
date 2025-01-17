@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
  * create on 2025. 01. 07.
  * create by IntelliJ IDEA.
  *
- * 콘서트 관련 Entity.
+ * 콘서트 Entity.
  *
  * @author UTae Jang
  */

@@ -1,6 +1,8 @@
 package org.sparta.its.domain.concert.service;
 
 import static org.sparta.its.global.constant.GlobalConstant.*;
+import static org.sparta.its.global.exception.errorcode.ConcertErrorCode.*;
+import static org.sparta.its.global.exception.errorcode.ImageErrorCode.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -17,8 +19,6 @@ import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.hall.repository.HallRepository;
 import org.sparta.its.global.exception.ConcertException;
 import org.sparta.its.global.exception.ImageException;
-import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
-import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
 import org.springframework.data.domain.Page;
@@ -76,7 +76,7 @@ public class ConcertService {
 		try {
 			publicUrls = s3Service.uploadImages(createDto.getImages(), ImageFormat.CONCERT, saveConcert.getId());
 		} catch (SdkClientException | IOException e) {
-			throw new ImageException(ImageErrorCode.FILE_UPLOAD_FAILED);
+			throw new ImageException(FILE_UPLOAD_FAILED);
 		}
 
 		for (String publicUrl : publicUrls) {
@@ -104,7 +104,7 @@ public class ConcertService {
 		switch (order.toUpperCase()) {
 			case ORDER_DESC -> sort = Sort.by(Sort.Order.desc(ORDER_START_AT));
 			case ORDER_ASC -> sort = Sort.by(Sort.Order.asc(ORDER_START_AT));
-			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
+			default -> throw new ConcertException(INCORRECT_VALUE);
 		}
 
 		LocalDate today = LocalDate.now();
@@ -127,7 +127,7 @@ public class ConcertService {
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
 
 		if (concert.getEndAt().isBefore(LocalDate.now())) {
-			throw new ConcertException(ConcertErrorCode.ALREADY_ENDED);
+			throw new ConcertException(ALREADY_ENDED);
 		}
 
 		return ConcertResponse.ReadDto.toDto(concert);
@@ -190,10 +190,10 @@ public class ConcertService {
 		// 콘서트 시작 날짜 및 종료 날짜 예외 처리
 		ConcertValidator.startAtIsAfterEndAt(startAt, endAt);
 
-		Page<Concert> getStatistics
+		Page<ConcertResponse.StatisticsDto> getStatistics
 			= concertRepository.findStatisticsWithOrderByConcertInfo(title, startAt, endAt, order, pageable);
 
-		return getStatistics.stream().map(ConcertResponse.StatisticsDto::toDto).toList();
+		return getStatistics.toList();
 	}
 
 	/**
