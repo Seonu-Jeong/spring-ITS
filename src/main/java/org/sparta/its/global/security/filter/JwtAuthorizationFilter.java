@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +36,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(
 		HttpServletRequest req,
 		HttpServletResponse res,
-		FilterChain filterChain) throws ServletException, IOException {
+		FilterChain filterChain) throws ServletException, IOException, JwtException {
 
 		String tokenValue = jwtUtil.getTokenFromRequest(req);
 
@@ -43,15 +44,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 			// JWT 토큰 substring
 			tokenValue = jwtUtil.substringToken(tokenValue);
 
-			if (!jwtUtil.validateToken(tokenValue)) {
-				filterChain.doFilter(req, res);
-				return;
-			}
+			jwtUtil.validateToken(tokenValue);
 
 			Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
 
 			setAuthentication(info);
-			
+
 		}
 
 		filterChain.doFilter(req, res);
@@ -75,7 +73,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	}
 
 	private Collection<GrantedAuthority> getGrantedAuthorities(Claims info) {
-		String authority = info.get(AUTHORIZATION_KEY, String.class);
+		String authority = info.get(ROLE, String.class);
 
 		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
