@@ -21,7 +21,6 @@ import org.springframework.stereotype.Repository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -171,14 +170,5 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 			case ORDER_ASC -> concert.startAt.asc();
 			default -> throw new ConcertException(INCORRECT_VALUE);
 		};
-	}
-
-	private BooleanExpression checkStatusCompleted() {
-
-		return reservation.status.eq(ReservationStatus.COMPLETED);
-	}
-
-	private NumberExpression<Integer> countReservation() {
-		return reservation.count().intValue();
 	}
 }
