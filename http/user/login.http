@@ -1,5 +1,5 @@
 ### 회원 가입
-@userType = 유저타입
+@userType = ADMIN
 
 POST http://localhost:8080/auth/signup
 Content-Type: application/json
@@ -7,7 +7,7 @@ Content-Type: application/json
 {
   "email": "user6@gmail.com",
   "password": "Password1234@",
-  "name": "JEONG",
+  "name": "JEONG1",
   "phoneNumber": "010-2149-0922",
   "role": "{{userType}}"
 }

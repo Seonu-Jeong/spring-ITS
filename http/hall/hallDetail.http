@@ -1,6 +1,5 @@
 ### 공연장 조회 (단건)
-@hallId = 아이디
+@hallId = 공연장아이디
 
 GET http://localhost:8080/halls/{{hallId}}
-Content-Type: application/json
 Authorization: {{authToken}}

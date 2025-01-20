@@ -1,7 +1,7 @@
 ### 공연장 등록
 @name = 공연장명
 @location = 장소
-@capacity = 인원
+@capacity = 100
 
 POST http://localhost:8080/halls
 Content-Type: multipart/form-data; boundary=boundary

@@ -1,5 +1,4 @@
 ### 예약 조회 (다건)
 
 GET http://localhost:8080/reservations
-Content-Type: application/json
 Authorization: {{authToken}}

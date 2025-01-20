@@ -1,5 +1,4 @@
 ### 공연장 조회 (다건)
 
 GET http://localhost:8080/halls
-Content-Type: application/json
 Authorization: {{authToken}}

@@ -2,6 +2,5 @@
 @reservationId = 아이디
 
 POST http://localhost:8080/reservations/{{reservationId}}
-Content-Type: application/json
 Authorization: {{authToken}}
 
