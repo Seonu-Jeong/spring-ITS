@@ -110,7 +110,7 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 		JPQLQuery<Integer> reservationCount = JPAExpressions.select(reservation.count().intValue())
 			.from(reservation)
 			.where(reservation.status.eq(ReservationStatus.COMPLETED)
-				.and(reservation.concert.eq(concert)));
+				.and(reservation.concert.id.eq(concert.id)));
 
 		List<ConcertResponse.StatisticsDto> fetch = jpaQueryFactory
 			.select(Projections.constructor(
@@ -122,7 +122,6 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 				concert.price.multiply(reservationCount),
 				concert.startAt))
 			.from(concert)
-			.leftJoin(concert.reservations, reservation)
 			.where(concertTitleLike(title)
 				.and(isAfterStartAt(startAt))
 				.and(isBeforeEndAt(endAt)))
