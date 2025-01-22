@@ -51,6 +51,8 @@ public class ReservationService {
 	 *
 	 * @param concertId 콘서트 고유 식별자
 	 * @param seatId 좌석 고유 식별자
+	 * @param date 콘서트 날짜
+	 * @param userId 유저 고유 식별자
 	 * @return {@link ReservationResponse.SelectDto}
 	 */
 	@Transactional
@@ -66,14 +68,6 @@ public class ReservationService {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
 
-		// 예약 가능 여부 확인
-		Optional<Reservation> existingReservation
-			= reservationRepository.findReservationByConcertInfo(seat, concert, date, ReservationStatus.PENDING);
-
-		if (existingReservation.isPresent()) {
-			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
-		}
-
 		// 콘서트 선택 날짜 검증
 		boolean isCorrectConcertDate
 			= concert.getStartAt().minusDays(1).isBefore(date)
@@ -81,6 +75,14 @@ public class ReservationService {
 
 		if (!isCorrectConcertDate) {
 			throw new ReservationException(ReservationErrorCode.NOT_CORRECT_DATE);
+		}
+
+		// 예약 가능 여부 확인
+		Optional<Reservation> existingReservation
+			= reservationRepository.findReservationByConcertInfo(seat, concert, date, ReservationStatus.PENDING);
+
+		if (existingReservation.isPresent()) {
+			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
 		}
 
 		// 예약 생성

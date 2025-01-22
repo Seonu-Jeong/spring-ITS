@@ -8,6 +8,7 @@ import java.util.List;
 import org.sparta.its.domain.reservation.dto.ReservationRequest;
 import org.sparta.its.domain.reservation.dto.ReservationResponse;
 import org.sparta.its.domain.reservation.service.ReservationService;
+import org.sparta.its.domain.reservation.service.ReservationServiceFacade;
 import org.sparta.its.global.security.UserDetail;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -37,6 +38,7 @@ import lombok.RequiredArgsConstructor;
 public class ReservationController {
 
 	private final ReservationService reservationService;
+	private final ReservationServiceFacade reservationServiceFacade;
 
 	/**
 	 * 좌석 선택 API
@@ -55,7 +57,7 @@ public class ReservationController {
 		@AuthenticationPrincipal UserDetail userDetail) {
 
 		ReservationResponse.SelectDto selectDto
-			= reservationService.selectSeat(concertId, seatId, date, userDetail.getId());
+			= reservationServiceFacade.selectSeat(concertId, seatId, date, userDetail.getId());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(selectDto);
 	}
