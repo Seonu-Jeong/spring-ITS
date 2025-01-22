@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.sparta.its.domain.user.entity.Role;
 import org.sparta.its.domain.user.entity.User;
@@ -19,6 +20,7 @@ public class UserRepositoryTest {
 	private UserRepository userRepository;
 
 	@Test
+	@DisplayName("활성된 유저 email로 검색 테스트")
 	void findUserByEmailAndStatusIsActivatedTest() {
 
 		User user = new User(
@@ -36,10 +38,11 @@ public class UserRepositoryTest {
 		Optional<User> result = userRepository.findUserByEmailAndStatusIsActivated(email);
 
 		assertTrue(result.isPresent());
-		assertEquals(email, result.get().getEmail());
+		assertSame(user, result.get());
 	}
 
 	@Test
+	@DisplayName("활성된 유저 id로 검색 테스트")
 	void findUserByIdAndStatusIsActivatedTest() {
 
 		User user = new User(
@@ -55,10 +58,11 @@ public class UserRepositoryTest {
 		Optional<User> result = userRepository.findUserByIdAndStatusIsActivated(savedUser.getId());
 
 		assertTrue(result.isPresent());
-		assertEquals(user.getId(), result.get().getId());
+		assertSame(user, result.get());
 	}
 
 	@Test
+	@DisplayName("유저 이메일 존재 여부 테스트")
 	void existsUserByEmailTest() {
 
 		User user = new User(
