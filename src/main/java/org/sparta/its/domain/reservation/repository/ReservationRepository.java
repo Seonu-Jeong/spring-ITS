@@ -25,6 +25,17 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>,
 	// 쿼리 메소드
 
 	// @Query 작성 메소드
+	@Query(value = "SELECT GET_LOCK(:key, 100)", nativeQuery = true)
+	Integer getLock(String key);
+
+	@Query(value = "SELECT RELEASE_LOCK(:key)", nativeQuery = true)
+	Integer releaseLock(String key);
+
+	@Query(value = "SELECT IS_FREE_LOCK(:key)", nativeQuery = true)
+	Integer isFreeLock(String key);
+
+	@Query(value = "SELECT IS_USED_LOCK(:key)", nativeQuery = true)
+	Integer isUsedLock(String key);
 
 	//특정 자리 조회시 Pessimistic Lock적용
 	//TODO: 동시성 제어해야함

@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * create on 2025. 01. 25.
@@ -38,6 +39,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReservationService {
 
 	private final ReservationRepository reservationRepository;
@@ -55,21 +57,35 @@ public class ReservationService {
 	 */
 	@Transactional
 	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, LocalDate date, Long userId) {
-
 		// 콘서트 조회
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
-
-		// 좌석 조회
-		Seat seat = seatRepository.findByIdOrThrow(seatId);
 
 		// 유저 확인
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
+		Reservation reservation = null;
+		Seat seat = seatRepository.findByIdOrThrow(seatId);
+		// 좌석 조회
+		try {
+			if (reservationRepository.isFreeLock(userId.toString()) == 1) {
+				reservationRepository.getLock(userId.toString());
 
+				reservation = getReservation(date, user, seat, concert);
+			}
+		} finally {
+			// reservationRepository.releaseLock(userId.toString());
+		}
+
+		return ReservationResponse.SelectDto.toDto(reservation, date);
+	}
+
+	// @Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Reservation getReservation(LocalDate date, User user, Seat seat, Concert concert) {
 		// 예약 가능 여부 확인
 		Optional<Reservation> existingReservation
 			= reservationRepository.findReservationByConcertInfo(seat, concert, date, ReservationStatus.PENDING);
 
+		// retry
 		if (existingReservation.isPresent()) {
 			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
 		}
@@ -83,7 +99,6 @@ public class ReservationService {
 			throw new ReservationException(ReservationErrorCode.NOT_CORRECT_DATE);
 		}
 
-		// 예약 생성
 		Reservation reservation = Reservation.builder()
 			.user(user)
 			.seat(seat)
@@ -92,9 +107,11 @@ public class ReservationService {
 			.concertDate(date)
 			.build();
 
-		reservationRepository.save(reservation);
+		reservationRepository.saveAndFlush(reservation);
 
-		return ReservationResponse.SelectDto.toDto(reservation, date);
+		// 예약 생성
+
+		return reservation;
 	}
 
 	/**
