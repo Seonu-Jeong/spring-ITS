@@ -8,6 +8,7 @@ import org.redisson.api.RedissonClient;
 import org.sparta.its.domain.reservation.dto.ReservationResponse;
 import org.sparta.its.global.exception.ReservationException;
 import org.sparta.its.global.exception.errorcode.ReservationErrorCode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,12 @@ public class ReservationServiceFacade {
 
 	private final ReservationService reservationService;
 	private final RedissonClient redissonClient;
+
+	@Value("${WAIT_TIME}")
+	long waitTime;
+
+	@Value("${LEASE_TIME}")
+	long leaseTime;
 
 	/**
 	 * 좌석 선택 - Redis 동시성 제어
@@ -31,9 +38,6 @@ public class ReservationServiceFacade {
 	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, LocalDate date, Long userId) {
 		RLock lock = redissonClient.getLock(generateLockName(concertId, seatId, date));
 
-		long waitTime = 5L;
-		long leaseTime = 3L;
-
 		ReservationResponse.SelectDto resultDto = null;
 
 		try {
@@ -45,9 +49,12 @@ public class ReservationServiceFacade {
 
 			resultDto = reservationService.selectSeat(concertId, seatId, date, userId);
 		} catch (InterruptedException e) {
+			// controller advice 예외 처리 위임
 			throw new RuntimeException(e);
 		} finally {
-			lock.unlock();
+			if (lock.isHeldByCurrentThread()) {
+				lock.unlock();
+			}
 		}
 
 		return resultDto;
