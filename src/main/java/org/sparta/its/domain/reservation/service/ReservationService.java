@@ -55,7 +55,6 @@ public class ReservationService {
 	 * @param seatId 좌석 고유 식별자
 	 * @return {@link ReservationResponse.SelectDto}
 	 */
-	@Transactional
 	public ReservationResponse.SelectDto selectSeat(Long concertId, Long seatId, LocalDate date, Long userId) {
 		// 콘서트 조회
 		Concert concert = concertRepository.findByIdOrThrow(concertId);
@@ -64,52 +63,48 @@ public class ReservationService {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new UserException(UserErrorCode.FORBIDDEN_ACCESS));
 		Reservation reservation = null;
-		Seat seat = seatRepository.findByIdOrThrow(seatId);
-		// 좌석 조회
-		try {
-			if (reservationRepository.isFreeLock(userId.toString()) == 1) {
-				reservationRepository.getLock(userId.toString());
 
-				reservation = getReservation(date, user, seat, concert);
-			}
-		} finally {
-			// reservationRepository.releaseLock(userId.toString());
-		}
+		Seat seat = seatRepository.findByIdOrThrow(seatId);
+
+		reservation = getReservation(date, user, seat, concert);
 
 		return ReservationResponse.SelectDto.toDto(reservation, date);
 	}
 
-	// @Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional
 	public Reservation getReservation(LocalDate date, User user, Seat seat, Concert concert) {
-		// 예약 가능 여부 확인
-		Optional<Reservation> existingReservation
-			= reservationRepository.findReservationByConcertInfo(seat, concert, date, ReservationStatus.PENDING);
+		String lockName = "seat_" + seat.getSeatNumber();
+		int lockAcquired = 0;
+		Reservation reservation = null;
 
-		// retry
-		if (existingReservation.isPresent()) {
-			throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
+		try {
+			lockAcquired = reservationRepository.getLock(lockName);
+			if (lockAcquired == 0) {
+				throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
+			}
+
+			// 예약 가능 여부 확인
+			Optional<Reservation> existingReservation
+				= reservationRepository.findReservationByConcertInfo(seat, concert, date, ReservationStatus.PENDING);
+
+			if (existingReservation.isPresent()) {
+				throw new ReservationException(ReservationErrorCode.ALREADY_BOOKED);
+			}
+
+			reservation = Reservation.builder()
+				.user(user)
+				.seat(seat)
+				.concert(concert)
+				.status(ReservationStatus.PENDING)
+				.concertDate(date)
+				.build();
+
+			reservationRepository.saveAndFlush(reservation);
+		} finally {
+			if (lockAcquired == 1) {
+				reservationRepository.releaseLock(lockName);
+			}
 		}
-
-		// 콘서트 선택 날짜 검증
-		boolean isCorrectConcertDate
-			= concert.getStartAt().minusDays(1).isBefore(date)
-			&& concert.getEndAt().plusDays(1).isAfter(date);
-
-		if (!isCorrectConcertDate) {
-			throw new ReservationException(ReservationErrorCode.NOT_CORRECT_DATE);
-		}
-
-		Reservation reservation = Reservation.builder()
-			.user(user)
-			.seat(seat)
-			.concert(concert)
-			.status(ReservationStatus.PENDING)
-			.concertDate(date)
-			.build();
-
-		reservationRepository.saveAndFlush(reservation);
-
-		// 예약 생성
 
 		return reservation;
 	}

@@ -25,7 +25,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>,
 	// 쿼리 메소드
 
 	// @Query 작성 메소드
-	@Query(value = "SELECT GET_LOCK(:key, 100)", nativeQuery = true)
+	@Query(value = "SELECT GET_LOCK(:key, 10)", nativeQuery = true)
 	Integer getLock(String key);
 
 	@Query(value = "SELECT RELEASE_LOCK(:key)", nativeQuery = true)

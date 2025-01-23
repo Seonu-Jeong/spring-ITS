@@ -22,16 +22,16 @@ class ReservationServiceTest {
 
 	@Test
 	public void concurrencyTestNamedLock() {
-		IntStream.range(0, 10).parallel().forEach(i -> {
+		IntStream.range(0, 20).parallel().forEach(i -> {
 
-			long concert = ThreadLocalRandom.current().nextLong(5L) + 1;
-			long seat = ThreadLocalRandom.current().nextLong(100L) + 1;
+			long concert = ThreadLocalRandom.current().nextLong(3L) + 1;
+			long seat = ThreadLocalRandom.current().nextLong(5L) + 1;
 			LocalDate date = LocalDate.parse("2025-12-15");
 			long user = ThreadLocalRandom.current().nextLong(4L) + 1;
 
-			// log.warn("{}/{}/{}", concert, seat, user);
+			log.warn("{}/{}/{}", concert, seat, user);
 			// testService.testNamedLockV2(1L, seat, date, user);
-			reservationService.selectSeat(1L, 1L, date, user);
+			reservationService.selectSeat(concert, seat, date, user);
 			// testService.test(1L, 1L, date, 1L);
 		});
 	}
