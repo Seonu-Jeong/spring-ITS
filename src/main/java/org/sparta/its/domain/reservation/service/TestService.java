@@ -23,7 +23,7 @@ public class TestService {
 	private final ReservationRepository reservationRepository;
 
 	public void testNamedLockV1(Long concertId, Long seatId, LocalDate date, Long userId) {
-		String key = keyGenerator(concertId, seatId, date, userId);
+		String key = keyGenerator(concertId, seatId, date);
 		try {
 			reservationRepository.getLock(key);
 			reservationService.selectSeat(concertId, seatId, date, userId);
@@ -34,19 +34,8 @@ public class TestService {
 		}
 	}
 
-	public void testNamedLockV2(Long concertId, Long seatId, LocalDate date, Long userId) {
-		try {
-			reservationRepository.getLock("Test");
-			reservationService.selectSeat(concertId, seatId, date, userId);
-		} catch (Exception e) {
+	private String keyGenerator(Long concertId, Long seatId, LocalDate date) {
 
-		} finally {
-			reservationRepository.releaseLock("Test");
-		}
-	}
-
-	private String keyGenerator(Long concertId, Long seatId, LocalDate date, Long userId) {
-
-		return concertId + "/" + seatId + "/" + date + "/" + userId;
+		return concertId + "/" + seatId + "/" + date;
 	}
 }
