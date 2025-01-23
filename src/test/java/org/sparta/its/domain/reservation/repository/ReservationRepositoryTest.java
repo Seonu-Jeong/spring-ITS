@@ -44,59 +44,50 @@ class ReservationRepositoryTest {
 	@Autowired
 	private HallRepository hallRepository;
 
-	private Concert testConcert;
 	private Seat testSeat;
-	private Hall testHall;
+	private Concert testConcert;
+	private User testUser;
+	private Reservation testReservation;
 
 	@BeforeEach
 	void setUp() {
-		testSeat = new Seat();
-		testHall = new Hall();
-		testConcert = new Concert();
-	}
-
-	//setup helper method
-	private Hall createAndSaveHall() {
-		return hallRepository.save(Hall.builder()
+		// Hall 생성
+		Hall testHall = hallRepository.save(Hall.builder()
 			.name("Test Hall")
 			.location("Test Location")
 			.capacity(100)
 			.isOpen(true)
 			.build());
-	}
 
-	private Seat createAndSaveSeat(Hall hall, int seatNumber) {
-		return seatRepository.save(new Seat(hall, seatNumber));
-	}
+		// Seat 생성
+		testSeat = seatRepository.save(new Seat(testHall, 1));
 
-	private Concert createAndSaveConcert(Hall hall, String title, String singer) {
-		return concertRepository.save(Concert.builder()
-			.hall(hall)
-			.title(title)
-			.singer(singer)
+		// Concert 생성
+		testConcert = concertRepository.save(Concert.builder()
+			.hall(testHall)
+			.title("Test Concert")
+			.singer("Test Singer")
 			.startAt(LocalDate.now().minusDays(1))
 			.endAt(LocalDate.now().plusDays(1))
 			.runningStartTime(LocalTime.of(19, 0))
 			.runningEndTime(LocalTime.of(21, 0))
 			.price(11000)
 			.build());
-	}
 
-	private User createAndSaveUser(String email, String password, String name, String phoneNumber) {
-		return userRepository.save(User.builder()
-			.email(email)
-			.password(password)
-			.name(name)
-			.phoneNumber(phoneNumber)
+		// User 생성
+		testUser = userRepository.save(User.builder()
+			.email("test@email.com")
+			.password("Password1234!")
+			.name("Test User")
+			.phoneNumber("01012345678")
 			.role(Role.USER)
 			.build());
-	}
 
-	private Reservation createAndSaveReservation(User user, Concert concert, Seat seat) {
-		return reservationRepository.save(Reservation.builder()
-			.user(user)
-			.concert(concert)
-			.seat(seat)
+		// Reservation 생성
+		testReservation = reservationRepository.save(Reservation.builder()
+			.user(testUser)
+			.concert(testConcert)
+			.seat(testSeat)
 			.status(ReservationStatus.PENDING)
 			.concertDate(LocalDate.now())
 			.build());
@@ -104,46 +95,29 @@ class ReservationRepositoryTest {
 
 	@Test
 	void findByIdOrThrowTest() {
-		User testUser = createAndSaveUser(
-			"test@email.com",
-			"PAssword1234@",
-			"testName",
-			"01012345656");
-		Reservation savedReservation = createAndSaveReservation(testUser, testConcert, testSeat);
+		// When
+		Reservation foundReservation = reservationRepository.findByIdOrThrow(testReservation.getId());
 
-		Reservation foundReservation = reservationRepository.findByIdOrThrow(savedReservation.getId());
-
-		assertNotNull(foundReservation);
-		assertEquals(testUser.getId(), foundReservation.getUser().getId());
-		assertEquals(testConcert.getId(), foundReservation.getConcert().getId());
-		assertEquals(testSeat.getId(), foundReservation.getSeat().getId());
+		// Then
+		assertNotNull(foundReservation, "예약을 찾을 수 없습니다.");
+		assertSame(testReservation, foundReservation);
 	}
 
+	//todo 있는경우, 없는경우 따로
 	@Test
 	void findReservationByConcertInfoTest() {
-		//Given
-		testHall = createAndSaveHall();
-		testConcert = createAndSaveConcert(testHall, "Test", "Test");
-		testSeat = createAndSaveSeat(testHall, 2);
-		User testUser = createAndSaveUser("test@email.com", "PAssword1234@", "testName", "01012345656");
-		Reservation savedReservation = createAndSaveReservation(testUser, testConcert, testSeat);
+		// When
+		Optional<Reservation> result = reservationRepository.findReservationByConcertInfo(
+			testSeat, testConcert, LocalDate.now(), ReservationStatus.PENDING);
 
-		//When
-		Optional<Reservation> result = reservationRepository
-			.findReservationByConcertInfo(
-				testSeat,
-				testConcert,
-				LocalDate.now(),
-				ReservationStatus.PENDING);
-
-		//Then
-		assertTrue(result.isPresent(), "예약이 존재하지 않습니다");
+		// Then
+		assertTrue(result.isPresent(), "예약이 존재하지 않습니다.");
 		Reservation foundReservation = result.get();
-		assertEquals(savedReservation.getId(), foundReservation.getId(), "예약 아이디와 일치하지 않습니다");
-		assertEquals(testUser.getId(), foundReservation.getUser().getId(), "유저 아이디와 일치하지 않습니다");
-		assertEquals(testConcert.getId(), foundReservation.getConcert().getId(), "콘서트 아이디가 일치하지 않습니다");
-		assertEquals(testSeat.getId(), foundReservation.getSeat().getId(), "자리 아이디가 일치하지 않습니다");
-		assertEquals(LocalDate.now(), foundReservation.getConcertDate(), "콘서트 날짜가 일치하지 않습니다");
-		assertEquals(ReservationStatus.PENDING, foundReservation.getStatus(), "예약 상태가 일치하지 않습니다");
+		assertEquals(testReservation.getId(), foundReservation.getId(), "예약 ID가 일치하지 않습니다.");
+		assertEquals(testUser.getId(), foundReservation.getUser().getId(), "유저 ID가 일치하지 않습니다.");
+		assertEquals(testConcert.getId(), foundReservation.getConcert().getId(), "콘서트 ID가 일치하지 않습니다.");
+		assertEquals(testSeat.getId(), foundReservation.getSeat().getId(), "좌석 ID가 일치하지 않습니다.");
+		assertEquals(LocalDate.now(), foundReservation.getConcertDate(), "콘서트 날짜가 일치하지 않습니다.");
+		assertEquals(ReservationStatus.PENDING, foundReservation.getStatus(), "예약 상태가 일치하지 않습니다.");
 	}
 }
