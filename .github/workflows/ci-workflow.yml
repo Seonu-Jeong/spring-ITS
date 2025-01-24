@@ -53,7 +53,7 @@ jobs:
           mkdir -p ./src/test/resources
           cd ./src/test/resources
           touch ./application-test.properties
-          echo "${{ secrets.APPLICATION_TEST }}" > ./application-test.yml
+          echo "${{ secrets.APPLICATION_TEST }}" > ./application-test.properties
 
       - name: make executable gradlew
         run: chmod +x ./gradlew
