@@ -39,7 +39,7 @@ jobs:
         with:
           host port: 3306
           container port: 3306
-          mysql database: 'ci'
+          mysql database: 'its'
           mysql user: 'root'
           mysql root password: '1234'
 
