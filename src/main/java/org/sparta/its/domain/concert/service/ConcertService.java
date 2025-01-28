@@ -114,6 +114,12 @@ public class ConcertService {
 			= concertRepository.findConcertsBySingerAndTitleAndTodayOrderByStartAt(singer, title, today, sortByStartAt);
 
 		return allConcerts.stream().map(ConcertResponse.ReadDto::toDto).toList();
+
+		// TODO: QueryDsl vs jqpl 성능 테스트
+		// Page<Concert> concertsBySingerAndTitleAndTodayOrderByStartAt = concertRepository.findConcertsBySingerAndTitleAndTodayOrderByStartAt(
+		// 	singer, title, order, today, pageable);
+		//
+		// return concertsBySingerAndTitleAndTodayOrderByStartAt.stream().map(ConcertResponse.ReadDto::toDto).toList();
 	}
 
 	/**

@@ -89,6 +89,36 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 		entityManager.clear();
 	}
 
+	// todo : jpql vs querydsl 최적화 테스트
+	// @Override
+	// public Page<Concert> findConcertsBySingerAndTitleAndTodayOrderByStartAt(String singer, String title, String order,
+	// 	LocalDate today, Pageable pageable) {
+	//
+	// 	List<Concert> fetch = jpaQueryFactory.selectFrom(concert)
+	// 		.where(singerLikeTest(singer)
+	// 			.and(concertTitleLike(title))
+	// 			.and(concert.endAt.goe(today)))
+	// 		.orderBy(decideOrderBy(order))
+	// 		.fetch();
+	//
+	// 	JPAQuery<Long> count = jpaQueryFactory
+	// 		.select(concert.count())
+	// 		.from(concert)
+	// 		.where(
+	// 			singerLikeTest(singer)
+	// 				.and(concertTitleLike(title))
+	// 				.and(concert.endAt.goe(today)));
+	//
+	// 	return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
+	// }
+	//
+	// private BooleanExpression singerLikeTest(String singer) {
+	// 	if (singer == null) {
+	// 		return null;
+	// 	}
+	// 	return concert.title.like("%" + singer + "%");
+	// }
+
 	/**
 	 * 콘서트 등록 현황 조회
 	 *
