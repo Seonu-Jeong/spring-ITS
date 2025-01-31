@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.sparta.its.domain.concert.entity.Concert;
@@ -99,8 +100,8 @@ class ReservationRepositoryTest {
 		Reservation foundReservation = reservationRepository.findByIdOrThrow(testReservation.getId());
 
 		// Then
-		assertNotNull(foundReservation, "예약을 찾을 수 없습니다.");
-		assertSame(testReservation, foundReservation);
+		Assertions.assertThat(foundReservation).isNotNull();
+		Assertions.assertThat(testReservation).isSameAs(foundReservation);
 	}
 
 	//todo 있는경우, 없는경우 따로
