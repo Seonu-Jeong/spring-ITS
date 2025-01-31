@@ -25,12 +25,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * create on 2025. 01. 25.
+ * create on 2025. 01. 23.
  * create by IntelliJ IDEA.
  *
  * 예약 관련 Service.
  *
- * @author Jun Heo
+ * @author Tae Hyeon Kim
  */
 @Service
 @RequiredArgsConstructor

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 /**
- * create on 2025. 01. 25.
+ * create on 2025. 01. 22.
  * create by IntelliJ IDEA.
  *
  * 예약 관련 Service.
  *
- * @author Jun Heo
+ * @author Tae Hyeon Kim
  */
 @Service
 @RequiredArgsConstructor
@@ -27,8 +27,6 @@ public class TestService {
 		try {
 			reservationRepository.getLock(key);
 			reservationService.selectSeat(concertId, seatId, date, userId);
-		} catch (Exception e) {
-
 		} finally {
 			reservationRepository.releaseLock(key);
 		}
