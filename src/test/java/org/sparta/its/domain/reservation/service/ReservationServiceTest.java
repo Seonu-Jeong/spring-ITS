@@ -29,7 +29,7 @@ import com.mysema.commons.lang.Assert;
 class ReservationServiceTest {
 
 	@Autowired
-	private TestService testService;
+	private ReservationFacadeLockService testService;
 
 	@Autowired
 	private ReservationLockService reservationLockService;

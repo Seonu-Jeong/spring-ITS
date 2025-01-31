@@ -3,7 +3,6 @@ package org.sparta.its.domain.reservation.service;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.sparta.its.domain.cancelList.repository.CancelListRepository;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
 import org.sparta.its.domain.hall.entity.Seat;
@@ -28,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
  * create on 2025. 01. 23.
  * create by IntelliJ IDEA.
  *
- * 예약 관련 Service.
+ * 내부 트랜잭션 제어를 이용한 동시성 제어 관련 Service.
  *
  * @author Tae Hyeon Kim
  */
@@ -41,7 +40,6 @@ public class ReservationLockService {
 	private final SeatRepository seatRepository;
 	private final ConcertRepository concertRepository;
 	private final UserRepository userRepository;
-	private final CancelListRepository cancelListRepository;
 
 	/**
 	 * 좌석 선택
@@ -105,7 +103,6 @@ public class ReservationLockService {
 	}
 
 	private String keyGenerator(Long concertId, Long seatId, LocalDate date) {
-
 		return concertId + "/" + seatId + "/" + date;
 	}
 }

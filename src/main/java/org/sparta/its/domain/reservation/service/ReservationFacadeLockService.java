@@ -11,13 +11,13 @@ import lombok.RequiredArgsConstructor;
  * create on 2025. 01. 22.
  * create by IntelliJ IDEA.
  *
- * 예약 관련 Service.
+ * 파샤드 패턴을 이용한 동시성 제어 관련 Service.
  *
  * @author Tae Hyeon Kim
  */
 @Service
 @RequiredArgsConstructor
-public class TestService {
+public class ReservationFacadeLockService {
 
 	private final ReservationService reservationService;
 	private final ReservationRepository reservationRepository;
@@ -33,7 +33,6 @@ public class TestService {
 	}
 
 	private String keyGenerator(Long concertId, Long seatId, LocalDate date) {
-
 		return concertId + "/" + seatId + "/" + date;
 	}
 }

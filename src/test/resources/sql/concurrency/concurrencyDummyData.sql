@@ -22,8 +22,5 @@ VALUES (1, 1, 'SEOUL', true, 'TEST');
 INSERT INTO seat (id, seat_number, hall_id)
 VALUES (1, 1, 1);
 
-INSERT INTO seat (id, seat_number, hall_id)
-VALUES (2, 2, 1);
-
 INSERT INTO concert (id, singer, title, price, hall_id, start_at, end_at, running_start_time, running_end_time)
 VALUES (1, 'TEST_SINGER', 'TEST_TITLE', 1, 1, '2070-12-15', '2070-12-31', '20:00:00', '21:00:00');
