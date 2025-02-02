@@ -43,8 +43,8 @@ public class ReservationServiceConcurrencyTest {
 	private ReservationFacadeService reservationService;
 
 	@Test
-	@DisplayName("좌석 임시 선택 동시성 테스트")
-	public void selectSeatTest() throws InterruptedException {
+	@DisplayName("좌석 임시 선택 동시성 테스트 - 네임드 락 기반")
+	public void lockSelectSeatTest() throws InterruptedException {
 		//given
 		List<User> users = userRepository.findAll();
 		Long concertId = 1L;
@@ -63,7 +63,48 @@ public class ReservationServiceConcurrencyTest {
 			int userIdx = i;
 			executorService.execute(() -> {
 				try {
-					reservationService.selectSeat(concertId, seatId, date, users.get(userIdx).getId());
+					reservationService.lockSelectSeat(concertId, seatId, date, users.get(userIdx).getId());
+
+					successCount.getAndIncrement();
+				} catch (ReservationException e) {
+					failCount.getAndIncrement();
+				} finally {
+					doneSignal.countDown();
+				}
+			});
+		}
+		doneSignal.await();
+		executorService.shutdown();
+
+		//then
+		assertAll(
+			() -> assertThat(successCount.get()).isEqualTo(1),
+			() -> assertThat(failCount.get()).isEqualTo(9)
+		);
+	}
+
+	@Test
+	@DisplayName("좌석 임시 선택 동시성 테스트 - redis 기반")
+	public void redisSelectSeatTest() throws InterruptedException {
+		//given
+		List<User> users = userRepository.findAll();
+		Long concertId = 1L;
+		Long seatId = 1L;
+		LocalDate date = LocalDate.of(2025, 5, 05);
+
+		int numThreads = 10;
+		CountDownLatch doneSignal = new CountDownLatch(numThreads);
+		ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
+
+		AtomicInteger successCount = new AtomicInteger();
+		AtomicInteger failCount = new AtomicInteger();
+
+		// when
+		for (int i = 0; i < numThreads; i++) {
+			int userIdx = i;
+			executorService.execute(() -> {
+				try {
+					reservationService.redisSelectSeat(concertId, seatId, date, users.get(userIdx).getId());
 
 					successCount.getAndIncrement();
 				} catch (ReservationException e) {

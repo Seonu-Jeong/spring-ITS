@@ -16,13 +16,14 @@ public enum ReservationErrorCode {
 
 	NOT_CORRECT_DATE(HttpStatus.BAD_REQUEST, "불가능한 콘서트 날짜입니다."),
 
-	RETRY_REQUESET(HttpStatus.BAD_REQUEST, "좌석 선택을 재시도 해주세요."),
-
 	// 403 FORBIDDEN
 	ALREADY_BOOKED(HttpStatus.FORBIDDEN, "이 자리는 이미 예약되었습니다."),
 
 	// 404 NOT FOUND
-	NOT_FOUND_RESERVATION(HttpStatus.NOT_FOUND, "예약을 찾을 수 없습니다.");
+	NOT_FOUND_RESERVATION(HttpStatus.NOT_FOUND, "예약을 찾을 수 없습니다."),
+
+	// 409 CONFLICT
+	TIME_OUT(HttpStatus.CONFLICT, "자리 선택 요청 대기 시간을 초과했습니다. 재시도해주세요");
 
 	private final HttpStatus httpStatus;
 	private final String detail;
