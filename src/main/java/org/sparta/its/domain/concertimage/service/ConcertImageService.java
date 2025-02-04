@@ -1,8 +1,10 @@
 package org.sparta.its.domain.concertimage.service;
 
+import static org.sparta.its.global.exception.errorcode.ConcertImageErrorCode.*;
+import static org.sparta.its.global.exception.errorcode.ImageErrorCode.*;
+
 import java.io.IOException;
 
-import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.domain.concert.repository.ConcertRepository;
 import org.sparta.its.domain.concertimage.dto.ConcertImageRequest;
 import org.sparta.its.domain.concertimage.dto.ConcertImageResponse;
@@ -10,8 +12,6 @@ import org.sparta.its.domain.concertimage.entity.ConcertImage;
 import org.sparta.its.domain.concertimage.repository.ConcertImageRepository;
 import org.sparta.its.global.exception.ConcertImageException;
 import org.sparta.its.global.exception.ImageException;
-import org.sparta.its.global.exception.errorcode.ConcertImageErrorCode;
-import org.sparta.its.global.exception.errorcode.ImageErrorCode;
 import org.sparta.its.global.s3.S3Service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,11 +49,11 @@ public class ConcertImageService {
 		Long concertId,
 		Long concertImageId,
 		ConcertImageRequest.UpdateDto updateDto) {
-		Concert findConcert = concertRepository.findByIdOrThrow(concertId);
+
 		ConcertImage findConcertImage = concertImageRepository.findByIdOrThrow(concertImageId);
 
-		if (!findConcertImage.getConcert().getId().equals(findConcert.getId())) {
-			throw new ConcertImageException(ConcertImageErrorCode.NOT_MATCHING);
+		if (!findConcertImage.getConcert().getId().equals(concertId)) {
+			throw new ConcertImageException(NOT_MATCHING);
 		}
 
 		String publicUrl;
@@ -62,11 +62,11 @@ public class ConcertImageService {
 			// 기존 이미지 삭제 및 새 이미지 업로드 후 url 받아옴
 			publicUrl = s3Service.updateImage(
 				updateDto.getImageFormat(),
-				findConcert.getId(),
+				concertId,
 				findConcertImage.getImageUrl(),
 				updateDto.getImages());
 		} catch (SdkClientException | IOException e) {
-			throw new ImageException(ImageErrorCode.FILE_UPLOAD_FAILED);
+			throw new ImageException(FILE_UPLOAD_FAILED);
 		}
 
 		// url 업데이트

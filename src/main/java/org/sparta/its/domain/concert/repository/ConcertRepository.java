@@ -1,12 +1,13 @@
 package org.sparta.its.domain.concert.repository;
 
+import static org.sparta.its.global.exception.errorcode.ConcertErrorCode.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.entity.Concert;
 import org.sparta.its.global.exception.ConcertException;
-import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,7 +39,7 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
 		@Param("title") String title,
 		@Param("today") LocalDate today,
 		Pageable pageable);
-
+	
 	@Query("""
 		SELECT new org.sparta.its.domain.concert.dto.ConcertResponse$ConcertSeatDto(s.id, s.seatNumber, r.status)
 			FROM seat s
@@ -53,6 +54,6 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
 	// Default 메소드
 	default Concert findByIdOrThrow(Long concertId) {
 		return findById(concertId).orElseThrow(() ->
-			new ConcertException(ConcertErrorCode.NOT_FOUND));
+			new ConcertException(NOT_FOUND));
 	}
 }
