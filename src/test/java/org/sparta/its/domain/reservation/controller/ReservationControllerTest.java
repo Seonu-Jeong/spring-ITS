@@ -30,7 +30,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -88,7 +87,6 @@ class ReservationControllerTest {
 
 	@Test
 	@DisplayName("좌석 선택 API 테스트")
-	@WithMockUser(username = "테스트_최고관리자", roles = {"SUPER"})
 	void selectSeatTest() throws Exception {
 		Long concertId = 1L;
 		Long seatId = 1L;

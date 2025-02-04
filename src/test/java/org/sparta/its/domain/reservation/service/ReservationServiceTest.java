@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,7 +56,6 @@ public class ReservationServiceTest {
 	@InjectMocks
 	private ReservationService reservationService;
 
-	private Long seatId = 1L;
 	private LocalDate date = LocalDate.of(2025, 1, 31);
 	private Reservation testReservation;
 	private User testUser;
@@ -111,6 +111,7 @@ public class ReservationServiceTest {
 	}
 
 	@Test
+	@DisplayName("좌석 선택 테스트")
 	void testSelectSeat() {
 		// given
 		ReservationResponse.SelectDto selectDto = ReservationResponse.SelectDto.toDto(testReservation, date);
@@ -131,6 +132,7 @@ public class ReservationServiceTest {
 	}
 
 	@Test
+	@DisplayName("이미 예약된 좌석 선택 테스트")
 	void testSelectSeat_AlreadyBooked() {
 		when(userRepository.findById(anyLong())).thenReturn(Optional.of(testUser));
 		// 예약이 이미 있는 경우
@@ -143,6 +145,7 @@ public class ReservationServiceTest {
 	}
 
 	@Test
+	@DisplayName("좌석 확정 테스트")
 	void testCompleteReservation() {
 		// given
 		ReflectionTestUtils.setField(testReservation, "id", 1L); // ID 설정
@@ -162,6 +165,7 @@ public class ReservationServiceTest {
 	}
 
 	@Test
+	@DisplayName("예약 취소 테스트")
 	void testCancelReservation() {
 		// given
 		ReflectionTestUtils.setField(testConcert, "startAt", LocalDate.now().plusDays(1)); // 미래 날짜 설정
@@ -183,6 +187,7 @@ public class ReservationServiceTest {
 	}
 
 	@Test
+	@DisplayName("예약 미확정 요청 취소 테스트")
 	void testCancelReservation_NotCompleted() {
 		// given
 		ReflectionTestUtils.setField(testReservation, "status", ReservationStatus.PENDING); // 상태 변경
@@ -196,6 +201,7 @@ public class ReservationServiceTest {
 	}
 
 	@Test
+	@DisplayName("예약 조회 테스트")
 	void testGetReservations() {
 		// given
 		Pageable pageable = PageRequest.of(0, 10);
