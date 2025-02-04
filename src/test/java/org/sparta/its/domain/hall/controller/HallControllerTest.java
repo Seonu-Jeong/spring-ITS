@@ -54,13 +54,13 @@ class HallControllerTest {
 	void createHall() throws Exception {
 		// given
 		MockMultipartFile image1 = new MockMultipartFile(
-			"테스트 이미지1",
+			"images",
 			"test1.png",
 			ImageFormat.HALL.toString(),
 			"test1.png".getBytes(StandardCharsets.UTF_8));
 
 		MockMultipartFile image2 = new MockMultipartFile(
-			"테스트 이미지1",
+			"images",
 			"test1.png",
 			ImageFormat.HALL.toString(),
 			"test1.png".getBytes(StandardCharsets.UTF_8));

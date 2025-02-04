@@ -2,7 +2,6 @@ package org.sparta.its.domain.hall.service;
 
 import static org.mockito.ArgumentMatchers.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -18,12 +17,10 @@ import org.sparta.its.domain.hall.dto.HallRequest;
 import org.sparta.its.domain.hall.dto.HallResponse;
 import org.sparta.its.domain.hall.entity.Hall;
 import org.sparta.its.domain.hall.repository.HallRepository;
-import org.sparta.its.domain.hall.repository.SeatRepository;
 import org.sparta.its.domain.hallImage.entity.HallImage;
 import org.sparta.its.domain.hallImage.repository.HallImageRepository;
 import org.sparta.its.global.exception.HallException;
 import org.sparta.its.global.exception.ImageException;
-import org.sparta.its.global.s3.ImageFormat;
 import org.sparta.its.global.s3.S3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,9 +39,6 @@ class HallServiceTest {
 	private HallImageRepository hallImageRepository;
 
 	@Mock
-	private SeatRepository seatRepository;
-
-	@Mock
 	private S3Service s3Service;
 
 	@InjectMocks
@@ -53,18 +47,9 @@ class HallServiceTest {
 	@Test
 	@DisplayName("공연장 이름 중복 예외 처리")
 	void duplicatedHallName_Test() {
-		MockMultipartFile image1 = new MockMultipartFile(
-			"테스트 이미지1",
-			"test1.png",
-			ImageFormat.HALL.toString(),
-			"test1.png".getBytes(StandardCharsets.UTF_8));
-
-		MockMultipartFile image2 = new MockMultipartFile(
-			"테스트 이미지1",
-			"test1.png",
-			ImageFormat.HALL.toString(),
-			"test1.png".getBytes(StandardCharsets.UTF_8));
-		MockMultipartFile[] images = {image1, image2};
+		MockMultipartFile multipartFile1 = Mockito.mock(MockMultipartFile.class);
+		MockMultipartFile multipartFile2 = Mockito.mock(MockMultipartFile.class);
+		MockMultipartFile[] images = {multipartFile1, multipartFile2};
 
 		HallRequest.CreateDto requestDto = new HallRequest.CreateDto(
 			"올림픽 경기장",
@@ -87,18 +72,9 @@ class HallServiceTest {
 		List<String> imageUrls = List.of("imageUrl1", "imageUrl2");
 		HallImage hallImage = Mockito.mock(HallImage.class);
 
-		MockMultipartFile image1 = new MockMultipartFile(
-			"테스트 이미지1",
-			"test1.png",
-			ImageFormat.HALL.toString(),
-			"test1.png".getBytes(StandardCharsets.UTF_8));
-
-		MockMultipartFile image2 = new MockMultipartFile(
-			"테스트 이미지1",
-			"test1.png",
-			ImageFormat.HALL.toString(),
-			"test1.png".getBytes(StandardCharsets.UTF_8));
-		MockMultipartFile[] images = {image1, image2};
+		MockMultipartFile multipartFile1 = Mockito.mock(MockMultipartFile.class);
+		MockMultipartFile multipartFile2 = Mockito.mock(MockMultipartFile.class);
+		MockMultipartFile[] images = {multipartFile1, multipartFile2};
 
 		HallRequest.CreateDto requestDto = new HallRequest.CreateDto(
 			"올림픽 경기장",
@@ -208,25 +184,18 @@ class HallServiceTest {
 		Assertions.assertThat(hall.getIsOpen()).isEqualTo(false);
 	}
 
-	// todo : HallImageRepository deleteAllByIdInBatch 테스트 코드에서 적용 방법
 	@Test
 	@DisplayName("공연장 삭제 시 해당 공연장 이미지 삭제 정상 작동")
 	void deleteHallAndHallImages() {
 		Long hallId = 1L;
-		Hall hall = new Hall("올림픽 경기장", "잠실", 400, true);
+		Hall hall = Mockito.mock(Hall.class);
 		ReflectionTestUtils.setField(hall, "id", hallId);
 
-		List<String> imageUrls = List.of("imageUrl1", "imageUrl2");
+		BDDMockito.given(hallRepository.findByIdOrThrow(hallId)).willReturn(hall);
+		HallResponse.DeleteDto responseDto = hallService.deleteHall(hallId);
 
-		HallImage hallImage1 = new HallImage(hall, imageUrls.get(0));
-		Long hallImageId1 = 1L;
-
-		HallImage hallImage2 = new HallImage(hall, imageUrls.get(0));
-		Long hallImageId2 = 2L;
-
-		hall.getHallImages().add(hallImage1);
-		hall.getHallImages().add(hallImage2);
-
-		Assertions.assertThat(hall.getHallImages().size()).isEqualTo(0);
+		BDDMockito.verify(hall, Mockito.times(1)).updateClosed();
+		Assertions.assertThat(responseDto.getMessage()).isEqualTo("공연장 삭제완료");
+		Assertions.assertThat(hall.getIsOpen()).isEqualTo(false);
 	}
 }

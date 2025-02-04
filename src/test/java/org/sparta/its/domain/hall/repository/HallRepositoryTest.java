@@ -84,14 +84,14 @@ class HallRepositoryTest {
 	@Test
 	@DisplayName("공연장 정보 부분 수정 요청 정상 작동")
 	void updateHall() {
-		Hall hall1 = new Hall("잠실 경기장", "잠실", 400, true);
+		Hall hall = new Hall("잠실 경기장", "잠실", 400, true);
 
 		HallRequest.UpdateDto requestDto =
 			new HallRequest.UpdateDto("상암 경기장 수정", null);
 
-		hallRepository.save(hall1);
-		hallRepository.updateHall(hall1.getId(), requestDto);
-		Hall findHall = hallRepository.findByIdOrThrow(hall1.getId());
+		hallRepository.save(hall);
+		hallRepository.updateHall(hall.getId(), requestDto);
+		Hall findHall = hallRepository.findByIdOrThrow(hall.getId());
 
 		Assertions.assertThat(findHall.getName()).isEqualTo("상암 경기장 수정");
 		Assertions.assertThat(findHall.getLocation()).isEqualTo("잠실");
