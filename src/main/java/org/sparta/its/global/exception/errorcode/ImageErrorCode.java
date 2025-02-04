@@ -16,9 +16,6 @@ public enum ImageErrorCode {
 
 	NOT_ALLOW_FILE_EXTENSION(HttpStatus.BAD_REQUEST, "해당 확장자는 업로드가 불가능합니다."),
 
-	// 403 FORBIDDEN
-	DUPLICATED_NAME(HttpStatus.FORBIDDEN, "중복된 공연장 이름입니다."),
-
 	// 500 INTERNAL SERVER ERROR
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드 실패"),
 
