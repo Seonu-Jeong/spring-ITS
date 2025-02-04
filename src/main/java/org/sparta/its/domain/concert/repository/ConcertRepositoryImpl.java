@@ -1,24 +1,28 @@
 package org.sparta.its.domain.concert.repository;
 
 import static org.sparta.its.domain.concert.entity.QConcert.*;
-import static org.sparta.its.domain.hall.entity.QHall.*;
 import static org.sparta.its.domain.reservation.entity.QReservation.*;
 import static org.sparta.its.global.constant.GlobalConstant.*;
+import static org.sparta.its.global.exception.errorcode.ConcertErrorCode.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
+import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.sparta.its.domain.concert.entity.Concert;
+import org.sparta.its.domain.reservation.entity.ReservationStatus;
 import org.sparta.its.global.exception.ConcertException;
-import org.sparta.its.global.exception.errorcode.ConcertErrorCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
@@ -85,6 +89,36 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 		entityManager.clear();
 	}
 
+	// todo : jpql vs querydsl 최적화 테스트
+	// @Override
+	// public Page<Concert> findConcertsBySingerAndTitleAndTodayOrderByStartAt(String singer, String title, String order,
+	// 	LocalDate today, Pageable pageable) {
+	//
+	// 	List<Concert> fetch = jpaQueryFactory.selectFrom(concert)
+	// 		.where(singerLikeTest(singer)
+	// 			.and(concertTitleLike(title))
+	// 			.and(concert.endAt.goe(today)))
+	// 		.orderBy(decideOrderBy(order))
+	// 		.fetch();
+	//
+	// 	JPAQuery<Long> count = jpaQueryFactory
+	// 		.select(concert.count())
+	// 		.from(concert)
+	// 		.where(
+	// 			singerLikeTest(singer)
+	// 				.and(concertTitleLike(title))
+	// 				.and(concert.endAt.goe(today)));
+	//
+	// 	return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
+	// }
+	//
+	// private BooleanExpression singerLikeTest(String singer) {
+	// 	if (singer == null) {
+	// 		return null;
+	// 	}
+	// 	return concert.title.like("%" + singer + "%");
+	// }
+
 	/**
 	 * 콘서트 등록 현황 조회
 	 *
@@ -93,26 +127,35 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 	 * @param endAt 콘서트 종료 시간
 	 * @param order 정렬 방식
 	 * @param pageable 페이지 설정
-	 * @return {@link PageableExecutionUtils}
+	 * @return {@link Page<Concert>}
 	 */
 	@Override
-	public Page<Concert> findStatisticsWithOrderByConcertInfo(
+	public Page<ConcertResponse.StatisticsDto> findStatisticsWithOrderByConcertInfo(
 		String title,
 		LocalDate startAt,
 		LocalDate endAt,
 		String order,
 		Pageable pageable) {
 
-		List<Concert> findConcert = jpaQueryFactory
-			.select(concert)
+		JPQLQuery<Integer> reservationCount = JPAExpressions.select(reservation.count().intValue())
+			.from(reservation)
+			.where(reservation.status.eq(ReservationStatus.COMPLETED)
+				.and(reservation.concert.id.eq(concert.id)));
+
+		List<ConcertResponse.StatisticsDto> fetch = jpaQueryFactory
+			.select(Projections.constructor(
+				ConcertResponse.StatisticsDto.class,
+				concert.id,
+				concert.title,
+				concert.hall.capacity,
+				reservationCount,
+				concert.price.multiply(reservationCount),
+				concert.startAt))
 			.from(concert)
 			.where(concertTitleLike(title)
 				.and(isAfterStartAt(startAt))
 				.and(isBeforeEndAt(endAt)))
-			.leftJoin(concert.hall, hall)
-			.fetchJoin()
-			.leftJoin(concert.reservations, reservation)
-			.fetchJoin()
+			.groupBy(concert.id)
 			.orderBy(decideOrderBy(order))
 			.offset(pageable.getPageNumber())
 			.limit(pageable.getPageSize())
@@ -126,7 +169,7 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 					.and(isAfterStartAt(startAt))
 					.and(isBeforeEndAt(endAt)));
 
-		return PageableExecutionUtils.getPage(findConcert, pageable, count::fetchOne);
+		return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
 	}
 
 	private BooleanExpression concertTitleLike(String title) {
@@ -154,7 +197,7 @@ public class ConcertRepositoryImpl implements ConcertQueryDslRepository {
 		return switch (order.toUpperCase()) {
 			case ORDER_DESC -> concert.startAt.desc();
 			case ORDER_ASC -> concert.startAt.asc();
-			default -> throw new ConcertException(ConcertErrorCode.INCORRECT_VALUE);
+			default -> throw new ConcertException(INCORRECT_VALUE);
 		};
 	}
 }
