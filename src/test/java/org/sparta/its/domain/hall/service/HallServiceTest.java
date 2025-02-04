@@ -16,11 +16,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.sparta.its.domain.hall.dto.HallRequest;
 import org.sparta.its.domain.hall.dto.HallResponse;
 import org.sparta.its.domain.hall.entity.Hall;
+import org.sparta.its.domain.hall.entity.Seat;
 import org.sparta.its.domain.hall.repository.HallRepository;
+import org.sparta.its.domain.hall.repository.SeatRepository;
 import org.sparta.its.domain.hallImage.entity.HallImage;
 import org.sparta.its.domain.hallImage.repository.HallImageRepository;
 import org.sparta.its.global.exception.HallException;
-import org.sparta.its.global.exception.ImageException;
 import org.sparta.its.global.s3.S3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,6 +38,9 @@ class HallServiceTest {
 
 	@Mock
 	private HallImageRepository hallImageRepository;
+
+	@Mock
+	private SeatRepository seatRepository;
 
 	@Mock
 	private S3Service s3Service;
@@ -61,7 +65,7 @@ class HallServiceTest {
 
 		// todo : 공연장 이름 중복 exception -> imageException ?
 		Assertions.assertThatThrownBy(() -> hallService.creatHall(requestDto))
-			.isInstanceOf(ImageException.class)
+			.isInstanceOf(HallException.class)
 			.hasMessage(null);
 	}
 
@@ -86,9 +90,12 @@ class HallServiceTest {
 		Hall hall = requestDto.toEntity();
 		ReflectionTestUtils.setField(hall, "id", hallId);
 
+		Seat seat = new Seat(hall, 1);
+
 		BDDMockito.given(hallRepository.save(any(Hall.class))).willReturn(hall);
 		BDDMockito.given(hallImageRepository.save(any(HallImage.class))).willReturn(hallImage);
 		BDDMockito.given(s3Service.uploadImages(any(), any(), anyLong())).willReturn(imageUrls);
+		BDDMockito.given(seatRepository.save(any(Seat.class))).willReturn(seat);
 
 		HallResponse.CreatDto responseDto = hallService.creatHall(requestDto);
 		ReflectionTestUtils.setField(responseDto, "imageUrls", imageUrls);
