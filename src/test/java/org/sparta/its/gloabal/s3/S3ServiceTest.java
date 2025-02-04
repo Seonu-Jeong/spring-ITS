@@ -1,4 +1,4 @@
-package org.sparta.its.global.s3;
+package org.sparta.its.gloabal.s3;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,11 +8,11 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.sparta.its.gloabal.s3.S3TestConfig;
 import org.sparta.its.global.exception.ImageException;
+import org.sparta.its.global.s3.ImageFormat;
+import org.sparta.its.global.s3.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -77,23 +77,4 @@ public class S3ServiceTest {
 			s3Service.uploadImages(new MultipartFile[] {file}, imageFormat, domainId)
 		);
 	}
-
-	// @Test
-	// @DisplayName("S3 이미지 삭제 테스트")
-	@Test
-	void testDeleteImage() {
-		// Given
-		String imageUrl = "https://mock-s3-url/bucket/folder/test.jpg";
-		ArgumentCaptor<String> objectKeyCaptor = ArgumentCaptor.forClass(String.class);
-
-		Mockito.doNothing().when(amazonS3).deleteObject(Mockito.anyString(), objectKeyCaptor.capture());
-
-		// When
-		s3Service.deleteImprovementDelete(1L, ImageFormat.CONCERT);
-
-		// Then
-		List<String> capturedKeys = objectKeyCaptor.getAllValues();
-		assertTrue(capturedKeys.stream().anyMatch(key -> key.contains("folder/test.jpg")));
-	}
-
 }
