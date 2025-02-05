@@ -22,10 +22,12 @@
 
 ## 와이어 프레임
 
+![플러스](https://github.com/Seonu-Jeong/spring-ITS/blob/develop/%EC%99%80%EC%9D%B4%EC%96%B4%20%ED%94%84%EB%A0%88%EC%9E%84%20%EC%9D%B4%EB%AF%B8%EC%A7%80.png)
+
 ## ERD
 
-![플러스]()
+![플러스](https://github.com/Seonu-Jeong/spring-ITS/blob/develop/ERD%20%EC%9D%B4%EB%AF%B8%EC%A7%80.png)
 
 ## API 명세서
 
-![플러스](https://www.notion.so/teamsparta/067033596ef9457b97ce8d4caff33534?v=16f2dc3ef51481fa9b3a000c60f9a52d)
+![플러스](https://github.com/Seonu-Jeong/spring-ITS/blob/develop/API%20%EB%AA%85%EC%84%B8%EC%84%9C%20%EC%9D%B4%EB%AF%B8%EC%A7%80.png)
