@@ -37,7 +37,13 @@ dependencies {
 
     // Redisson
     implementation 'org.redisson:redisson-spring-boot-starter:3.41.0'
-    
+
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // Redis Deserialize
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
     //AWS
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
