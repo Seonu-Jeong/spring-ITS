@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
  * create on 2025. 02. 02.
  * create by IntelliJ IDEA.
  *
- * 예약 관련 FacadeService.
+ * 예약 관련 Service With Redis
  *
  * @author Seonu-Jeong, TaeHyeon Kim
  */
