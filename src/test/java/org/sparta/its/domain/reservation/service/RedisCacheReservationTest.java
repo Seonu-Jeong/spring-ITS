@@ -1,4 +1,4 @@
-package org.sparta.its.redis;
+package org.sparta.its.domain.reservation.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
-import org.sparta.its.domain.reservation.service.ReservationTestRedisService;
 import org.sparta.its.domain.user.entity.User;
 import org.sparta.its.domain.user.repository.UserRepository;
 import org.sparta.its.global.exception.ReservationException;

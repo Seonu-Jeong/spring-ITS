@@ -1,4 +1,4 @@
-package org.sparta.its.global.redis;
+package org.sparta.its.domain.reservation.dto.redis;
 
 import java.time.LocalDate;
 
