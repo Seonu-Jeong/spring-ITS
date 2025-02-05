@@ -128,7 +128,7 @@ public class ReservationService {
 	 * @param cancelDto 취소 DTO
 	 * @return {@link ReservationResponse.CancelDto}
 	 */
-	@Transactional(readOnly = true)
+	@Transactional
 	public ReservationResponse.CancelDto cancelReservation(
 		Long reservationId,
 		Long requestedUserId,
@@ -181,7 +181,7 @@ public class ReservationService {
 	 * @param pageable 페이징
 	 * @return {@link ReservationResponse.ReservationListDto}
 	 */
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<ReservationResponse.ReservationListDto> getReservations(
 		LocalDate startAt,
 		LocalDate endAt,

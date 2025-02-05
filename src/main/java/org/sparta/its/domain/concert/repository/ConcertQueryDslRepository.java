@@ -3,7 +3,7 @@ package org.sparta.its.domain.concert.repository;
 import java.time.LocalDate;
 
 import org.sparta.its.domain.concert.dto.ConcertRequest;
-import org.sparta.its.domain.concert.entity.Concert;
+import org.sparta.its.domain.concert.dto.ConcertResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,7 +19,15 @@ public interface ConcertQueryDslRepository {
 
 	void updateConcert(Long concertId, ConcertRequest.UpdateDto updateDto);
 
-	Page<Concert> findStatisticsWithOrderByConcertInfo(
+	// todo :  querydsl vs jpql 비교 메서드
+	// Page<Concert> findConcertsBySingerAndTitleAndTodayOrderByStartAt(
+	// 	String singer,
+	// 	String title,
+	// 	String order,
+	// 	LocalDate today,
+	// 	Pageable pageable);
+
+	Page<ConcertResponse.StatisticsDto> findStatisticsWithOrderByConcertInfo(
 		String title,
 		LocalDate startAt,
 		LocalDate endAt,

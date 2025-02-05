@@ -155,23 +155,20 @@ public class ConcertResponse {
 
 		private final LocalDate startAt;
 
-		public static StatisticsDto toDto(Concert concert) {
-			return StatisticsDto.builder()
-				.concertId(concert.getId())
-				.concertTitle(concert.getTitle())
-				.allSeat(concert.getHall().getCapacity())
-				.reservationSeat(concert.getReservations()
-					.stream()
-					.filter(reservation -> reservation.getStatus().equals(ReservationStatus.COMPLETED))
-					.toList()
-					.size()) // 예약 상태가 COMPLETED 된 갯수
-				.sumPrice(concert.getReservations()
-					.stream()
-					.filter(reservation -> reservation.getStatus().equals(ReservationStatus.COMPLETED))
-					.toList()
-					.size() * concert.getPrice()) // // 예약 상태가 COMPLETED 된 갯수 * 콘서트 가격
-				.startAt(concert.getStartAt()) // 정렬 기준인데 반환 값에 넣으면
-				.build();
+		public StatisticsDto(
+			Long concertId,
+			String concertTitle,
+			Integer allSeat,
+			Integer reservationSeat,
+			Integer sumPrice,
+			LocalDate startAt) {
+
+			this.concertId = concertId;
+			this.concertTitle = concertTitle;
+			this.allSeat = allSeat;
+			this.reservationSeat = reservationSeat;
+			this.sumPrice = sumPrice;
+			this.startAt = startAt;
 		}
 	}
 

@@ -57,7 +57,7 @@ public class HallService {
 	public HallResponse.CreatDto creatHall(HallRequest.CreateDto createDto) {
 
 		if (hallRepository.existsByName(createDto.getName())) {
-			throw new ImageException(DUPLICATED_NAME);
+			throw new HallException(DUPLICATED_NAME);
 		}
 
 		Hall savedHall = hallRepository.save(createDto.toEntity());
