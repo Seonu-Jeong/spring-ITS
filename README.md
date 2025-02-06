@@ -5,8 +5,6 @@
 
 ## 🌈 서비스/프로젝트 소개
 
----
-
 #### "쓰러지지 않는 콘서트 예매 서버"
 
 > 관리자는 공연장을 등록하고 해당 공연장에 오픈할 콘서트를 등록할 수 있습니다.
@@ -15,8 +13,6 @@
 > 동시성 제어, 인덱스, 캐싱 등의 기법을 적용하여 안정적인 서비스를 구현합니다.
 
 ## 🔑 Key Summary
-
----
 
 <details>
 <summary>예매 시스템 성능 개선</summary>
@@ -109,27 +105,25 @@ Code Coverage 를 통해서 기존 코드가 얼마나 안정적으로 운영되
 
 ## 👉 주요 기능
 
----
-
-1. 👷‍♂️ 관리자
+1. 👷‍♂️ **관리자**
     - 관리자는 공연장과 콘서트를 등록 가능
     - 관리자는 공연장과 콘서트에 필요한 이미지 등록 가능
     - 관리자는 공연장 예매 결과를 조회 가능
 
 
-2. 🎪 공연장/콘서트
+2. 🎪 **공연장/콘서트**
     - 해당 도메인 (공연장/콘서트) 가 등록될 때, AWS S3에 이미지를 같이 등록할 수 있으며,
       등록된 이미지는 수정 및 삭제가 가능
 
 
-3. 👦 유저
+3. 👦 **유저**
     - 유저는 회원가입/로그인을 통해 인증/인가
     - 유저는 콘서트를 조회하며, 콘서트 자리 선정
     - 최종적으로 유저는 해당 자리에 대하여 예매 가능
     - 유저는 자신의 예매 내역을 확인 가능
 
 
-4. 🎫 좌석 예매
+4. 🎫 **좌석 예매**
     - 콘서트 좌석 예매
         - 유저는 콘서트를 예매할 때, `좌석 선택` → `좌석 선택 완료` 단계를 걸쳐 예매를 완료
         - 여기서 `좌석 선택` 단계 에서는 동 시간 내에 많은 요청이 오더라도 `Redis` 의 `분산락`
@@ -138,69 +132,50 @@ Code Coverage 를 통해서 기존 코드가 얼마나 안정적으로 운영되
 
 ## 🛠 기술 스택
 
----
-
 ### 1. 라이브러리 & 프레임 워크
 
-<img src="https://img.shields.io/badge/Spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> 
-<img src="https://img.shields.io/badge/Spring Data jpa-6DB33F?style=for-the-badge&logo=&logoColor=white">
-<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
-<img src="https://img.shields.io/badge/QueryDsl-2496ED?style=for-the-badge&logo=&logoColor=white">
-<img src="https://img.shields.io/badge/Redisson-FF4438?style=for-the-badge&logo=&logoColor=white">
+<img src="https://img.shields.io/badge/Spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/Spring Data jpa-6DB33F?style=for-the-badge&logo=&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white"> <img src="https://img.shields.io/badge/QueryDsl-2496ED?style=for-the-badge&logo=&logoColor=white"> <img src="https://img.shields.io/badge/Redisson-FF4438?style=for-the-badge&logo=&logoColor=white">
 
 ### 2. DB & Optimization
 
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
-<img src="https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=redis&logoColor=white"> 
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=redis&logoColor=white"> 
 
 ### 3. 인프라 & 배포
 
-<img src="https://img.shields.io/badge/amazon web Service-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white"> 
-<img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
-<img src="https://img.shields.io/badge/Amazon%20S3-FF9900?style=for-the-badge&logo=amazons3&logoColor=white">
-<img src="https://img.shields.io/badge/Amazon%20RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
+<img src="https://img.shields.io/badge/amazon web Service-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20S3-FF9900?style=for-the-badge&logo=amazons3&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
 
 ### 4. CI/CD
 
-<img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
-<img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white"> <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 
 ### 5. 협업툴
 
-<img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white">
-<img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
-<img src="https://img.shields.io/badge/miro-050038?style=for-the-badge&logo=miro&logoColor=white">
-<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+<img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"> <img src="https://img.shields.io/badge/miro-050038?style=for-the-badge&logo=miro&logoColor=white"> <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
 ### 6. 언어 및 IDE
 
-<img src ="https://img.shields.io/badge/Java jdk 17-007396.svg?&style=for-the-badge&logo=Java&logoColor=white"/>  
-<img src ="https://img.shields.io/badge/intellijidea-000000.svg?&style=for-the-badge&logo=intellijidea&logoColor=white"/>
+<img src ="https://img.shields.io/badge/Java jdk 17-007396.svg?&style=for-the-badge&logo=Java&logoColor=white"/> <img src ="https://img.shields.io/badge/intellijidea-000000.svg?&style=for-the-badge&logo=intellijidea&logoColor=white"/>
 
 2025.01.02 ~ 2025.02.11
 
 ## 💬 기술적 의사 결정
 
----
-
-- 🚧 인증/인가 방식은 어떻게?
+- 🚧 **인증/인가 방식은 어떻게?**
     - 링크
-- 🔀 동시성 제어는 어떻게?
+- 🔀 **동시성 제어는 어떻게?**
     - 링크
-- 🐳 CI/CD는 어떻게?
+- 🐳 **CI/CD는 어떻게?**
     - 링크
 
 ## 📌 트러블슈팅
 
----
-
-- ✌ Query DSL N+1 문제 해결 및 성능 비교
+- ✌ **Query DSL N+1 문제 해결 및 성능 비교**
     - 링크
-- 🔒 동시성 제어 (Lock)
+- 🔒 **동시성 제어 (Lock)**
     - 링크
-- 📈 인덱스로 성능 최적화
+- 📈 **인덱스로 성능 최적화**
     - 링크
-- 🚀 Redis 캐시로 동시성 제어 및 성능 개선
+- 🚀 **Redis 캐시로 동시성 제어 및 성능 개선**
     - 링크
 
 ## 와이어 프레임
